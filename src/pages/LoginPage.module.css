@@ -1,0 +1,48 @@
+.accountContainer, .passwordContainer {
+  margin: 2rem 1rem;
+}
+
+.label {
+  text-align: start;
+  margin-bottom: 0.5rem;
+}
+
+.input {
+  height:1.5rem;
+  background-color: #D9D9D9;
+  border: none;
+  font-size:16px;
+  line-height: 16px;
+  border-radius: 12px;
+  width:90vw;
+  height:2rem;
+}
+
+.btnContainer {
+}
+
+button {
+  margin: 1rem;
+  border-radius: 8px;
+  width:90vw;
+  height:2rem;
+  border: none;
+}
+
+p {
+  margin: 0;
+  margin-left: 1rem;
+  text-align: start;
+}
+
+.loginBtn {
+  background-color: #fd7004;
+}
+
+.loginBtn:hover{
+  background-color: #ac4b01;
+}
+
+.registerBtn:hover {
+  background-color: #bebebe;
+}
