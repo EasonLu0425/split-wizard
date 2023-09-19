@@ -1,4 +1,4 @@
-.accountContainer, .passwordContainer {
+.accountContainer, .emailContainer ,.passwordContainer, .pwdConfirmContainer {
   margin: 2rem 1rem;
 }
 
