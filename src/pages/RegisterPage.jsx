@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Swal from "sweetalert2";
 import styles from './RegisterPage.module.css'
 
 
@@ -11,6 +12,27 @@ const RegisterPage = () => {
   const [isSubmit, setIsSubmit] = useState(false)
 
   const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!account || !password || !email || !pwdConfirm) {
+      Swal.fire({
+        position: "center",
+        title: "每一項都是必填喔!",
+        timer: 1000,
+        icon: "error",
+        showConfirmButton: false,
+      });
+      return;
+    }
+    if (password !== pwdConfirm) {
+      Swal.fire({
+        position: "center",
+        title: "密碼與確認密碼不一致!",
+        timer: 1000,
+        icon: "error",
+        showConfirmButton: false,
+      });
+      return;
+    }
     console.log('submit!')
     setIsSubmit(true)
   }
@@ -35,7 +57,7 @@ const RegisterPage = () => {
             <div className={styles.label}>email:</div>
             <input
               className={styles.input}
-              type="text"
+              type="email"
               placeholder="請輸入email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}

@@ -1,5 +1,6 @@
 import styles from "./LoginPage.module.css";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { useState } from "react";
 
 const LoginPage = () => {
@@ -18,6 +19,16 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!account || !password) {
+      Swal.fire({
+        position: "center",
+        title: "請完整輸入帳號密碼!",
+        timer: 1000,
+        icon: "error",
+        showConfirmButton: false,
+      });
+      return;
+    }
     setIsSubmit(true);
     console.log("account", account, "password", password);
     setIsSubmit(false);

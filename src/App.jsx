@@ -1,8 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { LoginPage, HomePage } from './pages'
-import RegisterPage from './pages/RegisterPage';
+import { LoginPage, HomePage, RegisterPage } from './pages'
 
 
 function App() {
@@ -12,6 +11,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage/>}/>
+          <Route path='/' element={<HomePage/>}></Route>
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,0 +1,97 @@
+.navContainer {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #d2e9c4;
+  box-shadow: 0px 1px 2px 1px #bebebe;
+}
+
+.hamburger {
+  width: 20px;
+  height: 2px;
+  background: #000;
+}
+
+.hamburger::after,
+.hamburger::before {
+  content: "";
+  width: 20px;
+  height: 2px;
+  background: #000;
+  display: block;
+}
+
+.hamburger::after {
+  transform: translate(0, 7px);
+}
+
+.hamburger::before {
+  transform: translate(0, -8px);
+}
+
+.title a {
+  text-decoration-line: none;
+  color: black;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+
+.navList {
+  position: absolute;
+  top: 0;
+  margin-top: calc(3rem + 3px);
+  width: 35%;
+  transform: scaleX(0);
+  transition: transform 0.2s ease-in;
+  transform-origin: left;
+  background: white;
+  backdrop-filter: blur(20px);
+  height:100vh
+}
+
+.listContainer {
+  height:93%;
+  position: relative;
+}
+
+.navList ul {
+  list-style-type: none;
+  margin: 0;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  height:100%
+}
+
+.navList ul li {
+  width: 100%;
+  height: 2.5rem;
+  border: 1px solid #bebebe;
+}
+
+.navList ul li a {
+  text-decoration: none;
+  color: #000;
+  line-height: 2.5rem;
+}
+
+.navList ul li:hover {
+  background-color: #bebebe;
+}
+
+.logoutBtn {
+  margin: 0;
+  width:100%;
+  height: 2.5rem;
+  border-radius: 0;
+  position: absolute;
+  bottom: 0;
+  left:0
+}
