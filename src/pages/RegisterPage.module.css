@@ -22,7 +22,7 @@
 .btnContainer {
 }
 
-button {
+.loginBtn, .registerBtn {
   margin: 1rem;
   border-radius: 8px;
   width:90vw;
@@ -41,7 +41,7 @@ p {
 }
 
 .loginBtn:hover{
-  background-color: #97a78d;
+  background-color: #bee9e8;
 }
 
 .registerBtn:hover {

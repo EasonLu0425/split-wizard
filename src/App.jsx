@@ -1,8 +1,14 @@
 // import logo from './logo.svg';
-import './App.css';
+import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { LoginPage, HomePage, RegisterPage } from './pages'
-
+import {
+  LoginPage,
+  HomePage,
+  RegisterPage,
+  GropuPage,
+  AddItemPage,
+  AddGroupPage,
+} from "./pages";
 
 function App() {
   return (
@@ -10,8 +16,14 @@ function App() {
       <BrowserRouter basename="/splitWizard">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path='/register' element={<RegisterPage/>}/>
-          <Route path='/' element={<HomePage/>}></Route>
+          <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/group/:groupId/addItem"
+            element={<AddItemPage />}
+          ></Route>
+          <Route path="/group/addGroup" element={<AddGroupPage/>}></Route>
+          <Route path="/group/:groupId" element={<GropuPage />}></Route>
+          <Route path="/" element={<HomePage />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

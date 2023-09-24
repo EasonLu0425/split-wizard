@@ -1,0 +1,36 @@
+.addItemPageContainer {
+  margin-top: 3rem;
+}
+
+.title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 2rem;
+  font-size: 32px;
+}
+
+.backArrow {
+  width: 40px;
+  background: none;
+  font-size: 28px;
+  border: none ;
+}
+
+.titleName {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.addItemFormContainer {
+  margin: 2rem;
+}
+
+
+.cancelBtn {
+  width: 100px;
+  border: none;
+  background: #cae9ff;
+  height:2rem;
+  border-radius: 15px;
+}

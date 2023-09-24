@@ -1,8 +1,15 @@
 import { Navbar } from "../components";
 import styles from './HomePage.module.css'
 import { Link, useNavigate } from "react-router-dom";
+import plusButton from "../images/plusBtn.svg";
+
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const handleAddGroup = () => {
+    
+    navigate(`/group/addGroup`);
+  }
   return (
     <>
       <Navbar></Navbar>
@@ -17,6 +24,11 @@ const HomePage = () => {
               <div className={styles.groupsMembers}>成員:</div>
             </Link>
           </div>
+        </div>
+        <div className={styles.plusBtn}>
+          <button className={styles.plus} onClick={handleAddGroup}>
+            <img src={plusButton} alt="plusButton" />
+          </button>
         </div>
       </div>
     </>

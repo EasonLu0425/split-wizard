@@ -1,0 +1,93 @@
+.groupPageContainer {
+  margin-top: 3rem;
+}
+
+.title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 2rem;
+  font-size: 32px;
+}
+
+.backArrow {
+  width: 40px;
+  background: none;
+  font-size: 28px;
+  border: none ;
+}
+
+.titleName {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.itemsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.itemsLi {
+  padding: 0;
+}
+
+.item {
+  list-style-type: none;
+}
+
+.itemLink {
+  text-decoration: none;
+  color:black
+}
+
+.itemBox {
+  width: 300px;
+  height: 150px;
+  box-shadow: 2px 2px 3px 2px #bdbdbd;
+  position:relative
+}
+
+.itemName {
+  position:absolute;
+  top:4px;
+  left:0.5rem;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.itemDate {
+  position: absolute;
+  top:4px;
+  right:0.5rem
+}
+
+.itemAmount {
+  position: absolute;
+  top:40%;
+  left:40%;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.itemPayer {
+  position: absolute;
+  bottom:4px;
+}
+
+.plusBtn {
+  position:fixed;
+  bottom: 10%;
+  left:50%;
+  transform: translate(-50%,0);
+}
+
+.plus{
+  background: none;
+  border: none ;
+  margin: 0;
+  padding: 0;
+  width: fit-content;
+  height: fit-content;
+}

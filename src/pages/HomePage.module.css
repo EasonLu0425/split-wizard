@@ -44,3 +44,19 @@
 .groupMembers {
   font-weight: 600;
 }
+
+.plusBtn {
+  position:fixed;
+  bottom: 10%;
+  left:50%;
+  transform: translate(-50%,0);
+}
+
+.plus{
+  background: none;
+  border: none ;
+  margin: 0;
+  padding: 0;
+  width: fit-content;
+  height: fit-content;
+}
