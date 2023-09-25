@@ -1,0 +1,19 @@
+.title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 2rem;
+  font-size: 32px;
+}
+
+.backArrow {
+  width: 40px;
+  background: none;
+  font-size: 28px;
+  border: none ;
+}
+
+.titleName {
+  font-size: 28px;
+  font-weight: 600;
+}

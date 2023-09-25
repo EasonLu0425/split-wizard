@@ -1,0 +1,65 @@
+.addGroupPageContainer {
+  margin-top: 3rem;
+}
+
+.title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 2rem;
+  font-size: 32px;
+}
+
+.backArrow {
+  width: 40px;
+  background: none;
+  font-size: 28px;
+  border: none ;
+}
+
+.titleName {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.addGroupForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem;
+}
+
+.formLabel {
+  display: block;
+}
+
+.groupNameInput {
+  height:2rem;
+  width:300px;
+  border: none;
+  background: #F0F0F0;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+}
+
+.usersSelect {
+  width:300px;
+}
+
+.addGroupBtn {
+  margin-top: 1.5rem;
+  border: none;
+  border-radius: 15px;
+  background: #1b4965;
+  color:white;
+  height: 2rem;
+  width: 100px;
+}
+
+.cancelBtn {
+  width: 100px;
+  border: none;
+  background: #cae9ff;
+  height:2rem;
+  border-radius: 15px;
+}

@@ -8,6 +8,8 @@ import {
   GropuPage,
   AddItemPage,
   AddGroupPage,
+  ItemDetailPage,
+  EditItemPage,
 } from "./pages";
 
 function App() {
@@ -21,8 +23,16 @@ function App() {
             path="/group/:groupId/addItem"
             element={<AddItemPage />}
           ></Route>
-          <Route path="/group/addGroup" element={<AddGroupPage/>}></Route>
+          <Route path="/group/addGroup" element={<AddGroupPage />}></Route>
           <Route path="/group/:groupId" element={<GropuPage />}></Route>
+          <Route
+            path="/group/:groupId/:itemId/edit"
+            element={<EditItemPage />}
+          ></Route>
+          <Route
+            path="/group/:groupId/:itemId"
+            element={<ItemDetailPage />}
+          ></Route>
           <Route path="/" element={<HomePage />}></Route>
         </Routes>
       </BrowserRouter>

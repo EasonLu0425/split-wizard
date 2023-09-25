@@ -35,6 +35,9 @@ const Navbar = () => {
             <li>
               <Link to="/">帳號管理</Link>
             </li>
+            <li>
+              <Link to='/'>已封存的行程</Link>
+            </li>
           </ul>
           <form>
             <button className={styles.logoutBtn}>登出</button>

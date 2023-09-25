@@ -1,0 +1,12 @@
+.editItemPageContainer {
+  margin: 2rem;
+  margin-top: 3rem;
+}
+
+.cancelBtn {
+  border: none;
+  border-radius: 15px;
+  height:2rem;
+  width:100px;
+  background: #cae9ff;
+}
