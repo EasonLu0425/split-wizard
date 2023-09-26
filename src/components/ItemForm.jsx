@@ -41,7 +41,7 @@ const dummyData = [
   },
 ];
 
-const User = ({ allUsers, user, index, onChange }) => {
+const User = ({ allUsers, user, index, onChange, deleteOwer }) => {
   const handleUserChange = (event) => {
     const { name, value } = event.target;
     onChange(index, name, value, user.id);
@@ -50,6 +50,12 @@ const User = ({ allUsers, user, index, onChange }) => {
   return (
     <>
       <div className={styles.user}>
+        <button
+          className={styles.deleteOwer}
+          onClick={(e) => deleteOwer(e, index)}
+        >
+          x
+        </button>
         <div className={styles.userNameContainer}>
           <label>{`使用者${index + 1}`}</label>
           <select onChange={handleUserChange} value={user.id} name={`user`}>
@@ -77,7 +83,9 @@ const User = ({ allUsers, user, index, onChange }) => {
   );
 };
 
-const ItemForm = (isEdit) => {
+const ItemForm = ({ isEdit }) => {
+  const [itemDate, setItemDate] = useState("");
+  const [itemTime, setItemTime] = useState('')
   const [itemName, setItemName] = useState("");
   const [itemAmount, setItemAmount] = useState("");
   const [payer, setPayer] = useState("");
@@ -86,7 +94,7 @@ const ItemForm = (isEdit) => {
   const usersInfo = itemData.users;
 
   useEffect(() => {
-    if (isEdit && itemData) {
+    if (isEdit === true && itemData) {
       setItemName(itemData.name || "");
       setItemAmount(itemData.amount || "");
       setPayer(usersInfo.filter((user) => user.payer) || "");
@@ -96,10 +104,14 @@ const ItemForm = (isEdit) => {
 
   const handleUserChange = (index, name, value, id) => {
     if (name === "user") {
-      const [nextUser] = usersInfo.filter(user => user.id === Number(value))
-      const nextOwer = [...ower]
-      nextOwer[index] = {...nextOwer[index], name:nextUser.name, id:nextUser.id}
-      setOwer(nextOwer)
+      const [nextUser] = usersInfo.filter((user) => user.id === Number(value));
+      const nextOwer = [...ower];
+      nextOwer[index] = {
+        ...nextOwer[index],
+        name: nextUser.name,
+        id: nextUser.id,
+      };
+      setOwer(nextOwer);
     } else if (name === "userAmount") {
       const nextOwer = ower.map((user) => {
         if (user.id === id) {
@@ -115,20 +127,76 @@ const ItemForm = (isEdit) => {
     }
   };
   const handleGoDutch = (e) => {
-    e.preventDefault()
-    const dutchedAmount = itemAmount/ ower.length
-    const nextOwer = ower.map(user => {
+    e.preventDefault();
+    const dutchedAmount = itemAmount / usersInfo.length;
+    const nextOwer = usersInfo.map((user) => {
       return {
         ...user,
-        amount: dutchedAmount
-      }
-    })
-    setOwer(nextOwer)
+        amount: dutchedAmount,
+      };
+    });
+    setOwer(nextOwer);
+  };
+
+  const addOwer = (e) => {
+    e.preventDefault();
+    const newUser = {
+      id: 0,
+      name: "",
+      amount: 0,
+      payer: false,
+    };
+
+    setOwer([...ower, newUser]);
+  };
+
+  const deleteOwer = (e, index) => {
+    e.preventDefault();
+    const updatedOwer = ower.filter((user, idx) => idx !== index);
+    setOwer(updatedOwer);
+  };
+
+  const handleItemSubmit = (e) => {
+    e.preventDefault();
+    let owerTotalAmount = 0;
+    ower.forEach((user) => (owerTotalAmount += user.amount));
+    if (itemAmount === 0 || !itemName || !payer || ower.length === 0) {
+      throw new Error("每一項都是必填喔!");
+    }
+    if (Number(itemAmount) !== owerTotalAmount) {
+      throw new Error("加總金額不對!");
+    }
+    const formData = {
+      itemDate,
+      itemTime,
+      itemName,
+      itemAmount,
+      payerId: payer,
+      ower,
+    };
+    console.log("formData", formData);
+    // 傳送axios.post 給後端
   };
 
   return (
     <>
-      <form className={styles.itemForm}>
+      <form className={styles.itemForm} onSubmit={handleItemSubmit}>
+        <div className={styles.itemDate}>
+          <label>項目日期</label>
+          <input
+            type="date"
+            name="itemDate"
+            value={itemDate}
+            onChange={(e) => setItemDate(e.target.value)}
+          />
+          <label>項目時間</label>
+          <input
+            type="time"
+            name="itemTime"
+            value={itemTime}
+            onChange={(e) => setItemTime(e.target.value)}
+          />
+        </div>
         <label>項目名稱</label>
         <input
           type="text"
@@ -143,14 +211,19 @@ const ItemForm = (isEdit) => {
           value={itemAmount}
           onChange={(e) => setItemAmount(e.target.value)}
         />
-        <label>支出者</label>
+        <label>支付者</label>
         <select
           className={styles.payerSelect}
           value={payer}
           onChange={(e) => setPayer(e.target.value)}
         >
+          <option value="" disabled hidden>
+            請選擇支付者
+          </option>
           {itemData.users.map((user) => (
-            <option key={`payer-userId:${user.id}`}>{user.name}</option>
+            <option key={`payer-userId:${user.id}`} value={user.id}>
+              {user.name}
+            </option>
           ))}
         </select>
         <button className={styles.goDutchBtn} onClick={handleGoDutch}>
@@ -163,9 +236,13 @@ const ItemForm = (isEdit) => {
               allUsers={usersInfo}
               user={user}
               index={index}
+              deleteOwer={deleteOwer}
               onChange={handleUserChange}
             ></User>
           ))}
+          <button className={styles.addOwerBtn} onClick={addOwer}>
+            新增使用者
+          </button>
         </div>
 
         <button className={styles.addNewBtn} type="submit">

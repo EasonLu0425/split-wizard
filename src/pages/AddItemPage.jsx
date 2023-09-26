@@ -10,7 +10,6 @@ const AddItemPage = () => {
     navigate(`/group/${groupId}`);
   };
 
-  const handleGoDutch = () => {};
 
   return (
     <>

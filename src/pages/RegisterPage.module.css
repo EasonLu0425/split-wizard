@@ -1,5 +1,5 @@
 .accountContainer, .emailContainer ,.passwordContainer, .pwdConfirmContainer {
-  margin: 2rem 1rem;
+  margin: 3rem 1rem;
 }
 
 .label {
@@ -37,11 +37,12 @@ p {
 }
 
 .loginBtn {
-  background-color: #D2E9C4;
+  background-color: #1B4965;
+  color:white
 }
 
 .loginBtn:hover{
-  background-color: #bee9e8;
+  background-color: #14354a;
 }
 
 .registerBtn:hover {

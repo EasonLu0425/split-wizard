@@ -1,5 +1,5 @@
 .accountContainer, .passwordContainer {
-  margin: 2rem 1rem;
+  margin: 3rem 1rem;
 }
 
 .label {
@@ -19,9 +19,6 @@
   height:2rem;
 }
 
-.btnContainer {
-}
-
 .loginBtn, .registerBtn {
   margin: 1rem;
   border-radius: 8px;
@@ -37,11 +34,12 @@ p {
 }
 
 .loginBtn {
-  background-color: #bee9e8;
+  background-color: #1B4965;
+  color:white
 }
 
 .loginBtn:hover{
-  background-color: #9bbdbc;
+  background-color: #123246;
 }
 
 .registerBtn:hover {
