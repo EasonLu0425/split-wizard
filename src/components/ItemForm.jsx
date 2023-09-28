@@ -16,25 +16,31 @@ const dummyData = [
       {
         id: 2,
         name: "小薛",
-        amount: 1500,
+        amount: 1200,
         payer: false,
       },
       {
         id: 3,
         name: "小莊",
-        amount: 1500,
+        amount: 1200,
         payer: false,
       },
       {
         id: 4,
         name: "大呂",
-        amount: 1500,
+        amount: 1200,
         payer: false,
       },
       {
         id: 5,
         name: "大莊",
-        amount: 1500,
+        amount: 1200,
+        payer: false,
+      },
+      {
+        id: 6,
+        name: "大薛",
+        amount: 1200,
         payer: false,
       },
     ],
@@ -129,6 +135,7 @@ const ItemForm = ({ isEdit }) => {
   const handleGoDutch = (e) => {
     e.preventDefault();
     const dutchedAmount = itemAmount / usersInfo.length;
+    // if 數量帶有小數，alert 可能需要手動調整
     const nextOwer = usersInfo.map((user) => {
       return {
         ...user,
@@ -167,8 +174,7 @@ const ItemForm = ({ isEdit }) => {
       throw new Error("加總金額不對!");
     }
     const formData = {
-      itemDate,
-      itemTime,
+      itemTime: `${itemDate} ${itemTime}`,
       itemName,
       itemAmount,
       payerId: payer,

@@ -6,8 +6,11 @@ import AddItemPage from "./AddItemPage";
 import AddGroupPage from "./AddGroupPage";
 import ItemDetailPage from "./ItemDetailPage";
 import EditItemPage from "./EditItemPage";
+import RedirectPage from "./RedirectPage";
+import ManageAccountPage from "./ManageAccountPage";
 
 export {
+  RedirectPage,
   LoginPage,
   HomePage,
   RegisterPage,
@@ -15,5 +18,6 @@ export {
   AddItemPage,
   AddGroupPage,
   ItemDetailPage,
-  EditItemPage
+  EditItemPage,
+  ManageAccountPage
 };

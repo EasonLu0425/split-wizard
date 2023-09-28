@@ -2,11 +2,13 @@ import styles from "./LoginPage.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useState } from "react";
+import axios from "axios";
 
 const LoginPage = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
+  const navigate = useNavigate()
 
   const handleAccountInput = (e) => {
     const value = e.target.value;
@@ -17,24 +19,54 @@ const LoginPage = () => {
     setPassword(value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!account || !password) {
-      Swal.fire({
-        position: "center",
-        title: "請完整輸入帳號密碼!",
-        timer: 1000,
-        icon: "error",
-        showConfirmButton: false,
-      });
-      return;
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      if (!account || !password) {
+        Swal.fire({
+          position: "center",
+          title: "請完整輸入帳號密碼!",
+          timer: 1000,
+          icon: "error",
+          showConfirmButton: false,
+        });
+        return;
+      }
+      setIsSubmit(true);
+      console.log("account", account, "password", password);
+      const formData = {
+        account,
+        password,
+      };
+
+      // const baseURL = "http://localhost:8081/splitwizard-SP-0.1";
+      const baseURL = "http://localhost:5000/splitWizard";
+      const { data } = await axios.post(`${baseURL}/login`, formData);
+
+      if (data.status === 'success') {
+        Swal.fire({
+          position: "center",
+          title: "登入成功",
+          timer: 1000,
+          icon: "success",
+          showConfirmButton: false,
+        });
+        navigate('/')
+      } else {
+        Swal.fire({
+          position: "center",
+          title: data.message,
+          timer: 1000,
+          icon: "error",
+          showConfirmButton: false,
+        });
+        setIsSubmit(false);
+      }
+    } catch (error) {
+      console.error(error)
     }
-    setIsSubmit(true);
-    console.log("account", account, "password", password);
-    setIsSubmit(false);
+    
   };
-
-
 
   return (
     <>
@@ -43,11 +75,11 @@ const LoginPage = () => {
         <h2>login</h2>
         <form onSubmit={handleSubmit}>
           <div className={styles.accountContainer}>
-            <div className={styles.label}>帳號:</div>
+            <div className={styles.label}>email:</div>
             <input
               className={styles.input}
               type="text"
-              placeholder="請輸入帳號"
+              placeholder="請輸入email"
               onChange={handleAccountInput}
               value={account}
             ></input>

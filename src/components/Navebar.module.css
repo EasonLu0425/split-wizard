@@ -98,3 +98,96 @@
   bottom: 0;
   left: 0;
 }
+
+.notification {
+  position: relative;
+}
+
+.bellBtn {
+  background: none;
+  border: none;
+}
+
+.notiDot {
+  position:absolute;
+  bottom: 0;
+  right: 0;
+  width:10px;
+  height: 10px;
+  background: #1B4965;
+  border-radius: 50%;
+  box-shadow: 1px 1px 1px white;
+}
+
+.notiShow {
+  display: block;
+}
+
+.notiHide {
+  display: none;
+}
+
+.modalContainer {
+  position: absolute;
+  top:110%;
+  right:0;
+  width:60vw;
+  height:fit-content;
+  padding: 1rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 2px 2px 2px 3px #bdbdbd;
+  z-index: 1;
+}
+
+.notiLiContainer {
+  list-style-type: none;
+  padding: 0;
+}
+
+.notiLi {
+  border: 1px solid #BDBDBD;
+  height:4rem;
+  position: relative;
+  padding: 0.5rem;
+}
+
+.unreadDot {
+  position: absolute;
+  top:0.5rem;
+  width:10px;
+  height: 10px;
+  background: #1B4965;
+  border-radius: 50%;
+  box-shadow: 1px 1px 1px white;
+}
+
+.notiControl {
+  display: flex;
+  justify-content: flex-end;
+  gap:1rem;
+  margin: 0.5rem;
+}
+
+.notiControl button {
+  border: none;
+  border-radius: 15px;
+  height:1.5rem;
+  width:50px
+}
+
+.notiYes {
+  background: #1B4965;
+  color:white
+}
+
+.notiNo {
+  background: #CAE9FF;
+}
+
+.moreNotiBtn {
+  border: none;
+  width:100%;
+  height:2rem;
+  border-radius: 15px;
+}

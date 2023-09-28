@@ -2,39 +2,75 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import styles from './RegisterPage.module.css'
+import axios from 'axios'
 
 
 const RegisterPage = () => {
-  const [account, setAccount] = useState('')
-  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [account, setaccount] = useState('')
   const [password, setPassword] =useState('')
   const [pwdConfirm, setPwdConfirm] = useState('')
   const [isSubmit, setIsSubmit] = useState(false)
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!account || !password || !email || !pwdConfirm) {
-      Swal.fire({
-        position: "center",
-        title: "每一項都是必填喔!",
-        timer: 1000,
-        icon: "error",
-        showConfirmButton: false,
-      });
-      return;
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      if (!name || !password || !account || !pwdConfirm) {
+        Swal.fire({
+          position: "center",
+          title: "每一項都是必填喔!",
+          timer: 1000,
+          icon: "error",
+          showConfirmButton: false,
+        });
+        return;
+      }
+      if (password !== pwdConfirm) {
+        Swal.fire({
+          position: "center",
+          title: "密碼與確認密碼不一致!",
+          timer: 1000,
+          icon: "error",
+          showConfirmButton: false,
+        });
+        return;
+      }
+      // const baseURL = "http://localhost:8081/splitwizard-SP-0.1";
+      const baseURL = "http://localhost:5000/splitWizard";
+      const formData = {
+        name,
+        account,
+        password,
+        passwordCheck: pwdConfirm
+      };
+      const { data } = await axios.post(`${baseURL}/register`, formData);
+      setIsSubmit(true);
+      console.log('後端回傳',data)
+      if (data.status === 'success') {
+        Swal.fire({
+          position: "center",
+          title: "註冊成功!",
+          timer: 1000,
+          icon: "success",
+          showConfirmButton: false,
+        });
+        navigate('/login')
+      } else {
+        Swal.fire({
+          position: "center",
+          title: data.err,
+          timer: 1000,
+          icon: "error",
+          showConfirmButton: false,
+        });
+      }
+
+    } catch(err) {
+      console.error(err)
     }
-    if (password !== pwdConfirm) {
-      Swal.fire({
-        position: "center",
-        title: "密碼與確認密碼不一致!",
-        timer: 1000,
-        icon: "error",
-        showConfirmButton: false,
-      });
-      return;
-    }
-    console.log('submit!')
-    setIsSubmit(true)
+    
   }
 
   return (
@@ -44,23 +80,23 @@ const RegisterPage = () => {
         <h2>register</h2>
         <form onSubmit={handleSubmit}>
           <div className={styles.accountContainer}>
-            <div className={styles.label}>帳號:</div>
+            <div className={styles.label}>名稱:</div>
             <input
               className={styles.input}
               type="text"
-              placeholder="請輸入帳號"
-              onChange={(e) => setAccount(e.target.value)}
-              value={account}
+              placeholder="請輸入使用者名稱"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
             ></input>
           </div>
-          <div className={styles.emailContainer}>
-            <div className={styles.label}>email:</div>
+          <div className={styles.accountContainer}>
+            <div className={styles.label}>帳號(email):</div>
             <input
               className={styles.input}
               type="email"
               placeholder="請輸入email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
+              onChange={(e) => setaccount(e.target.value)}
+              value={account}
             ></input>
           </div>
           <div className={styles.passwordContainer}>
