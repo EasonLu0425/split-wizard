@@ -8,7 +8,7 @@ const LoginPage = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleAccountInput = (e) => {
     const value = e.target.value;
@@ -32,17 +32,18 @@ const LoginPage = () => {
         });
         return;
       }
-      setIsSubmit(true);
+
       console.log("account", account, "password", password);
+      // const baseURL = "http://localhost:8081/splitwizard-SP-0.1";
+      const baseURL = "http://localhost:5000/splitWizard";
       const formData = {
         account,
         password,
       };
-
-      // const baseURL = "http://localhost:8081/splitwizard-SP-0.1";
-      const baseURL = "http://localhost:5000/splitWizard";
+      setIsSubmit(true);
       const { data } = await axios.post(`${baseURL}/login`, formData);
-
+      console.log("後端回傳data", data);
+      //  const success = await login({ account, password }); 有JWT之後把login判斷式換成api.auth跟authContext
       if (data.status === 'success') {
         Swal.fire({
           position: "center",
@@ -52,20 +53,28 @@ const LoginPage = () => {
           showConfirmButton: false,
         });
         navigate('/')
-      } else {
-        Swal.fire({
-          position: "center",
-          title: data.message,
-          timer: 1000,
-          icon: "error",
-          showConfirmButton: false,
-        });
-        setIsSubmit(false);
-      }
-    } catch (error) {
-      console.error(error)
+      } 
+      // else {
+      //   Swal.fire({
+      //     position: "center",
+      //     title: data.message,
+      //     timer: 1000,
+      //     icon: "error",
+      //     showConfirmButton: false,
+      //   });
+      //   setIsSubmit(false);
+      // }
+    } catch (err) {
+      const {data} = err.response
+      Swal.fire({
+        position: "center",
+        title: data.message,
+        timer: 1000,
+        icon: "error",
+        showConfirmButton: false,
+      });
+      setIsSubmit(false);
     }
-    
   };
 
   return (
@@ -78,7 +87,7 @@ const LoginPage = () => {
             <div className={styles.label}>email:</div>
             <input
               className={styles.input}
-              type="text"
+              type="email"
               placeholder="請輸入email"
               onChange={handleAccountInput}
               value={account}

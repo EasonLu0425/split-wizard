@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const authURL = "待定";
+const authURL = "http://localhost:5000/splitWizard";
 
 export const login = async ({ account, password }) => {
   try {

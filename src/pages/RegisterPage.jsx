@@ -57,18 +57,27 @@ const RegisterPage = () => {
           showConfirmButton: false,
         });
         navigate('/login')
-      } else {
-        Swal.fire({
-          position: "center",
-          title: data.err,
-          timer: 1000,
-          icon: "error",
-          showConfirmButton: false,
-        });
-      }
-
+      } 
+      // else {
+      //   Swal.fire({
+      //     position: "center",
+      //     title: data.message,
+      //     timer: 1000,
+      //     icon: "error",
+      //     showConfirmButton: false,
+      //   });
+      //   setIsSubmit(false);
+      // }
     } catch(err) {
-      console.error(err)
+      const { data } = err.response;
+      Swal.fire({
+        position: "center",
+        title: data.message,
+        timer: 1000,
+        icon: "error",
+        showConfirmButton: false,
+      });
+      setIsSubmit(false);
     }
     
   }

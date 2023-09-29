@@ -2,10 +2,18 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navebar.module.css";
 import { useState } from "react";
 import bell from '../images/bell.svg'
+import axios from 'axios'
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [notiOpen, setNotiOpen] =useState(false)
+
+  const handleLogOut = async (e) => {
+    // const baseURL = "http://localhost:8081/splitwizard-SP-0.1";
+    const baseURL = "http://localhost:5000/splitWizard";
+    const { data } = await axios.post(`${baseURL}/logout`)
+    
+  }
 
   return (
     <>
@@ -71,7 +79,7 @@ const Navbar = () => {
             </li>
           </ul>
           <form>
-            <button className={styles.logoutBtn}>登出</button>
+            <button className={styles.logoutBtn} onClick={handleLogOut}>登出</button>
           </form>
         </div>
       </div>
