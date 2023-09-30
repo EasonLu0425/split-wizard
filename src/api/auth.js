@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const authURL = "http://localhost:5000/splitWizard";
+// const authURL = "http://localhost:8081/splitwizard-SP-0.1";
 
 export const login = async ({ account, password }) => {
   try {

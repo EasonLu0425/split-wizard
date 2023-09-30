@@ -47,7 +47,6 @@ const RegisterPage = () => {
       };
       const { data } = await axios.post(`${baseURL}/register`, formData);
       setIsSubmit(true);
-      console.log('後端回傳',data)
       if (data.status === 'success') {
         Swal.fire({
           position: "center",

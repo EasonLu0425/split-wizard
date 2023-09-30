@@ -1,37 +1,66 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { Navbar, Title } from "../components"
-import styles from './GroupPage.module.css'
+import { Navbar, Title } from "../components";
+import styles from "./GroupPage.module.css";
 import plusButton from "../images/plusBtn.svg";
+import { useEffect, useState } from "react";
+import { getGroup } from "../api/groups";
+import { formatDate } from "../helpers/helper";
 
 const GropuPage = () => {
-  const {groupId} = useParams()
+  const { groupId } = useParams();
   const navigate = useNavigate();
+  const [groupName, setGroupName] = useState("");
+  const [groupItems, setGroupItems] = useState([]);
 
   const goToHomePage = () => {
     navigate("/");
-  }
+  };
 
   const handleAddItem = () => {
-    navigate(`/group/${groupId}/addItem`)
-  }
+    navigate(`/group/${groupId}/addItem`);
+  };
+
+  useEffect(() => {
+    const getGroupAsync = async () => {
+      try {
+        const groupData = await getGroup(groupId);
+        setGroupName(groupData.name);
+        setGroupItems(groupData.Items);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getGroupAsync();
+  }, []);
   return (
     <>
       <Navbar></Navbar>
       <div className={styles.groupPageContainer}>
-        <Title title='Group Name' backFn={goToHomePage}></Title>
+        <Title title={`${groupName}`} backFn={goToHomePage}></Title>
         <div className={styles.itemsContainer}>
           <ul className={styles.itemsLi}>
-          {/* 用items.map 排列出來，考慮分成一個小的component */}
-            <li className={styles.item}>
-            <Link to={`/group/${groupId}/itemId`} className={styles.itemLink}>
-              <div className={styles.itemBox}>
-                <p className={styles.itemName}>親子動泛</p>
-                <p className={styles.itemDate}>2023/07/19</p>
-                <p className={styles.itemAmount}>$ 99999</p>
-                <p className={styles.itemPayer}>支付者: 大呂</p>
-              </div>
-            </Link>
-            </li>
+            {groupItems.map((item) => (
+              <li
+                className={styles.item}
+                key={`group${groupId}-item${item.id}`}
+              >
+                <Link
+                  to={`/group/${groupId}/${item.id}`}
+                  className={styles.itemLink}
+                >
+                  <div className={styles.itemBox}>
+                    <p className={styles.itemName}>{item.name}</p>
+                    <p className={styles.itemDate}>
+                      {formatDate(item.itemTime)}
+                    </p>
+                    <p className={styles.itemAmount}>$ {item.amount}</p>
+                    <p className={styles.itemPayer}>
+                      {item.ItemDetails[0].User.name} 先付 ${item.amount}
+                    </p>
+                  </div>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
         <div className={styles.plusBtn}>
@@ -42,6 +71,6 @@ const GropuPage = () => {
       </div>
     </>
   );
-}
+};
 
-export default GropuPage
+export default GropuPage;

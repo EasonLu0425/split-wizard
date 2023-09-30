@@ -5,7 +5,7 @@ import {
   LoginPage,
   HomePage,
   RegisterPage,
-  GropuPage,
+  GroupPage,
   AddItemPage,
   AddGroupPage,
   ItemDetailPage,
@@ -25,8 +25,8 @@ function App() {
             path="group/:groupId/addItem"
             element={<AddItemPage />}
           ></Route>
+          <Route path="groups/:groupId" element={<GroupPage />}></Route>
           <Route path="group/addGroup" element={<AddGroupPage />}></Route>
-          <Route path="group/:groupId" element={<GropuPage />}></Route>
           <Route
             path="group/:groupId/:itemId/edit"
             element={<EditItemPage />}

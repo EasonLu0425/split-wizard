@@ -32,8 +32,6 @@ const LoginPage = () => {
         });
         return;
       }
-
-      console.log("account", account, "password", password);
       // const baseURL = "http://localhost:8081/splitwizard-SP-0.1";
       const baseURL = "http://localhost:5000/splitWizard";
       const formData = {
@@ -42,7 +40,6 @@ const LoginPage = () => {
       };
       setIsSubmit(true);
       const { data } = await axios.post(`${baseURL}/login`, formData);
-      console.log("後端回傳data", data);
       //  const success = await login({ account, password }); 有JWT之後把login判斷式換成api.auth跟authContext
       if (data.status === 'success') {
         Swal.fire({

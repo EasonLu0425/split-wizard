@@ -7,7 +7,7 @@ const AddItemPage = () => {
   const navigate = useNavigate();
 
   const goToGroupPage = () => {
-    navigate(`/group/${groupId}`);
+    navigate(`/groups/${groupId}`);
   };
 
 

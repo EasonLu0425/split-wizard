@@ -1,57 +1,19 @@
+import { useEffect, useState } from "react";
 import { Navbar, Title } from "../components";
 import styles from "./ItemDetailPage.module.css";
 import { useNavigate, useParams } from "react-router-dom";
+import { getItem } from "../api/items";
 
-const dummyData = [
-  {
-    name: "一欄拉麵",
-    amount: 6000,
-    created_at: "2023/07/16",
-    users: [
-      {
-        id: 1,
-        name: "小呂",
-        amount: 6000,
-        payer: true,
-      },
-      {
-        id: 2,
-        name: "小薛",
-        amount: 1500,
-        payer: false,
-      },
-      {
-        id: 3,
-        name: "小莊",
-        amount: 1500,
-        payer: false,
-      },
-      {
-        id: 4,
-        name: "大呂",
-        amount: 1500,
-        payer: false,
-      },
-      {
-        id: 5,
-        name: "大莊",
-        amount: 1500,
-        payer: false,
-      },
-    ],
-  },
-];
 
 const ItemDetailPage = () => {
   const { groupId, itemId } = useParams();
   const navigate = useNavigate();
-
-  const [itemData] = dummyData;
-  const [payer] = itemData.users.filter((user) => user.payer);
-  const ower = itemData.users.filter((user) => !user.payer);
+  const [itemData, setItemData] = useState([]);
+  const [payer, setPayer] = useState({})
+  const [ower, setOwer] = useState([])
 
   const backToGroupPage = () => {
-    navigate(`/group/${groupId}`);
+    navigate(`/groups/${groupId}`);
   };
 
   const goToEdit = () => {
@@ -60,18 +22,32 @@ const ItemDetailPage = () => {
 
   const handleDelete = () => {
     console.log("delete this Item!");
-    // 傳送axios.delete
+    // 傳送itemAPI.delete
   };
+
+  useEffect(() => {
+    const getItemAsync = async () => {
+      try {
+        const groupData = await getItem(groupId, itemId);
+        setPayer(...groupData[0].users.filter(user => user.payer))
+        setOwer([...groupData[0].users.filter((user) => !user.payer)]);
+        setItemData(...groupData)
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getItemAsync();
+  }, []);
 
   return (
     <>
       <Navbar></Navbar>
       <div className={styles.itemDetailPageContainer}>
-        <Title title={`/${groupId}/${itemId}`} backFn={backToGroupPage}></Title>
+        <Title title={`${itemData.groupName}/${itemData.itemName}`} backFn={backToGroupPage}></Title>
         <div className={styles.detailContainer}>
           <div className={styles.itemDate}>{itemData.created_at}</div>
           <div className={styles.itemNameAndAmount}>
-            <p>{itemData.name}</p>
+            <p>{itemData.itemName}</p>
             <p>${itemData.amount}</p>
           </div>
           <div className={styles.payerContainer}>
@@ -83,7 +59,6 @@ const ItemDetailPage = () => {
           </div>
           <hr />
           <div className={styles.owerContainer}>
-            {/* users.map套進去 */}
             <div className={styles.owers}>
               <p className={styles.owerTitle}>使用者</p>
               {ower.map((user, index) => (
