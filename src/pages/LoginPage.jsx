@@ -40,7 +40,7 @@ const LoginPage = () => {
       const { data } = await axiosInstance.post(`${baseURL}/login`, formData);
       console.log(data)
       //  const success = await login({ account, password }); 有JWT之後把login判斷式換成api.auth跟authContext
-      localStorage.setItem('currentUserId', data.result)
+      localStorage.setItem('currentUserId', data.result.id)
       if (data.status === 'success') {
         Swal.fire({
           position: "center",
@@ -52,11 +52,11 @@ const LoginPage = () => {
         navigate('/')
       } 
     } catch (err) {
-      const {data} = err.response
+      const {data} = err
       console.log(err)
       Swal.fire({
         position: "center",
-        title: data || data.message,
+        title: data,
         timer: 1000,
         icon: "error",
         showConfirmButton: false,
