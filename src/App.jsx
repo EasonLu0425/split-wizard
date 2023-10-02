@@ -11,35 +11,38 @@ import {
   ItemDetailPage,
   EditItemPage,
   RedirectPage,
-  ManageAccountPage
+  ManageAccountPage,
 } from "./pages";
+import { ItemDataProvider } from "./contexts/EditItemContext";
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter basename="/splitWizard">
-        <Routes>
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
-          <Route
-            path="group/:groupId/addItem"
-            element={<AddItemPage />}
-          ></Route>
-          <Route path="groups/:groupId" element={<GroupPage />}></Route>
-          <Route path="group/addGroup" element={<AddGroupPage />}></Route>
-          <Route
-            path="group/:groupId/:itemId/edit"
-            element={<EditItemPage />}
-          ></Route>
-          <Route
-            path="group/:groupId/:itemId"
-            element={<ItemDetailPage />}
-          ></Route>
-          <Route path="group" element={<HomePage />}></Route>
-          <Route path="manageAccount" element = {<ManageAccountPage/>}></Route>
-          <Route path='*' element={<RedirectPage/>}></Route>
-        </Routes>
-      </BrowserRouter>
+      <ItemDataProvider>
+        <BrowserRouter basename="/splitWizard">
+          <Routes>
+            <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<RegisterPage />} />
+            <Route
+              path="group/:groupId/addItem"
+              element={<AddItemPage />}
+            ></Route>
+            <Route path="groups/:groupId" element={<GroupPage />}></Route>
+            <Route path="group/addGroup" element={<AddGroupPage />}></Route>
+            <Route
+              path="groups/:groupId/:itemId/edit"
+              element={<EditItemPage />}
+            ></Route>
+            <Route
+              path="group/:groupId/:itemId"
+              element={<ItemDetailPage />}
+            ></Route>
+            <Route path="groups" element={<HomePage />}></Route>
+            <Route path="manageAccount" element={<ManageAccountPage />}></Route>
+            <Route path="*" element={<RedirectPage />}></Route>
+          </Routes>
+        </BrowserRouter>
+      </ItemDataProvider>
     </div>
   );
 }

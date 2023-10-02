@@ -5,3 +5,8 @@ export const formatDate = (rawDate) => {
   
   return formattedDate
 };
+
+export const formatTime = (rawTime) => {
+  const formattedTime = moment(rawTime).format("HH:mm:ss");
+  return formattedTime
+}

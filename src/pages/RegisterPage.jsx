@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import styles from './RegisterPage.module.css'
-import axios from 'axios'
+import { axiosInstance, baseURL } from "../api/axiosInstance";
 
 
 const RegisterPage = () => {
@@ -37,15 +37,14 @@ const RegisterPage = () => {
         });
         return;
       }
-      // const baseURL = "http://localhost:8081/splitwizard-SP-0.1";
-      const baseURL = "http://localhost:5000/splitWizard";
+
       const formData = {
         name,
         account,
         password,
         passwordCheck: pwdConfirm
       };
-      const { data } = await axios.post(`${baseURL}/register`, formData);
+      const { data } = await axiosInstance.post(`${baseURL}/register`, formData);
       setIsSubmit(true);
       if (data.status === 'success') {
         Swal.fire({

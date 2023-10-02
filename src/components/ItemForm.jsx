@@ -1,53 +1,13 @@
 import styles from "./ItemForm.module.css";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useContext } from "react";
+import { getItem } from "../api/items";
+import { getGroupMembers, getGroup } from "../api/groups";
+import { useNavigate } from "react-router-dom";
+import { ItemContext } from "../contexts/EditItemContext";
+import Swal from "sweetalert2";
+import { postItem, putItem } from "../api/items";
 
-const dummyData = [
-  {
-    name: "一欄拉麵",
-    amount: 6000,
-    created_at: "2023/07/16",
-    users: [
-      {
-        id: 1,
-        name: "小呂",
-        amount: 6000,
-        payer: true,
-      },
-      {
-        id: 2,
-        name: "小薛",
-        amount: 1200,
-        payer: false,
-      },
-      {
-        id: 3,
-        name: "小莊",
-        amount: 1200,
-        payer: false,
-      },
-      {
-        id: 4,
-        name: "大呂",
-        amount: 1200,
-        payer: false,
-      },
-      {
-        id: 5,
-        name: "大莊",
-        amount: 1200,
-        payer: false,
-      },
-      {
-        id: 6,
-        name: "大薛",
-        amount: 1200,
-        payer: false,
-      },
-    ],
-  },
-];
-
-const User = ({ allUsers, user, index, onChange, deleteOwer }) => {
+const User = ({ role, allUsers, user, index, onChange, onDeleteUser }) => {
   const handleUserChange = (event) => {
     const { name, value } = event.target;
     onChange(index, name, value, user.id);
@@ -57,14 +17,16 @@ const User = ({ allUsers, user, index, onChange, deleteOwer }) => {
     <>
       <div className={styles.user}>
         <button
-          className={styles.deleteOwer}
-          onClick={(e) => deleteOwer(e, index)}
+          className={styles.deleteUser}
+          onClick={(e) => onDeleteUser(e, index, role)}
         >
           x
         </button>
         <div className={styles.userNameContainer}>
-          <label>{`使用者${index + 1}`}</label>
-          <select onChange={handleUserChange} value={user.id} name={`user`}>
+          <label>
+            {`${role === "payer" ? "支付者" : "使用者"}${index + 1}`}
+          </label>
+          <select onChange={handleUserChange} value={user.id} name={`${role}`}>
             {allUsers.map((oneUser) => {
               return (
                 <option key={`user-${index}-${oneUser.id}`} value={oneUser.id}>
@@ -75,11 +37,18 @@ const User = ({ allUsers, user, index, onChange, deleteOwer }) => {
           </select>
         </div>
         <div className={styles.userAmountContainer}>
-          <label>{`使用者${index}金額`}:</label>
+          <label>
+            {`${
+              role === "payer"
+                ? `支付者${index + 1}金額`
+                : `使用者${index + 1}金額`
+            }`}
+            :
+          </label>
           <input
             className={styles.userAmount}
             type="number"
-            name={`userAmount`}
+            name={`${role}Amount`}
             value={user.amount}
             onChange={handleUserChange}
           />
@@ -89,37 +58,33 @@ const User = ({ allUsers, user, index, onChange, deleteOwer }) => {
   );
 };
 
-const ItemForm = ({ isEdit }) => {
-  const [itemDate, setItemDate] = useState("");
-  const [itemTime, setItemTime] = useState('')
-  const [itemName, setItemName] = useState("");
-  const [itemAmount, setItemAmount] = useState("");
-  const [payer, setPayer] = useState("");
-  const [ower, setOwer] = useState([]);
-  const [itemData] = dummyData;
-  const usersInfo = itemData.users;
-
-  useEffect(() => {
-    if (isEdit === true && itemData) {
-      setItemName(itemData.name || "");
-      setItemAmount(itemData.amount || "");
-      setPayer(usersInfo.filter((user) => user.payer) || "");
-      setOwer(usersInfo.filter((user) => !user.payer) || []);
-    }
-  }, [isEdit, itemData, usersInfo]);
-
+const ItemForm = ({ isEdit, groupId, itemId }) => {
+  const {
+    itemInfo,
+    groupmembers,
+    receiveItemData,
+    receiveGroupMembers,
+    receiveGroupTitle,
+    handleInputChange,
+    handleOwerChange,
+    handlePayerChange,
+    resetItemInfo,
+  } = useContext(ItemContext);
+  const navigate = useNavigate();
   const handleUserChange = (index, name, value, id) => {
-    if (name === "user") {
-      const [nextUser] = usersInfo.filter((user) => user.id === Number(value));
-      const nextOwer = [...ower];
+    if (name === "ower") {
+      const [nextUser] = groupmembers.filter(
+        (user) => user.id === Number(value)
+      );
+      const nextOwer = [...itemInfo.ower];
       nextOwer[index] = {
         ...nextOwer[index],
         name: nextUser.name,
         id: nextUser.id,
       };
-      setOwer(nextOwer);
-    } else if (name === "userAmount") {
-      const nextOwer = ower.map((user) => {
+      handleOwerChange(nextOwer);
+    } else if (name === "owerAmount") {
+      const nextOwer = itemInfo.ower.map((user) => {
         if (user.id === id) {
           return {
             ...user,
@@ -129,60 +94,187 @@ const ItemForm = ({ isEdit }) => {
           return user;
         }
       });
-      setOwer(nextOwer);
+      handleOwerChange(nextOwer);
+    } else if (name === "payer") {
+      const [nextUser] = groupmembers.filter(
+        (user) => user.id === Number(value)
+      );
+      const nextPayer = [...itemInfo.payer];
+      nextPayer[index] = {
+        ...nextPayer[index],
+        name: nextUser.name,
+        id: nextUser.id,
+        payer: true,
+      };
+      handlePayerChange(nextPayer);
+    } else if (name === "payerAmount") {
+      const nextPayer = itemInfo.payer.map((user) => {
+        if (user.id === id) {
+          return {
+            ...user,
+            amount: value,
+          };
+        } else {
+          return user;
+        }
+      });
+      handlePayerChange(nextPayer);
     }
   };
   const handleGoDutch = (e) => {
     e.preventDefault();
-    const dutchedAmount = itemAmount / usersInfo.length;
-    // if 數量帶有小數，alert 可能需要手動調整
-    const nextOwer = usersInfo.map((user) => {
+    const dutchedAmount = itemInfo.itemAmount / groupmembers.length;
+    const nextOwer = groupmembers.map((user) => {
       return {
-        ...user,
+        id: user.id,
+        name: user.name,
         amount: dutchedAmount,
+        payer: false,
       };
     });
-    setOwer(nextOwer);
+    handleOwerChange(nextOwer);
   };
 
   const addOwer = (e) => {
     e.preventDefault();
     const newUser = {
-      id: 0,
-      name: "",
+      id: groupmembers[0].id,
+      name: groupmembers[0].name,
       amount: 0,
       payer: false,
     };
-
-    setOwer([...ower, newUser]);
+    handleOwerChange([...itemInfo.ower, newUser]);
   };
-
-  const deleteOwer = (e, index) => {
+  const addPayer = (e) => {
     e.preventDefault();
-    const updatedOwer = ower.filter((user, idx) => idx !== index);
-    setOwer(updatedOwer);
-  };
-
-  const handleItemSubmit = (e) => {
-    e.preventDefault();
-    let owerTotalAmount = 0;
-    ower.forEach((user) => (owerTotalAmount += user.amount));
-    if (itemAmount === 0 || !itemName || !payer || ower.length === 0) {
-      throw new Error("每一項都是必填喔!");
-    }
-    if (Number(itemAmount) !== owerTotalAmount) {
-      throw new Error("加總金額不對!");
-    }
-    const formData = {
-      itemTime: `${itemDate} ${itemTime}`,
-      itemName,
-      itemAmount,
-      payerId: payer,
-      ower,
+    const newUser = {
+      id: groupmembers[0].id,
+      name: groupmembers[0].name,
+      amount: 0,
+      payer: true,
     };
-    console.log("formData", formData);
-    // 傳送axios.post 給後端
+    handlePayerChange([...itemInfo.payer, newUser]);
   };
+
+  const handleDeleteUser = (e, index, role) => {
+    e.preventDefault();
+    if (role === "ower") {
+      const updatedOwer = itemInfo.ower.filter((user, idx) => idx !== index);
+      handleOwerChange(updatedOwer);
+    } else if (role === "payer") {
+      const updatedPayer = itemInfo.payer.filter((user, idx) => idx !== index);
+      handlePayerChange(updatedPayer);
+    }
+  };
+
+  const handleItemSubmit = async (e) => {
+    try {
+      e.preventDefault();
+
+      if (
+        itemInfo.itemAmount === 0 ||
+        !itemInfo.itemName ||
+        itemInfo.payer.length === 0 ||
+        itemInfo.ower.length === 0
+      ) {
+        throw new Error("每一項都是必填喔!");
+      }
+
+      let payerTotalAmount = 0;
+      itemInfo.payer.forEach(
+        (user) => (payerTotalAmount += Number(user.amount))
+      );
+      if (Number(itemInfo.itemAmount) !== payerTotalAmount) {
+        throw new Error("支付者的加總金額不對!");
+      }
+
+      let owerTotalAmount = 0;
+      itemInfo.ower.forEach((user) => (owerTotalAmount += Number(user.amount)));
+      if (Number(itemInfo.itemAmount) !== owerTotalAmount) {
+        throw new Error("使用者加總金額不對!");
+      }
+
+      const formData = {
+        itemTime: `${itemInfo.itemDate} ${itemInfo.itemTime}`,
+        itemName: itemInfo.itemName,
+        itemAmount: itemInfo.itemAmount,
+        payer: itemInfo.payer,
+        ower: itemInfo.ower,
+      };
+      // 傳送axios.put 給後端
+
+      if (isEdit) {
+        const { data } = await putItem(formData, groupId, itemId);
+        if (data.status === "success") {
+          Swal.fire({
+            position: "center",
+            title: "修改成功",
+            timer: 1000,
+            icon: "success",
+            showConfirmButton: false,
+          });
+          navigate("/");
+        }
+      } else {
+        const { data } = await postItem(formData, groupId);
+        if (data.status === "success") {
+          Swal.fire({
+            position: "center",
+            title: "新增成功",
+            timer: 1000,
+            icon: "success",
+            showConfirmButton: false,
+          });
+          navigate("/");
+        }
+      }
+    } catch (err) {
+      Swal.fire({
+        position: "center",
+        title: err.message,
+        timer: 1000,
+        icon: "error",
+        showConfirmButton: false,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (isEdit === true && groupId && itemId) {
+      const getItemAsync = async () => {
+        try {
+          const groupData = await getItem(groupId, itemId);
+          receiveItemData(groupData);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      getItemAsync();
+    } else if (!isEdit) {
+      const getGroupAsync = async () => {
+        try{
+          const groupData = await getGroup(groupId);
+          receiveGroupTitle(groupData.name)
+        } catch(err) {
+          console.error(err)
+        }
+      }
+      getGroupAsync()
+    }
+    const getgroupmembersAsync = async () => {
+      try {
+        const members = await getGroupMembers(groupId);
+        receiveGroupMembers(members);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getgroupmembersAsync();
+
+    return () => {
+      resetItemInfo()
+    }
+  }, []);
 
   return (
     <>
@@ -192,60 +284,66 @@ const ItemForm = ({ isEdit }) => {
           <input
             type="date"
             name="itemDate"
-            value={itemDate}
-            onChange={(e) => setItemDate(e.target.value)}
+            value={itemInfo.itemDate}
+            onChange={(e) => handleInputChange(e)}
           />
           <label>項目時間</label>
           <input
             type="time"
             name="itemTime"
-            value={itemTime}
-            onChange={(e) => setItemTime(e.target.value)}
+            value={itemInfo.itemTime}
+            onChange={(e) => handleInputChange(e)}
           />
         </div>
         <label>項目名稱</label>
         <input
           type="text"
           name="itemName"
-          value={itemName}
-          onChange={(e) => setItemName(e.target.value)}
+          value={itemInfo.itemName}
+          onChange={(e) => handleInputChange(e)}
         />
         <label>項目金額</label>
         <input
           type="number"
           name="itemAmount"
-          value={itemAmount}
-          onChange={(e) => setItemAmount(e.target.value)}
+          value={itemInfo.itemAmount}
+          onChange={(e) => handleInputChange(e)}
         />
         <label>支付者</label>
-        <select
-          className={styles.payerSelect}
-          value={payer}
-          onChange={(e) => setPayer(e.target.value)}
-        >
-          <option value="" disabled hidden>
-            請選擇支付者
-          </option>
-          {itemData.users.map((user) => (
-            <option key={`payer-userId:${user.id}`} value={user.id}>
-              {user.name}
-            </option>
-          ))}
-        </select>
+        <div className={styles.usersContainer}>
+          {itemInfo.payer &&
+            itemInfo.payer.map((user, index) => (
+              <User
+                key={`payer-userId:${user.id}-${index}`}
+                role={`payer`}
+                allUsers={groupmembers}
+                user={user}
+                index={index}
+                onDeleteUser={handleDeleteUser}
+                onChange={handleUserChange}
+              ></User>
+            ))}
+          <button className={styles.addPayerBtn} onClick={addPayer}>
+            新增支付者
+          </button>
+        </div>
         <button className={styles.goDutchBtn} onClick={handleGoDutch}>
           所有人平分此筆項目
         </button>
+        <label>使用者</label>
         <div className={styles.usersContainer}>
-          {ower.map((user, index) => (
-            <User
-              key={`ower-userId:${user.id}-${index}`}
-              allUsers={usersInfo}
-              user={user}
-              index={index}
-              deleteOwer={deleteOwer}
-              onChange={handleUserChange}
-            ></User>
-          ))}
+          {itemInfo.ower &&
+            itemInfo.ower.map((user, index) => (
+              <User
+                key={`ower-userId:${user.id}-${index}`}
+                role={`ower`}
+                allUsers={groupmembers}
+                user={user}
+                index={index}
+                onDeleteUser={handleDeleteUser}
+                onChange={handleUserChange}
+              ></User>
+            ))}
           <button className={styles.addOwerBtn} onClick={addOwer}>
             新增使用者
           </button>

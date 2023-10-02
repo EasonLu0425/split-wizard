@@ -15,7 +15,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const getGroupsAsync = async () => {
-      try {
+      try {      
         const groups = await getGroups();
         setGroups(groups.map((group) => ({ ...group })));
       } catch (err) {

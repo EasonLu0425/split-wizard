@@ -2,16 +2,32 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navebar.module.css";
 import { useState } from "react";
 import bell from '../images/bell.svg'
-import axios from 'axios'
+import { axiosInstance, baseURL } from "../api/axiosInstance";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [notiOpen, setNotiOpen] =useState(false)
+  const navigate = useNavigate()
 
   const handleLogOut = async (e) => {
-    // const baseURL = "http://localhost:8081/splitwizard-SP-0.1";
-    const baseURL = "http://localhost:5000/splitWizard";
-    const { data } = await axios.post(`${baseURL}/logout`)
+    try {
+      e.preventDefault()
+      const { data } = await axiosInstance.post(`${baseURL}/logout`);
+      console.log('登出回傳',data)
+      if (data.status === "success") {
+        Swal.fire({
+          position: "center",
+          title: "登出成功!",
+          timer: 1000,
+          icon: "success",
+          showConfirmButton: false,
+        });
+        navigate("/login");
+      }
+    } catch (err) {
+      console.error(err)
+    }
     
   }
 

@@ -2,7 +2,7 @@ import styles from "./LoginPage.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useState } from "react";
-import axios from "axios";
+import { axiosInstance, baseURL } from "../api/axiosInstance";
 
 const LoginPage = () => {
   const [account, setAccount] = useState("");
@@ -32,15 +32,15 @@ const LoginPage = () => {
         });
         return;
       }
-      // const baseURL = "http://localhost:8081/splitwizard-SP-0.1";
-      const baseURL = "http://localhost:5000/splitWizard";
       const formData = {
         account,
         password,
       };
       setIsSubmit(true);
-      const { data } = await axios.post(`${baseURL}/login`, formData);
+      const { data } = await axiosInstance.post(`${baseURL}/login`, formData);
+      console.log(data)
       //  const success = await login({ account, password }); 有JWT之後把login判斷式換成api.auth跟authContext
+      localStorage.setItem('currentUserId', data.result)
       if (data.status === 'success') {
         Swal.fire({
           position: "center",
@@ -51,21 +51,12 @@ const LoginPage = () => {
         });
         navigate('/')
       } 
-      // else {
-      //   Swal.fire({
-      //     position: "center",
-      //     title: data.message,
-      //     timer: 1000,
-      //     icon: "error",
-      //     showConfirmButton: false,
-      //   });
-      //   setIsSubmit(false);
-      // }
     } catch (err) {
       const {data} = err.response
+      console.log(err)
       Swal.fire({
         position: "center",
-        title: data.message,
+        title: data || data.message,
         timer: 1000,
         icon: "error",
         showConfirmButton: false,

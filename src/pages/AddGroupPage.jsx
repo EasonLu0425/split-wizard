@@ -5,7 +5,9 @@ import { Navbar, Title } from "../components";
 import styles from "./AddGroupPage.module.css";
 import { getAllUsers } from "../api/users";
 import { addGroup } from "../api/groups";
+import { addMemberToGroup } from "../api/userGroupConn";
 import Swal from "sweetalert2";
+import { all } from "axios";
 
 const AddGroupPage = () => {
   const [groupName, setGroupName] = useState('')
@@ -31,26 +33,35 @@ const AddGroupPage = () => {
     e.preventDefault()
     console.log('selectedNames', selectedNames)
     console.log('groupName', groupName)
-    const formData = {
+    const groupData = {
       name: groupName,
-      members: selectedNames
     }
-    const res = await addGroup(formData)
+    // const addMemberData = {
+    //   members: selectedNames,
+    // };
+    const newGroupData = await addGroup(groupData)
+    const currentUserId = localStorage.getItem('currentUserId')
+
+    const addMTGData = {
+      memberId: currentUserId,
+      groupId: newGroupData.result.id
+    }
+    const res = await addMemberToGroup(addMTGData)
     if (res.status === 'success') {
       Swal.fire({
         position: "center",
-        title: res.message,
+        title: '創建行程成功',
         timer: 1000,
         icon: "success",
         showConfirmButton: false,
       });
-      navigate("/");
+      navigate("/");  // 等addNotification建立好，做sendInvitation的動作
     }
     } catch(err) {
-      const { data } = err.response;
+      console.log(err)
       Swal.fire({
         position: "center",
-        title: data.message,
+        title: err.message,
         timer: 1000,
         icon: "error",
         showConfirmButton: false,
@@ -62,7 +73,8 @@ const AddGroupPage = () => {
   useEffect(() => {
     const getAllUserAsync = async ()=> {
       try {
-        const allusers = await getAllUsers()
+        const data = await getAllUsers()
+        const allusers = data.result
         const newOptions = allusers.map((user) => {
           return { value: user.id, label: user.name };
         });
