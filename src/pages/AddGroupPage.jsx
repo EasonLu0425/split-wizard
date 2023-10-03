@@ -39,6 +39,8 @@ const AddGroupPage = () => {
     // const addMemberData = {
     //   members: selectedNames,
     // };
+    if (!groupName) throw new Error('請輸入行程名稱!')
+    if (selectedNames.length === 0 ) throw new Error('請選擇至少一位旅伴!')
     const newGroupData = await addGroup(groupData)
     const currentUserId = localStorage.getItem('currentUserId')
 
@@ -46,6 +48,7 @@ const AddGroupPage = () => {
       memberId: currentUserId,
       groupId: newGroupData.result.id
     }
+    
     const res = await addMemberToGroup(addMTGData)
     if (res.status === 'success') {
       Swal.fire({
@@ -58,10 +61,10 @@ const AddGroupPage = () => {
       navigate("/");  // 等addNotification建立好，做sendInvitation的動作
     }
     } catch(err) {
-      console.log(err)
+      console.log(err.message)
       Swal.fire({
         position: "center",
-        title: err.message,
+        title: err.message || '發生錯誤，請稍後再試',
         timer: 1000,
         icon: "error",
         showConfirmButton: false,
@@ -98,10 +101,10 @@ const AddGroupPage = () => {
             placeholder="請輸入行程名稱"
             className={styles.groupNameInput}
             value={groupName}
-            onChange={e=>setGroupName(e.target.value)}
+            onChange={(e) => setGroupName(e.target.value)}
           />
           <div>
-            <p className={styles.formLabel}>邀請旅伴:</p>
+            <label className={styles.formLabel}>邀請旅伴:</label>
             <Select
               isMulti
               options={options}

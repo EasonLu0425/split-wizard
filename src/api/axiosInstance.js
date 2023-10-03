@@ -1,10 +1,10 @@
 import axios from "axios";
 
-// const baseURL = "http://localhost:5000/splitWizard";
-const baseURL = "http://localhost:8081/splitwizard-SP-0.1";
+const baseURL = "http://localhost:5000/splitWizard";
+// const baseURL = "http://localhost:8081/splitwizard-SP-0.1";
 
 const axiosInstance = axios.create({
-  // withCredentials: true,
+  withCredentials: true,
   baseURL,
 });
 

@@ -17,7 +17,7 @@ const GropuPage = () => {
   };
 
   const handleAddItem = () => {
-    navigate(`/group/${groupId}/addItem`);
+    navigate(`/groups/${groupId}/addItem`);
   };
 
   useEffect(() => {
@@ -39,28 +39,32 @@ const GropuPage = () => {
         <Title title={`${groupName}`} backFn={goToHomePage}></Title>
         <div className={styles.itemsContainer}>
           <ul className={styles.itemsLi}>
-            {groupItems.map((item) => (
-              <li
-                className={styles.item}
-                key={`group${groupId}-item${item.id}`}
-              >
-                <Link
-                  to={`/group/${groupId}/${item.id}`}
-                  className={styles.itemLink}
+            {groupItems && groupItems.length > 0 ? (
+              groupItems.map((item) => (
+                <li
+                  className={styles.item}
+                  key={`group${groupId}-item${item.id}`}
                 >
-                  <div className={styles.itemBox}>
-                    <p className={styles.itemName}>{item.name}</p>
-                    <p className={styles.itemDate}>
-                      {formatDate(item.itemTime)}
-                    </p>
-                    <p className={styles.itemAmount}>$ {item.amount}</p>
-                    <p className={styles.itemPayer}>
-                      {item.ItemDetails[0].User.name} 先付 ${item.amount}
-                    </p>
-                  </div>
-                </Link>
-              </li>
-            ))}
+                  <Link
+                    to={`/groups/${groupId}/${item.id}`}
+                    className={styles.itemLink}
+                  >
+                    <div className={styles.itemBox}>
+                      <p className={styles.itemName}>{item.name}</p>
+                      <p className={styles.itemDate}>
+                        {formatDate(item.itemTime)}
+                      </p>
+                      <p className={styles.itemAmount}>$ {item.amount}</p>
+                      <p className={styles.itemPayer}>
+                        {item.ItemDetails[0].User.name} 先付 ${item.amount}
+                      </p>
+                    </div>
+                  </Link>
+                </li>
+              ))
+            ) : (
+              <div>目前還沒有任何項目喔!</div>
+            )}
           </ul>
         </div>
         <div className={styles.plusBtn}>

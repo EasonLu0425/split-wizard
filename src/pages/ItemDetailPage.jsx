@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { Navbar, Title } from "../components";
 import styles from "./ItemDetailPage.module.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { getItem } from "../api/items";
+import { getItem, deleteItem } from "../api/items";
 import { formatDate } from "../helpers/helper";
+import Swal from "sweetalert2";
+
 
 
 const ItemDetailPage = () => {
@@ -21,9 +23,35 @@ const ItemDetailPage = () => {
     navigate(`/groups/${groupId}/${itemId}/edit`);
   };
 
-  const handleDelete = () => {
-    console.log("delete this Item!");
-    // 傳送itemAPI.delete
+  const handleDelete = (e) => {
+    e.preventDefault()
+    Swal.fire({
+      title: "吃過的帳單一去不復返",
+      text: "確定要刪除嗎?!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#1B4965",
+      cancelButtonColor: "#e56b6f",
+      confirmButtonText: "delete!",
+    }).then(async (result) => {
+      try {
+        if (result.isConfirmed) {
+          const res = await deleteItem(groupId, itemId);
+          if (res.status === 'success') {
+             Swal.fire({
+               position: "center",
+               title: res.message,
+               timer: 1000,
+               icon: "success",
+               showConfirmButton: false,
+             });
+             navigate(`/groups/${groupId}`)
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
   };
 
   useEffect(() => {

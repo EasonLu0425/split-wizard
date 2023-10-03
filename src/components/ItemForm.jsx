@@ -204,7 +204,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
       // 傳送axios.put 給後端
 
       if (isEdit) {
-        const { data } = await putItem(formData, groupId, itemId);
+        const data = await putItem(formData, groupId, itemId);
         if (data.status === "success") {
           Swal.fire({
             position: "center",
@@ -216,7 +216,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
           navigate("/");
         }
       } else {
-        const { data } = await postItem(formData, groupId);
+        const data = await postItem(formData, groupId);
         if (data.status === "success") {
           Swal.fire({
             position: "center",
@@ -252,14 +252,14 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
       getItemAsync();
     } else if (!isEdit) {
       const getGroupAsync = async () => {
-        try{
+        try {
           const groupData = await getGroup(groupId);
-          receiveGroupTitle(groupData.name)
-        } catch(err) {
-          console.error(err)
+          receiveGroupTitle(groupData.name);
+        } catch (err) {
+          console.error(err);
         }
-      }
-      getGroupAsync()
+      };
+      getGroupAsync();
     }
     const getgroupmembersAsync = async () => {
       try {
@@ -272,8 +272,8 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
     getgroupmembersAsync();
 
     return () => {
-      resetItemInfo()
-    }
+      resetItemInfo();
+    };
   }, []);
 
   return (

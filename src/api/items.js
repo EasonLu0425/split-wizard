@@ -34,3 +34,13 @@ export const putItem = async (formData, groupId, itemId) => {
     console.error(err);
   }
 };
+
+export const deleteItem = async (groupId, itemId) => {
+  try {
+    const res = await axiosInstance.delete(
+      `${baseURL}/groups/${groupId}/${itemId}`);
+    return res.data;
+  } catch(err) {
+    console.error(err)
+  }
+}

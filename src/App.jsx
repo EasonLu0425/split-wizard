@@ -24,17 +24,17 @@ function App() {
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
             <Route
-              path="group/:groupId/addItem"
+              path="groups/:groupId/addItem"
               element={<AddItemPage />}
             ></Route>
             <Route path="groups/:groupId" element={<GroupPage />}></Route>
-            <Route path="group/addGroup" element={<AddGroupPage />}></Route>
+            <Route path="groups/addGroup" element={<AddGroupPage />}></Route>
             <Route
               path="groups/:groupId/:itemId/edit"
               element={<EditItemPage />}
             ></Route>
             <Route
-              path="group/:groupId/:itemId"
+              path="groups/:groupId/:itemId"
               element={<ItemDetailPage />}
             ></Route>
             <Route path="groups" element={<HomePage />}></Route>
