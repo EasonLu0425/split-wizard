@@ -96,17 +96,32 @@ const Navbar = () => {
       }
     };
     getNotisAsync();
-    
+
     socket.on("onConnected", () => {
       console.log(`Connected with socket ID: ${socket.id}`);
     });
 
+    socket.on("notificationToClient", (data) => {
+      console.log("Received notification from server:", data);
+    });
+
+    socket.emit(
+      "notificationToServer",
+      { message: "Hello, Server!" },
+      (response) => {
+        console.log("Server response:", response);
+      }
+    );
+
     socket.on("onDisconnected", () => {
       console.log(`Disconnected from socket ID: ${socket.id}`);
-    });
+    })
+
     return () => {
       socket.off("onConnected");
       socket.off("onDisconnected");
+      socket.off("notificationToClient");
+      socket.off("notificationToServer");
     };
   }, []);
   return (
