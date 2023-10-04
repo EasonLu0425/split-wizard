@@ -36,15 +36,23 @@ export const register = async ({ account, email, password }) => {
   }
 };
 
-export const checkPermission = async (authToken) => {
+// export const checkPermission = async (authToken) => {
+//   try {
+//     const response = await axios.get(`${authURL}/test-token`, {
+//       headers: {
+//         Authorization: "Bearer " + authToken,
+//       },
+//     });
+//     return response.data.success;
+//   } catch (error) {
+//     console.error("[Check Permission Failed]:", error);
+//   }
+// };
+
+export const checkPermission = async () => {
   try {
-    const response = await axios.get(`${authURL}/test-token`, {
-      headers: {
-        Authorization: "Bearer " + authToken,
-      },
-    });
-    return response.data.success;
-  } catch (error) {
-    console.error("[Check Permission Failed]:", error);
+
+  } catch(err) {
+    console.error(err)
   }
-};
+}

@@ -38,7 +38,7 @@
   color: black;
   font-size: 32px;
   font-weight: 700;
-  height:fit-content;
+  height: fit-content;
 }
 
 .navList {
@@ -53,7 +53,7 @@
   backdrop-filter: blur(20px);
   height: 100vh;
   z-index: 1;
-  box-shadow: 2px 0px 2px #BDBDBD;
+  box-shadow: 2px 0px 2px #bdbdbd;
 }
 
 .listContainer {
@@ -85,7 +85,7 @@
 }
 
 .navList ul li:hover {
-  background-color: #FEFEFE;
+  background-color: #fefefe;
 }
 
 .logoutBtn {
@@ -109,12 +109,12 @@
 }
 
 .notiDot {
-  position:absolute;
+  position: absolute;
   bottom: 0;
   right: 0;
-  width:10px;
+  width: 10px;
   height: 10px;
-  background: #1B4965;
+  background: #1b4965;
   border-radius: 50%;
   box-shadow: 1px 1px 1px white;
 }
@@ -129,10 +129,10 @@
 
 .modalContainer {
   position: absolute;
-  top:110%;
-  right:0;
-  width:60vw;
-  height:fit-content;
+  top: 110%;
+  right: 0;
+  width: 60vw;
+  height: fit-content;
   padding: 1rem;
   background: white;
   border-radius: 15px;
@@ -146,18 +146,18 @@
 }
 
 .notiLi {
-  border: 1px solid #BDBDBD;
-  height:4rem;
+  border: 1px solid #bdbdbd;
+  height: 4rem;
   position: relative;
   padding: 0.5rem;
 }
 
 .unreadDot {
   position: absolute;
-  top:0.5rem;
-  width:10px;
+  top: 0.5rem;
+  width: 10px;
   height: 10px;
-  background: #1B4965;
+  background: #1b4965;
   border-radius: 50%;
   box-shadow: 1px 1px 1px white;
 }
@@ -165,29 +165,34 @@
 .notiControl {
   display: flex;
   justify-content: flex-end;
-  gap:1rem;
+  gap: 1rem;
   margin: 0.5rem;
 }
 
 .notiControl button {
   border: none;
   border-radius: 15px;
-  height:1.5rem;
-  width:50px
+  height: 1.5rem;
+  width: 50px;
 }
 
 .notiYes {
-  background: #1B4965;
-  color:white
+  background: #1b4965;
+  color: white;
 }
 
 .notiNo {
-  background: #CAE9FF;
+  background: #cae9ff;
+}
+
+.repliedTxt {
+  color: #bdbdbd;
+  margin-top: 0.5rem;
 }
 
 .moreNotiBtn {
   border: none;
-  width:100%;
-  height:2rem;
+  width: 100%;
+  height: 2rem;
   border-radius: 15px;
 }

@@ -11,7 +11,7 @@ const EditItemPage = () => {
     itemInfo,
   } = useContext(ItemContext);
   const backToItem = () => {
-    navigate(`/group/${groupId}/${itemId}`);
+    navigate(`/groups/${groupId}/${itemId}`);
   };
 
   return (

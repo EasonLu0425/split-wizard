@@ -13,7 +13,7 @@ const GropuPage = () => {
   const [groupItems, setGroupItems] = useState([]);
 
   const goToHomePage = () => {
-    navigate("/");
+    navigate("/groups");
   };
 
   const handleAddItem = () => {

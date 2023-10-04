@@ -8,6 +8,7 @@ import { addGroup } from "../api/groups";
 import { addMemberToGroup } from "../api/userGroupConn";
 import Swal from "sweetalert2";
 import { all } from "axios";
+import { addNotification } from "../api/notifications";
 
 const AddGroupPage = () => {
   const [groupName, setGroupName] = useState('')
@@ -25,7 +26,7 @@ const AddGroupPage = () => {
   };
 
   const goToHomePage = () => {
-    navigate("/");
+    navigate("/groups");
   };
 
   const handleAddGroup = async (e) => {
@@ -43,22 +44,27 @@ const AddGroupPage = () => {
     if (selectedNames.length === 0 ) throw new Error('請選擇至少一位旅伴!')
     const newGroupData = await addGroup(groupData)
     const currentUserId = localStorage.getItem('currentUserId')
-
+    const selectedUsers = selectedNames.map((user) => ({ id: user.value }));
+    const addNotiData = {
+      type: 201,
+      receivers: selectedUsers,
+      groupId : newGroupData.result.id
+    }
     const addMTGData = {
       memberId: currentUserId,
       groupId: newGroupData.result.id
     }
-    
-    const res = await addMemberToGroup(addMTGData)
-    if (res.status === 'success') {
+    const addNotiRes = await addNotification(addNotiData)
+    const addMTGRes = await addMemberToGroup(addMTGData)
+    if (addMTGRes.status === "success" && addNotiRes.status === "success") {
       Swal.fire({
         position: "center",
-        title: '創建行程成功',
+        title: "創建行程成功",
         timer: 1000,
         icon: "success",
         showConfirmButton: false,
       });
-      navigate("/");  // 等addNotification建立好，做sendInvitation的動作
+      navigate("/groups"); 
     }
     } catch(err) {
       console.log(err.message)

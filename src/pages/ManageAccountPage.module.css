@@ -2,3 +2,21 @@
   margin-top: 4rem;
 }
 
+.nameContainer input,
+.passwordContainer input,
+.pwdConfirmContainer input {
+  height: 2rem;
+  border-radius: 5px;
+  border: none;
+  background: #f0f0f0;
+  margin-bottom: 1rem;
+}
+
+.updateBtn {
+  border: none;
+  height:2rem;
+  width:100px;
+  border-radius: 15px;
+  background: #1B4965;
+  color:white
+}

@@ -4,14 +4,14 @@ import styles from './ManageAccountPage.module.css'
 import Swal from "sweetalert2";
 
 const ManageAccountPage = () => {
-   const [account, setAccount] = useState("");
+   const [name, setName] = useState("");
    const [password, setPassword] = useState("");
    const [pwdConfirm, setPwdConfirm] = useState("");
    const [isSubmit, setIsSubmit] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!account || !password || !pwdConfirm) {
+    if (!name || !password || !pwdConfirm) {
       Swal.fire({
         position: "center",
         title: "每一項都是必填喔!",
@@ -39,15 +39,15 @@ const ManageAccountPage = () => {
       <Navbar></Navbar>
       <div className={styles.manageAccountPageContainer}>
         <h2>帳號設定</h2>
-        <form onSubmit={handleSubmit}>
-          <div className={styles.accountContainer}>
-            <div className={styles.label}>帳號:</div>
+        <form onSubmit={handleSubmit} className={styles.accountSettingFForm}>
+          <div className={styles.nameContainer}>
+            <div className={styles.label}>名稱:</div>
             <input
               className={styles.input}
               type="text"
-              placeholder="請輸入帳號"
-              onChange={(e) => setAccount(e.target.value)}
-              value={account}
+              placeholder="請輸入名稱"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
             ></input>
           </div>
           <div className={styles.passwordContainer}>
@@ -70,8 +70,12 @@ const ManageAccountPage = () => {
               value={pwdConfirm}
             ></input>
           </div>
-          <button className={styles.loginBtn} type="submit" disabled={isSubmit}>
-            註冊
+          <button
+            className={styles.updateBtn}
+            type="submit"
+            disabled={isSubmit}
+          >
+            更新
           </button>
         </form>
       </div>

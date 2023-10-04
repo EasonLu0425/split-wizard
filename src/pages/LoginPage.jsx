@@ -38,7 +38,6 @@ const LoginPage = () => {
       };
       setIsSubmit(true);
       const { data } = await axiosInstance.post(`${baseURL}/login`, formData);
-      console.log(data)
       //  const success = await login({ account, password }); 有JWT之後把login判斷式換成api.auth跟authContext
       localStorage.setItem('currentUserId', data.result.id)
       if (data.status === 'success') {
@@ -49,7 +48,7 @@ const LoginPage = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        navigate('/')
+        navigate('/groups')
       } 
     } catch (err) {
       const {data} = err

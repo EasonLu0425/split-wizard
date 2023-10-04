@@ -1,20 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navebar.module.css";
-import { useState } from "react";
-import bell from '../images/bell.svg'
+import { useEffect, useState } from "react";
+import bell from "../images/bell.svg";
 import { axiosInstance, baseURL } from "../api/axiosInstance";
 import Swal from "sweetalert2";
+import { getNotifications, readNotification } from "../api/notifications";
+import { addMemberToGroup } from "../api/userGroupConn";
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
-  const [notiOpen, setNotiOpen] =useState(false)
-  const navigate = useNavigate()
+  const [notiOpen, setNotiOpen] = useState(false);
+  const [notis, setNotis] = useState([]);
+  const navigate = useNavigate();
 
   const handleLogOut = async (e) => {
     try {
-      e.preventDefault()
+      e.preventDefault();
+      localStorage.removeItem("currentUserId");
       const { data } = await axiosInstance.post(`${baseURL}/logout`);
-      console.log('登出回傳',data)
+      console.log("登出回傳", data);
       if (data.status === "success") {
         Swal.fire({
           position: "center",
@@ -26,11 +30,72 @@ const Navbar = () => {
         navigate("/login");
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-    
-  }
+  };
 
+  const acceptInvite = async (e, groupId, notiId) => {
+    try {
+      e.preventDefault();
+      const currentUserId = localStorage.getItem("currentUserId");
+      const addMTGData = {
+        memberId: currentUserId,
+        groupId,
+      };
+      const addRes = await addMemberToGroup(addMTGData);
+      if (addRes.status) {
+        Swal.fire({
+          position: "center",
+          title: "加入成功!",
+          timer: 1000,
+          icon: "success",
+          showConfirmButton: false,
+        });
+        const readRes = await readNotification({ notiId });
+        if (readRes.status === "success") {
+          navigate("/groups");
+        }
+      }
+    } catch (err) {
+      Swal.fire({
+        position: "center",
+        title: "加入失敗，請稍後再試",
+        timer: 1000,
+        icon: "error",
+        showConfirmButton: false,
+      });
+    }
+  };
+
+  const handleReject = async (e, notiId) => {
+    try{
+      const readRes = await readNotification({ notiId });
+      if (readRes.status === "success") {
+        Swal.fire({
+          position: "center",
+          title: "已拒絕加入!",
+          timer: 1000,
+          icon: "success",
+          showConfirmButton: false,
+        });
+        navigate("/groups");
+      }
+    } catch(err) {
+
+    }
+  };
+
+  useEffect(() => {
+    const getNotisAsync = async () => {
+      try {
+        const data = await getNotifications();
+        setNotis([...data.result]);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getNotisAsync();
+  }, []);
   return (
     <>
       <div className={styles.navContainer}>
@@ -38,7 +103,7 @@ const Navbar = () => {
           <div className={styles.hamburger}></div>
         </div>
         <div className={styles.title}>
-          <Link to="/">Split Wizard</Link>
+          <Link to="/groups">Split Wizard</Link>
         </div>
         <div className={styles.notification}>
           <div>
@@ -57,16 +122,41 @@ const Navbar = () => {
           >
             <div className={styles.modal}>
               <ul className={styles.notiLiContainer}>
-                <li>
-                  <div className={styles.notiLi}>
-                    <div className={styles.unreadDot}></div>
-                    <p className={styles.notiContent}>小呂 邀請 您 至 日本行</p>
-                    <div className={styles.notiControl}>
-                      <button className={styles.notiYes}>同意</button>
-                      <button className={styles.notiNo}>拒絕</button>
-                    </div>
-                  </div>
-                </li>
+                {notis.length > 0 ? (
+                  notis.map((noti) => (
+                    <li key={`noti:${noti.id}`}>
+                      <div className={styles.notiLi}>
+                        {noti.read === false && (
+                          <div className={styles.unreadDot}></div>
+                        )}
+                        <p className={styles.notiContent}>{noti.text}</p>
+                        {noti.type === 201 &&
+                          (!noti.read ? (
+                            <div className={styles.notiControl}>
+                              <button
+                                className={styles.notiYes}
+                                onClick={(e) =>
+                                  acceptInvite(e, noti.groupId, noti.id)
+                                }
+                              >
+                                同意
+                              </button>
+                              <button
+                                className={styles.notiNo}
+                                onClick={e => handleReject(e, noti.id)}
+                              >
+                                拒絕
+                              </button>
+                            </div>
+                          ) : (
+                            <p className={styles.repliedTxt}>已回覆邀請</p>
+                          ))}
+                      </div>
+                    </li>
+                  ))
+                ) : (
+                  <p>沒有任何通知喔!</p>
+                )}
               </ul>
               <button
                 className={styles.moreNotiBtn}
@@ -85,17 +175,19 @@ const Navbar = () => {
         <div className={styles.listContainer}>
           <ul>
             <li>
-              <Link to="/">我的行程</Link>
+              <Link to="/groups">我的行程</Link>
             </li>
             <li>
               <Link to="/manageAccount">帳號管理</Link>
             </li>
             <li>
-              <Link to="/">已封存的行程</Link>
+              <Link to="/groups">已封存的行程</Link>
             </li>
           </ul>
           <form>
-            <button className={styles.logoutBtn} onClick={handleLogOut}>登出</button>
+            <button className={styles.logoutBtn} onClick={handleLogOut}>
+              登出
+            </button>
           </form>
         </div>
       </div>

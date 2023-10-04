@@ -225,7 +225,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
             icon: "success",
             showConfirmButton: false,
           });
-          navigate("/");
+          navigate(`/groups/${groupId}`);
         }
       }
     } catch (err) {

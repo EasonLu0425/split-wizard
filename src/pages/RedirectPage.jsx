@@ -10,7 +10,7 @@ const RedirectPage = () => {
     // } else {
     //   navigate("/login");
     // }
-    navigate('/groups')
+    navigate('/login')
   }, [navigate])
 }
 
