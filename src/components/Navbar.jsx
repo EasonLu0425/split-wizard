@@ -6,6 +6,7 @@ import { axiosInstance, baseURL } from "../api/axiosInstance";
 import Swal from "sweetalert2";
 import { getNotifications, readNotification } from "../api/notifications";
 import { addMemberToGroup } from "../api/userGroupConn";
+import socket from "../helpers/socket-helper";
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
@@ -95,6 +96,18 @@ const Navbar = () => {
       }
     };
     getNotisAsync();
+    
+    socket.on("onConnected", () => {
+      console.log(`Connected with socket ID: ${socket.id}`);
+    });
+
+    socket.on("onDisconnected", () => {
+      console.log(`Disconnected from socket ID: ${socket.id}`);
+    });
+    return () => {
+      socket.off("onConnected");
+      socket.off("onDisconnected");
+    };
   }, []);
   return (
     <>
