@@ -6,7 +6,7 @@ import { axiosInstance, baseURL } from "../api/axiosInstance";
 import Swal from "sweetalert2";
 import { getNotifications, readNotification } from "../api/notifications";
 import { addMemberToGroup } from "../api/userGroupConn";
-import socket from "../helpers/socket-helper";
+import {socket} from '../socket'
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
@@ -28,6 +28,8 @@ const Navbar = () => {
           icon: "success",
           showConfirmButton: false,
         });
+        socket.emit('logout')
+        socket.disconnect()
         navigate("/login");
       }
     } catch (err) {
@@ -97,32 +99,14 @@ const Navbar = () => {
     };
     getNotisAsync();
 
-    socket.on("onConnected", () => {
-      console.log(`Connected with socket ID: ${socket.id}`);
-    });
+    const socketNotiListener = (data) => {
+      setNotis([data, ...notis])
+    }
 
-    socket.on("notificationToClient", (data) => {
-      console.log("Received notification from server:", data);
-    });
-
-    socket.emit(
-      "notificationToServer",
-      { message: "Hello, Server!" },
-      (response) => {
-        console.log("Server response:", response);
-      }
-    );
-
-    socket.on("onDisconnected", () => {
-      console.log(`Disconnected from socket ID: ${socket.id}`);
-    })
-
+    socket.on('notificationToClient', socketNotiListener)
     return () => {
-      socket.off("onConnected");
-      socket.off("onDisconnected");
-      socket.off("notificationToClient");
-      socket.off("notificationToServer");
-    };
+      socket.off("notificationToClient", socketNotiListener);
+    }
   }, []);
   return (
     <>

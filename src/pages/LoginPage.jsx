@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { axiosInstance, baseURL } from "../api/axiosInstance";
+import {socket} from '../socket'
 
 const LoginPage = () => {
   const [account, setAccount] = useState("");
@@ -48,6 +49,8 @@ const LoginPage = () => {
           icon: "success",
           showConfirmButton: false,
         });
+        socket.connect()
+        socket.emit('login')
         navigate('/groups')
       } 
     } catch (err) {

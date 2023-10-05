@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import "./App.css";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
   LoginPage,
   HomePage,
@@ -13,12 +13,37 @@ import {
   RedirectPage,
   ManageAccountPage,
 } from "./pages";
+import {socket} from './socket'
 import { ItemDataProvider } from "./contexts/EditItemContext";
-
-
-
+import { useState, useEffect } from "react";
 
 function App() {
+  const [isConnected, setIsConnected] = useState(socket.connected)
+  const [fooEvents, setFooEvents] = useState([])
+
+  useEffect(() => {
+    function onConnect() {
+      setIsConnected(true);
+    }
+
+    function onDisconnect() {
+      setIsConnected(false);
+    }
+
+    function onFooEvent(value) {
+      setFooEvents((previous) => [...previous, value]);
+    }
+
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+    socket.on("foo", onFooEvent);
+
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("foo", onFooEvent);
+    };
+  }, []);
   return (
     <div className="App">
       <ItemDataProvider>
