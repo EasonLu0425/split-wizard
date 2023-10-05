@@ -17,8 +17,9 @@ const HomePage = () => {
   useEffect(() => {
     const getGroupsAsync = async () => {
       try {
-        const groups = await getGroups();
-        setGroups(groups.map((group) => ({ ...group })));
+        const data = await getGroups()
+        const groupsData = data.result
+        setGroups(groupsData.map((group) => ({ ...group })));
       } catch (err) {
         Swal.fire({
           position: "center",
