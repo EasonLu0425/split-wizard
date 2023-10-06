@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ItemContext } from "../contexts/EditItemContext";
 import Swal from "sweetalert2";
 import { postItem, putItem } from "../api/items";
+import { postItemDetails, putItemDetails } from "../api/itemDetails";
 
 const User = ({ role, allUsers, user, index, onChange, onDeleteUser }) => {
   const handleUserChange = (event) => {
@@ -194,38 +195,62 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
         throw new Error("使用者加總金額不對!");
       }
 
-      const formData = {
+      const ItemData = {
         itemTime: `${itemInfo.itemDate} ${itemInfo.itemTime}`,
         itemName: itemInfo.itemName,
         itemAmount: itemInfo.itemAmount,
-        payer: itemInfo.payer,
-        ower: itemInfo.ower,
       };
       // 傳送axios.put 給後端
 
       if (isEdit) {
-        const data = await putItem(formData, groupId, itemId);
-        if (data.status === "success") {
-          Swal.fire({
-            position: "center",
-            title: "修改成功",
-            timer: 1000,
-            icon: "success",
-            showConfirmButton: false,
-          });
-          navigate("/");
+        const editItemRes = await putItem(ItemData, groupId, itemId);
+        if (editItemRes.status === "success") {
+          const editItemDetailsData = {
+            itemId: itemId,
+            payer: itemInfo.payer,
+            ower: itemInfo.ower,
+          };
+          const editItemDetailsRes = await putItemDetails(
+            editItemDetailsData,
+            groupId,
+            itemId
+          );
+          console.log(editItemDetailsRes);
+          if (editItemDetailsRes.status === "success") {
+            Swal.fire({
+              position: "center",
+              title: "修改成功",
+              timer: 1000,
+              icon: "success",
+              showConfirmButton: false,
+            });
+          }
+          navigate(`/groups/${groupId}`);
         }
       } else {
-        const data = await postItem(formData, groupId);
-        if (data.status === "success") {
-          Swal.fire({
-            position: "center",
-            title: "新增成功",
-            timer: 1000,
-            icon: "success",
-            showConfirmButton: false,
-          });
-          navigate(`/groups/${groupId}`);
+        const addItemData = await postItem(ItemData, groupId);
+        if (addItemData.status === "success") {
+          const addItemDetailsData = {
+            
+            payer: itemInfo.payer,
+            ower: itemInfo.ower,
+          };
+          const newItemId = addItemData.result.id;
+          const addItemDetailsRes = await postItemDetails(
+            addItemDetailsData,
+            groupId,
+            newItemId
+          );
+          if (addItemDetailsRes.status === "success") {
+            Swal.fire({
+              position: "center",
+              title: "新增成功",
+              timer: 1000,
+              icon: "success",
+              showConfirmButton: false,
+            });
+            navigate(`/groups/${groupId}`);
+          }
         }
       }
     } catch (err) {

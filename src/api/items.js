@@ -5,7 +5,7 @@ export const getItem = async (groupId, itemId) => {
     const res = await axiosInstance.get(
       `${baseURL}/groups/${groupId}/${itemId}`
     );
-    return res.data;
+    return res.data.result;
   } catch (err) {
     console.error(err);
   }

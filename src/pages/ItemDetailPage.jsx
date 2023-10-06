@@ -6,14 +6,12 @@ import { getItem, deleteItem } from "../api/items";
 import { formatDate } from "../helpers/helper";
 import Swal from "sweetalert2";
 
-
-
 const ItemDetailPage = () => {
   const { groupId, itemId } = useParams();
   const navigate = useNavigate();
   const [itemData, setItemData] = useState([]);
-  const [payer, setPayer] = useState([])
-  const [ower, setOwer] = useState([])
+  const [payer, setPayer] = useState([]);
+  const [ower, setOwer] = useState([]);
 
   const backToGroupPage = () => {
     navigate(`/groups/${groupId}`);
@@ -24,7 +22,7 @@ const ItemDetailPage = () => {
   };
 
   const handleDelete = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     Swal.fire({
       title: "吃過的帳單一去不復返",
       text: "確定要刪除嗎?!",
@@ -37,15 +35,15 @@ const ItemDetailPage = () => {
       try {
         if (result.isConfirmed) {
           const res = await deleteItem(groupId, itemId);
-          if (res.status === 'success') {
-             Swal.fire({
-               position: "center",
-               title: res.message,
-               timer: 1000,
-               icon: "success",
-               showConfirmButton: false,
-             });
-             navigate(`/groups/${groupId}`)
+          if (res.status === "success") {
+            Swal.fire({
+              position: "center",
+              title: res.message,
+              timer: 1000,
+              icon: "success",
+              showConfirmButton: false,
+            });
+            navigate(`/groups/${groupId}`);
           }
         }
       } catch (err) {
@@ -58,8 +56,8 @@ const ItemDetailPage = () => {
     const getItemAsync = async () => {
       try {
         const groupData = await getItem(groupId, itemId);
-        setItemData(groupData)
-        setPayer(groupData.users.filter(user => user.payer))
+        setItemData(groupData);
+        setPayer(groupData.users.filter((user) => user.payer));
         setOwer(groupData.users.filter((user) => !user.payer));
       } catch (err) {
         console.error(err);
@@ -81,16 +79,16 @@ const ItemDetailPage = () => {
           <div className={styles.itemNameAndAmount}>
             <p>{itemData.itemName}</p>
             <p>${itemData.amount}</p>
-          </div>
-          {payer.map((user, index) => (
-            <div className={styles.payerContainer} key={`payer-${index}`}>
-              <p className={styles.payerTitle}>支付者</p>
-              <div className={styles.payer}>
+          </div>{" "}
+          <div className={styles.payerContainer}>
+            <p className={styles.payerTitle}>支付者</p>
+            {payer.map((user, index) => (
+              <div className={styles.payer} key={`payer-${index}`}>
                 <p>{user.name}</p>
                 <p>${user.amount}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
           <hr />
           <div className={styles.owerContainer}>
             <div className={styles.owers}>

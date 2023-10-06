@@ -24,8 +24,8 @@ const GropuPage = () => {
     const getGroupAsync = async () => {
       try {
         const groupData = await getGroup(groupId);
-        setGroupName(groupData.name);
-        setGroupItems(groupData.Items);
+        setGroupName(groupData.result.name);
+        setGroupItems(groupData.result.Items);
       } catch (err) {
         console.error(err);
       }

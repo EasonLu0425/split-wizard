@@ -92,7 +92,7 @@ const Navbar = () => {
     const getNotisAsync = async () => {
       try {
         const data = await getNotifications();
-        setNotis([...data.result]);
+        setNotis([...data]);
       } catch (err) {
         console.error(err);
       }

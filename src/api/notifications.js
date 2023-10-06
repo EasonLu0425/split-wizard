@@ -3,7 +3,7 @@ import { axiosInstance, baseURL } from "./axiosInstance";
 export const getNotifications = async () => {
   try {
      const res = await axiosInstance.get(`${baseURL}/getNotifications`);
-     return res.data;
+     return res.data.result;
   } catch(err) {
     console.error(err)
   }
