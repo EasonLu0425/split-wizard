@@ -1,0 +1,82 @@
+.settlePageContainer {
+  margin: 4rem 2rem;
+}
+
+.overView {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.overView h2 {
+  margin: 0.5rem;
+}
+
+.overViewCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:60%;
+  margin-bottom: 0.5rem;
+}
+
+.overViewCard p {
+  margin: 0;
+  height:1.5rem
+}
+
+.positive {
+  background: #62B6CB;
+}
+
+.negative {
+  background: #ffbbbe;
+}
+
+.overViewCard p span {
+  font-weight: 700;
+}
+.unPaidListContainer, .paidListContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.unPaidLi, .paidLi {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  box-shadow: 2px 2px 3px 2px #bdbdbd;
+  margin-bottom: 1rem;
+}
+
+.payBtn, .cancelPaidBtn {
+  border: none;
+  border-radius: 15px;
+  height:2rem;
+  width:100px;
+  margin-left: 0.5rem;
+}
+
+.payBtn {
+  background: #5FA8D3;
+}
+
+.cancelPaidBtn {
+  background: #e56b6f;
+  color: white;
+}
+
+.setArchiveBtn{
+  margin-top: 1rem;
+  height:2rem;
+  width:100px;
+  border: none;
+  border-radius: 15px;
+  background: #1B4965;
+  color:white
+}

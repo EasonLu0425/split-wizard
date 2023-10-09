@@ -12,6 +12,7 @@ import {
   EditItemPage,
   RedirectPage,
   ManageAccountPage,
+  SettlePage
 } from "./pages";
 import {socket} from './socket'
 import { ItemDataProvider } from "./contexts/EditItemContext";
@@ -56,6 +57,10 @@ function App() {
               element={<AddItemPage />}
             ></Route>
             <Route path="groups/:groupId" element={<GroupPage />}></Route>
+            <Route
+              path="groups/:groupId/settle"
+              element={<SettlePage />}
+            ></Route>
             <Route path="groups/addGroup" element={<AddGroupPage />}></Route>
             <Route
               path="groups/:groupId/:itemId/edit"

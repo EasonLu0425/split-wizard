@@ -5,12 +5,14 @@ import plusButton from "../images/plusBtn.svg";
 import { useEffect, useState } from "react";
 import { getGroup } from "../api/groups";
 import { formatDate } from "../helpers/helper";
+import { createResult } from "../api/result";
 
 const GropuPage = () => {
   const { groupId } = useParams();
   const navigate = useNavigate();
   const [groupName, setGroupName] = useState("");
   const [groupItems, setGroupItems] = useState([]);
+  const [isSettled, setIsSettled] = useState(false)
 
   const goToHomePage = () => {
     navigate("/groups");
@@ -20,12 +22,25 @@ const GropuPage = () => {
     navigate(`/groups/${groupId}/addItem`);
   };
 
+  const onSettleClick = async (e) => {
+    e.preventDefault()
+    if (isSettled) {
+      navigate(`/groups/${groupId}/settle`)
+    } else {
+      const createRes = await createResult(groupId)
+      if (createRes.status === 'success') {
+        navigate(`/groups/${groupId}/settle`);
+      }
+    }
+  }
+
   useEffect(() => {
     const getGroupAsync = async () => {
       try {
         const groupData = await getGroup(groupId);
-        setGroupName(groupData.result.name);
-        setGroupItems(groupData.result.Items);
+        setGroupName(groupData.name);
+        setGroupItems(groupData.Items);
+        setIsSettled(groupData.redirect)
       } catch (err) {
         console.error(err);
       }
@@ -55,9 +70,13 @@ const GropuPage = () => {
                         {formatDate(item.itemTime)}
                       </p>
                       <p className={styles.itemAmount}>$ {item.amount}</p>
-                      <p className={styles.itemPayer}>
-                        {item.ItemDetails[0].User.name} 先付 ${item.amount}
-                      </p>
+                      <div className={styles.itemPayerWrapper}>
+                        {item.ItemDetails.map((user) => (
+                          <p className={styles.itemPayer} key={`payer${user.User.id}`}>
+                            {user.User.name} 先付 ${user.amount}
+                          </p>
+                        ))}
+                      </div>
                     </div>
                   </Link>
                 </li>
@@ -66,6 +85,13 @@ const GropuPage = () => {
               <div>目前還沒有任何項目喔!</div>
             )}
           </ul>
+          {groupItems && groupItems.length > 0 ? (
+            <div>
+              <button className={styles.settleBtn} onClick={onSettleClick}>結算</button>
+            </div>
+          ): (
+            <></>
+          )}
         </div>
         <div className={styles.plusBtn}>
           <button className={styles.plus} onClick={handleAddItem}>

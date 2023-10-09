@@ -74,9 +74,17 @@
   font-weight: 600;
 }
 
-.itemPayer {
+.itemPayerWrapper {
   position: absolute;
-  bottom:4px;
+  bottom: 4px;
+}
+
+.settleBtn {
+  width:100px;
+  height:2rem;
+  border-radius: 15px;
+  border: none;
+  background: #62B6CB;
 }
 
 .plusBtn {

@@ -21,7 +21,7 @@ export const addGroup = async (formData) => {
 export const getGroup = async (groupId) => {
   try {
     const res = await axiosInstance.get(`${baseURL}/groups/${groupId}`);
-    return res.data
+    return res.data.result
   } catch(err) {
     console.error("[Find Group failed]:", err);
   }

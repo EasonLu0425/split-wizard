@@ -3,6 +3,7 @@ import { Navbar, Title } from "../components";
 import styles from "./ItemDetailPage.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { getItem, deleteItem } from "../api/items";
+import { deleteItemDetails } from "../api/itemDetails";
 import { formatDate } from "../helpers/helper";
 import Swal from "sweetalert2";
 
@@ -34,16 +35,22 @@ const ItemDetailPage = () => {
     }).then(async (result) => {
       try {
         if (result.isConfirmed) {
-          const res = await deleteItem(groupId, itemId);
-          if (res.status === "success") {
-            Swal.fire({
-              position: "center",
-              title: res.message,
-              timer: 1000,
-              icon: "success",
-              showConfirmButton: false,
-            });
-            navigate(`/groups/${groupId}`);
+          const deleteItemRes = await deleteItem(groupId, itemId);
+          if (deleteItemRes.status === "success") {
+            const deleteItemDetailRes = await deleteItemDetails(
+              groupId,
+              itemId
+            );
+            if (deleteItemDetailRes.status === "success") {
+              Swal.fire({
+                position: "center",
+                title: deleteItemRes.message,
+                timer: 1000,
+                icon: "success",
+                showConfirmButton: false,
+              });
+              navigate(`/groups/${groupId}`);
+            }
           }
         }
       } catch (err) {

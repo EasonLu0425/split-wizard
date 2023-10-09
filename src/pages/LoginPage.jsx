@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { axiosInstance, baseURL } from "../api/axiosInstance";
-import {socket} from '../socket'
+import { socket } from "../socket";
 
 const LoginPage = () => {
   const [account, setAccount] = useState("");
@@ -40,8 +40,8 @@ const LoginPage = () => {
       setIsSubmit(true);
       const { data } = await axiosInstance.post(`${baseURL}/login`, formData);
       //  const success = await login({ account, password }); 有JWT之後把login判斷式換成api.auth跟authContext
-      localStorage.setItem('currentUserId', data.result.id)
-      if (data.status === 'success') {
+      localStorage.setItem("currentUserId", data.result.id);
+      if (data.status === "success") {
         Swal.fire({
           position: "center",
           title: "登入成功",
@@ -49,16 +49,20 @@ const LoginPage = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        socket.connect()
-        socket.emit('login')
-        navigate('/groups')
-      } 
+        socket.connect();
+        socket.emit("login");
+        navigate("/groups");
+      }
     } catch (err) {
-      const {data} = err
-      console.log(err)
+      let data = {};
+      if (err.status === 401) {
+        data = { message: "帳號或密碼錯誤" };
+      }
+
+      console.log("error.data", err);
       Swal.fire({
         position: "center",
-        title: data,
+        title: data.message,
         timer: 1000,
         icon: "error",
         showConfirmButton: false,

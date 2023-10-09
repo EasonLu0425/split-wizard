@@ -37,9 +37,6 @@ const AddGroupPage = () => {
       const groupData = {
         name: groupName,
       };
-      // const addMemberData = {
-      //   members: selectedNames,
-      // };
       if (!groupName) throw new Error("請輸入行程名稱!");
       if (selectedNames.length === 0) throw new Error("請選擇至少一位旅伴!");
       const newGroupData = await addGroup(groupData);
