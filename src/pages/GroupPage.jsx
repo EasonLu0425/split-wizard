@@ -3,36 +3,61 @@ import { Navbar, Title } from "../components";
 import styles from "./GroupPage.module.css";
 import plusButton from "../images/plusBtn.svg";
 import { useEffect, useState } from "react";
-import { getGroup } from "../api/groups";
+import { getGroup, resetGroupRedirect } from "../api/groups";
 import { formatDate } from "../helpers/helper";
 import { createResult } from "../api/result";
+import Swal from "sweetalert2";
 
 const GropuPage = () => {
   const { groupId } = useParams();
   const navigate = useNavigate();
   const [groupName, setGroupName] = useState("");
   const [groupItems, setGroupItems] = useState([]);
-  const [isSettled, setIsSettled] = useState(false)
+  const [isSettled, setIsSettled] = useState(false);
 
   const goToHomePage = () => {
     navigate("/groups");
   };
 
   const handleAddItem = () => {
-    navigate(`/groups/${groupId}/addItem`);
+    if (isSettled) {
+      Swal.fire({
+        title: "已經結算過了，新增後會刪除分帳結果",
+        text: "確定要再新增嗎?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#1B4965",
+        cancelButtonColor: "#e56b6f",
+        confirmButtonText: "新增!",
+        cancelButtonText: "取消",
+      }).then(async (result) => {
+        try {
+          if (result.isConfirmed) {
+            const resetRedirectRes = await resetGroupRedirect(groupId);
+            if (resetRedirectRes.status === "success") {
+              navigate(`/groups/${groupId}/addItem`);
+            }
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    } else {
+      navigate(`/groups/${groupId}/addItem`);
+    }
   };
 
   const onSettleClick = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (isSettled) {
-      navigate(`/groups/${groupId}/settle`)
+      navigate(`/groups/${groupId}/settle`);
     } else {
-      const createRes = await createResult(groupId)
-      if (createRes.status === 'success') {
+      const createRes = await createResult(groupId);
+      if (createRes.status === "success") {
         navigate(`/groups/${groupId}/settle`);
       }
     }
-  }
+  };
 
   useEffect(() => {
     const getGroupAsync = async () => {
@@ -40,7 +65,7 @@ const GropuPage = () => {
         const groupData = await getGroup(groupId);
         setGroupName(groupData.name);
         setGroupItems(groupData.Items);
-        setIsSettled(groupData.redirect)
+        setIsSettled(groupData.redirect);
       } catch (err) {
         console.error(err);
       }
@@ -72,7 +97,10 @@ const GropuPage = () => {
                       <p className={styles.itemAmount}>$ {item.amount}</p>
                       <div className={styles.itemPayerWrapper}>
                         {item.ItemDetails.map((user) => (
-                          <p className={styles.itemPayer} key={`payer${user.User.id}`}>
+                          <p
+                            className={styles.itemPayer}
+                            key={`payer${user.User.id}`}
+                          >
                             {user.User.name} 先付 ${user.amount}
                           </p>
                         ))}
@@ -87,9 +115,11 @@ const GropuPage = () => {
           </ul>
           {groupItems && groupItems.length > 0 ? (
             <div>
-              <button className={styles.settleBtn} onClick={onSettleClick}>結算</button>
+              <button className={styles.settleBtn} onClick={onSettleClick}>
+                結算
+              </button>
             </div>
-          ): (
+          ) : (
             <></>
           )}
         </div>

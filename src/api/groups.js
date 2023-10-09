@@ -35,3 +35,12 @@ export const getGroupMembers = async (groupId) => {
     console.error(err)
   }
 }
+
+export const resetGroupRedirect = async (groupId) => {
+  try {
+    const res = await axiosInstance.put(`${baseURL}/groups/${groupId}/resetRedirect`);
+    return res.data;
+  } catch (err) {
+    console.error("[Add Group failed]:", err);
+  }
+}

@@ -171,7 +171,6 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
   const handleItemSubmit = async (e) => {
     try {
       e.preventDefault();
-
       if (
         itemInfo.itemAmount === 0 ||
         !itemInfo.itemName ||
@@ -215,7 +214,6 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
             groupId,
             itemId
           );
-          console.log(editItemDetailsRes);
           if (editItemDetailsRes.status === "success") {
             Swal.fire({
               position: "center",
@@ -228,6 +226,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
           navigate(`/groups/${groupId}`);
         }
       } else {
+        
         const addItemData = await postItem(ItemData, groupId);
         if (addItemData.status === "success") {
           const addItemDetailsData = {

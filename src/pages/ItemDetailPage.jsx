@@ -6,6 +6,7 @@ import { getItem, deleteItem } from "../api/items";
 import { deleteItemDetails } from "../api/itemDetails";
 import { formatDate } from "../helpers/helper";
 import Swal from "sweetalert2";
+import { resetGroupRedirect } from "../api/groups";
 
 const ItemDetailPage = () => {
   const { groupId, itemId } = useParams();
@@ -19,7 +20,31 @@ const ItemDetailPage = () => {
   };
 
   const goToEdit = () => {
-    navigate(`/groups/${groupId}/${itemId}/edit`);
+    if (itemData.groupRedirect) {
+      Swal.fire({
+        title: "已經結算過了，修改後會刪除分帳結果",
+        text: "確定要修改嗎?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#1B4965",
+        cancelButtonColor: "#e56b6f",
+        confirmButtonText: "修改!",
+        cancelButtonText: "取消",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const resetRedirectRes = await resetGroupRedirect(groupId);
+            if (resetRedirectRes.status === "success") {
+              navigate(`/groups/${groupId}/${itemId}/edit`);
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      });
+    } else {
+      navigate(`/groups/${groupId}/${itemId}/edit`);
+    }
   };
 
   const handleDelete = (e) => {
@@ -41,6 +66,8 @@ const ItemDetailPage = () => {
               groupId,
               itemId
             );
+            if (itemData.groupRedirect) {
+            }
             if (deleteItemDetailRes.status === "success") {
               Swal.fire({
                 position: "center",
@@ -72,7 +99,7 @@ const ItemDetailPage = () => {
     };
     getItemAsync();
   }, []);
-
+  console.log("groupData", itemData);
   return (
     <>
       <Navbar></Navbar>
