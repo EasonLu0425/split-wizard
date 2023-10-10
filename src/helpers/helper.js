@@ -10,3 +10,8 @@ export const formatTime = (rawTime) => {
   const formattedTime = moment(rawTime).format("HH:mm:ss");
   return formattedTime
 }
+
+export const relativeTime = (rawTime) => {
+  const formattedTime = moment(rawTime).fromNow()
+  return formattedTime
+}

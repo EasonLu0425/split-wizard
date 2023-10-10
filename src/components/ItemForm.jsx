@@ -7,6 +7,7 @@ import { ItemContext } from "../contexts/EditItemContext";
 import Swal from "sweetalert2";
 import { postItem, putItem } from "../api/items";
 import { postItemDetails, putItemDetails } from "../api/itemDetails";
+import { addNotification } from "../api/notifications";
 
 const User = ({ role, allUsers, user, index, onChange, onDeleteUser }) => {
   const handleUserChange = (event) => {
@@ -202,52 +203,41 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
       // 傳送axios.put 給後端
 
       if (isEdit) {
+        //編輯Item
         const editItemRes = await putItem(ItemData, groupId, itemId);
         if (editItemRes.status === "success") {
           const editItemDetailsData = {
-            itemId: itemId,
             payer: itemInfo.payer,
             ower: itemInfo.ower,
           };
+          //編輯ItemDetails
           const editItemDetailsRes = await putItemDetails(
             editItemDetailsData,
             groupId,
             itemId
           );
           if (editItemDetailsRes.status === "success") {
-            Swal.fire({
-              position: "center",
-              title: "修改成功",
-              timer: 1000,
-              icon: "success",
-              showConfirmButton: false,
-            });
+            await handleSendNotification(groupId, "ITEM_UPDATE");
+            navigate(`/groups/${groupId}`);
           }
-          navigate(`/groups/${groupId}`);
         }
       } else {
-        
+        //新增Item
         const addItemData = await postItem(ItemData, groupId);
         if (addItemData.status === "success") {
           const addItemDetailsData = {
-            
             payer: itemInfo.payer,
             ower: itemInfo.ower,
           };
           const newItemId = addItemData.result.id;
+          //新增ItemDetails
           const addItemDetailsRes = await postItemDetails(
             addItemDetailsData,
             groupId,
             newItemId
           );
           if (addItemDetailsRes.status === "success") {
-            Swal.fire({
-              position: "center",
-              title: "新增成功",
-              timer: 1000,
-              icon: "success",
-              showConfirmButton: false,
-            });
+            handleSendNotification(groupId, "ITEM_ADD");
             navigate(`/groups/${groupId}`);
           }
         }
@@ -258,6 +248,34 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
         title: err.message,
         timer: 1000,
         icon: "error",
+        showConfirmButton: false,
+      });
+    }
+  };
+
+  const handleSendNotification = async (groupId, notiType) => {
+    const addNotiData = {
+      type: notiType,
+      receiverIds: [],
+      groupId: groupId,
+    };
+    itemInfo.payer.forEach((p) => {
+      if (!addNotiData.receiverIds.includes(p.id)) {
+        addNotiData.receiverIds.push(p.id);
+      }
+    });
+    itemInfo.ower.forEach((o) => {
+      if (!addNotiData.receiverIds.includes(o.id)) {
+        addNotiData.receiverIds.push(o.id);
+      }
+    });
+    const sendNotiRes = await addNotification(addNotiData);
+    if (sendNotiRes.status === "success") {
+      Swal.fire({
+        position: "center",
+        title: notiType === "ITEM_ADD" ? "新增成功" : "修改成功",
+        timer: 1000,
+        icon: "success",
         showConfirmButton: false,
       });
     }

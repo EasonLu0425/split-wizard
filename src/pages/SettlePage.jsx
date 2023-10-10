@@ -183,7 +183,9 @@ const SettlePage = () => {
             </div>
           </div>
           <button
-            className={styles.setArchiveBtn}
+            className={clsx(styles.setArchiveBtn, {
+              [styles.btnDisabled]: !isButtonEnabled,
+            })}
             disabled={!isButtonEnabled}
             onClick={handleArchive}
           >

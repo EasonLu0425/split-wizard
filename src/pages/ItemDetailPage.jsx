@@ -50,7 +50,7 @@ const ItemDetailPage = () => {
   const handleDelete = (e) => {
     e.preventDefault();
     Swal.fire({
-      title: "吃過的帳單一去不復返",
+      title: "擁有的帳單一去不復返",
       text: "確定要刪除嗎?!",
       icon: "warning",
       showCancelButton: true,
@@ -67,6 +67,7 @@ const ItemDetailPage = () => {
               itemId
             );
             if (itemData.groupRedirect) {
+              await resetGroupRedirect(groupId)
             }
             if (deleteItemDetailRes.status === "success") {
               Swal.fire({
@@ -99,7 +100,8 @@ const ItemDetailPage = () => {
     };
     getItemAsync();
   }, []);
-  console.log("groupData", itemData);
+  console.log(itemData)
+
   return (
     <>
       <Navbar></Navbar>
@@ -136,12 +138,16 @@ const ItemDetailPage = () => {
             </div>
           </div>
           <div className={styles.itemControl}>
-            <button className={styles.editBtn} onClick={goToEdit}>
-              編輯
-            </button>
-            <button className={styles.deleteBtn} onClick={handleDelete}>
-              刪除
-            </button>
+            {itemData.groupArchive === false && (
+              <>
+                <button className={styles.editBtn} onClick={goToEdit}>
+                  編輯
+                </button>
+                <button className={styles.deleteBtn} onClick={handleDelete}>
+                  刪除
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -14,6 +14,7 @@ const GropuPage = () => {
   const [groupName, setGroupName] = useState("");
   const [groupItems, setGroupItems] = useState([]);
   const [isSettled, setIsSettled] = useState(false);
+  const [isArchive, setIsArchive] = useState(false)
 
   const goToHomePage = () => {
     navigate("/groups");
@@ -66,12 +67,14 @@ const GropuPage = () => {
         setGroupName(groupData.name);
         setGroupItems(groupData.Items);
         setIsSettled(groupData.redirect);
+        setIsArchive(groupData.archive)
       } catch (err) {
         console.error(err);
       }
     };
     getGroupAsync();
   }, []);
+
   return (
     <>
       <Navbar></Navbar>
@@ -124,9 +127,11 @@ const GropuPage = () => {
           )}
         </div>
         <div className={styles.plusBtn}>
-          <button className={styles.plus} onClick={handleAddItem}>
-            <img src={plusButton} alt="plusButton" />
-          </button>
+          {!isArchive && (
+            <button className={styles.plus} onClick={handleAddItem}>
+              <img src={plusButton} alt="plusButton" />
+            </button>
+          )}
         </div>
       </div>
     </>

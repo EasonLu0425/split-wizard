@@ -80,3 +80,7 @@
   background: #1B4965;
   color:white
 }
+
+.btnDisabled {
+  background: #bdbdbd;
+}

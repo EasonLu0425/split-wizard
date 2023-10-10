@@ -6,7 +6,8 @@ import { axiosInstance, baseURL } from "../api/axiosInstance";
 import Swal from "sweetalert2";
 import { getNotifications, readNotification } from "../api/notifications";
 import { addMemberToGroup } from "../api/userGroupConn";
-import {socket} from '../socket'
+import { socket } from "../socket";
+import { relativeTime } from "../helpers/helper";
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
@@ -28,8 +29,8 @@ const Navbar = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        socket.emit('logout')
-        socket.disconnect()
+        socket.emit("logout");
+        socket.disconnect();
         navigate("/login");
       }
     } catch (err) {
@@ -56,7 +57,18 @@ const Navbar = () => {
         });
         const readRes = await readNotification({ notiId });
         if (readRes.status === "success") {
-          navigate("/groups");
+          setNotis(
+            notis.map((noti) => {
+              if (noti.id === notiId) {
+                return {
+                  ...noti,
+                  read: true,
+                };
+              } else {
+                return noti;
+              }
+            })
+          );
         }
       }
     } catch (err) {
@@ -71,7 +83,8 @@ const Navbar = () => {
   };
 
   const handleReject = async (e, notiId) => {
-    try{
+    try {
+      e.preventDefault();
       const readRes = await readNotification({ notiId });
       if (readRes.status === "success") {
         Swal.fire({
@@ -81,12 +94,28 @@ const Navbar = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        navigate("/groups");
       }
-    } catch(err) {
-
+    } catch (err) {
+      console.error(err);
     }
   };
+
+  const handleRead = async (e, notiId) => {
+    e.preventDefault()
+    const readRes = await readNotification({ notiId })
+    if (readRes.status === 'success') {
+      setNotis(notis.map(noti => {
+        if (noti.id === notiId) {
+          return {
+            ...noti,
+            read: true
+          }
+        } else {
+          return noti
+        }
+      }))
+    }
+  }
 
   useEffect(() => {
     const getNotisAsync = async () => {
@@ -100,14 +129,16 @@ const Navbar = () => {
     getNotisAsync();
 
     const socketNotiListener = (data) => {
-      setNotis([data, ...notis])
-    }
+      setNotis([data, ...notis]);
+    };
 
-    socket.on('notificationToClient', socketNotiListener)
+    socket.on("notificationToClient", socketNotiListener);
     return () => {
       socket.off("notificationToClient", socketNotiListener);
-    }
+    };
   }, []);
+  console.log(notis);
+
   return (
     <>
       <div className={styles.navContainer}>
@@ -126,7 +157,16 @@ const Navbar = () => {
               <img src={bell}></img>
             </button>
           </div>
-          <div className={styles.notiDot}></div>
+          <div
+            className={styles.notiDot}
+            style={{
+              display:
+                notis.length === 0 || notis.every((noti) => noti.read === true)
+                  ? "none"
+                  : "block",
+            }}
+          ></div>
+          {/* notiList */}
           <div
             className={`${styles.modalContainer} ${
               notiOpen ? styles.notiShow : styles.notiHide
@@ -137,12 +177,19 @@ const Navbar = () => {
                 {notis.length > 0 ? (
                   notis.map((noti) => (
                     <li key={`noti:${noti.id}`}>
-                      <div className={styles.notiLi}>
+                      <div
+                        className={styles.notiLi}
+                        onClick={(e) => {
+                          if (noti.type !== "INVITATION") {
+                            handleRead(e, noti.id);
+                          }
+                        }}
+                      >
                         {noti.read === false && (
                           <div className={styles.unreadDot}></div>
                         )}
                         <p className={styles.notiContent}>{noti.text}</p>
-                        {noti.type === 201 &&
+                        {noti.type === "INVITATION" &&
                           (!noti.read ? (
                             <div className={styles.notiControl}>
                               <button
@@ -155,7 +202,7 @@ const Navbar = () => {
                               </button>
                               <button
                                 className={styles.notiNo}
-                                onClick={e => handleReject(e, noti.id)}
+                                onClick={(e) => handleReject(e, noti.id)}
                               >
                                 拒絕
                               </button>
@@ -163,6 +210,9 @@ const Navbar = () => {
                           ) : (
                             <p className={styles.repliedTxt}>已回覆邀請</p>
                           ))}
+                        <span className={styles.notiTime}>
+                          {relativeTime(noti.time)}
+                        </span>
                       </div>
                     </li>
                   ))
@@ -180,6 +230,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      {/* navlist */}
       <div
         className={styles.navList}
         style={{ transform: `scaleX(${navOpen ? "1" : "0"})` }}

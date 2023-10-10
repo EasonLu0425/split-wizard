@@ -152,6 +152,8 @@
   padding: 0.5rem;
 }
 
+
+
 .unreadDot {
   position: absolute;
   top: 0.5rem;
@@ -188,6 +190,13 @@
 .repliedTxt {
   color: #bdbdbd;
   margin-top: 0.5rem;
+}
+
+.notiTime {
+  position: absolute;
+  bottom: 0;
+  right:0;
+  color:#929292
 }
 
 .moreNotiBtn {

@@ -32,8 +32,6 @@ const AddGroupPage = () => {
   const handleAddGroup = async (e) => {
     try {
       e.preventDefault();
-      console.log("selectedNames", selectedNames);
-      console.log("groupName", groupName);
       const groupData = {
         name: groupName,
       };
@@ -41,11 +39,11 @@ const AddGroupPage = () => {
       if (selectedNames.length === 0) throw new Error("請選擇至少一位旅伴!");
       const newGroupData = await addGroup(groupData);
       const currentUserId = localStorage.getItem("currentUserId");
-      const selectedUsers = selectedNames.map((user) => ({ id: user.value }));
+      const selectedUsers = selectedNames.map((user) => (user.value));
       const addNotiData = {
-        type: 201,
-        receivers: selectedUsers,
-        group: { id: newGroupData.result.id },
+        type: "INVITATION",
+        receiverIds: selectedUsers,
+        groupId: newGroupData.result.id,
       };
       const addMTGData = {
         memberId: currentUserId,
