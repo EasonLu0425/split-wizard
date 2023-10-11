@@ -74,7 +74,7 @@ const GropuPage = () => {
       }
     };
     getGroupAsync();
-  }, []);
+  }, [groupId]);
 
   return (
     <>

@@ -1,14 +1,16 @@
 import styles from "./LoginPage.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { axiosInstance, baseURL } from "../api/axiosInstance";
-import { socket } from "../socket";
+// import { socket } from "../socket";
+// import { useAuth } from "../contexts/AuthContext";
 
 const LoginPage = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
+  // const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const handleAccountInput = (e) => {
@@ -39,6 +41,7 @@ const LoginPage = () => {
       };
       setIsSubmit(true);
       const { data } = await axiosInstance.post(`${baseURL}/login`, formData);
+      console.log(data)
       //  const success = await login({ account, password }); 有JWT之後把login判斷式換成api.auth跟authContext
       localStorage.setItem("currentUserId", data.result.id);
       if (data.status === "success") {
@@ -70,6 +73,11 @@ const LoginPage = () => {
       setIsSubmit(false);
     }
   };
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate("/todos");
+  //   }
+  // }, [navigate, isAuthenticated]);
 
   return (
     <>

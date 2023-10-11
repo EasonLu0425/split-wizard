@@ -1,4 +1,5 @@
 import axios from "axios";
+import { axiosInstance } from "./axiosInstance";
 
 const authURL = "http://localhost:5000/splitWizard";
 // const authURL = "http://localhost:8081/splitwizard-SP-0.1";
@@ -49,10 +50,10 @@ export const register = async ({ account, email, password }) => {
 //   }
 // };
 
-export const checkPermission = async () => {
-  try {
-
-  } catch(err) {
-    console.error(err)
-  }
-}
+// export const checkPermission = async () => {
+//   try {
+//     const response = await axiosInstance.get(`${authURL}/auth`)
+//   } catch(err) {
+//     console.error(err)
+//   }
+// }
