@@ -92,8 +92,8 @@ const ItemDetailPage = () => {
       try {
         const groupData = await getItem(groupId, itemId);
         setItemData(groupData);
-        setPayer(groupData.users.filter((user) => user.payer));
-        setOwer(groupData.users.filter((user) => !user.payer));
+        setPayer(groupData.details.filter((user) => user.payer));
+        setOwer(groupData.details.filter((user) => !user.payer));
       } catch (err) {
         console.error(err);
       }
@@ -113,7 +113,7 @@ const ItemDetailPage = () => {
         <div className={styles.detailContainer}>
           <div className={styles.itemDate}>{formatDate(itemData.itemTime)}</div>
           <div className={styles.itemNameAndAmount}>
-            <p>{itemData.itemName}</p>
+            <p>{itemData.name}</p>
             <p>${itemData.amount}</p>
           </div>{" "}
           <div className={styles.payerContainer}>

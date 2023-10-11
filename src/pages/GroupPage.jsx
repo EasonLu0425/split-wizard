@@ -64,7 +64,7 @@ const GropuPage = () => {
     const getGroupAsync = async () => {
       try {
         const groupData = await getGroup(groupId);
-        console.log(groupData)
+        console.log(groupData.items)
         setGroupName(groupData.name);
         setGroupItems(groupData.items);
         setIsSettled(groupData.redirect);
@@ -94,11 +94,11 @@ const GropuPage = () => {
                     className={styles.itemLink}
                   >
                     <div className={styles.itemBox}>
-                      <p className={styles.itemName}>{item.name}</p>
+                      <p className={styles.itemName}>{item.itemName}</p>
                       <p className={styles.itemDate}>
                         {formatDate(item.itemTime)}
                       </p>
-                      <p className={styles.itemAmount}>$ {item.amount}</p>
+                      <p className={styles.itemAmount}>$ {item.itemAmount}</p>
                       <div className={styles.itemPayerWrapper}>
                         {item.details.map((user) => (
                           <p
