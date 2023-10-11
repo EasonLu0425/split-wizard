@@ -64,6 +64,7 @@ const GropuPage = () => {
     const getGroupAsync = async () => {
       try {
         const groupData = await getGroup(groupId);
+        console.log(groupData)
         setGroupName(groupData.name);
         setGroupItems(groupData.Items);
         setIsSettled(groupData.redirect);

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./Navebar.module.css";
+import styles from "./Navbar.module.css";
 import { useEffect, useState } from "react";
 import bell from "../images/bell.svg";
 import { axiosInstance, baseURL } from "../api/axiosInstance";
@@ -29,8 +29,8 @@ const Navbar = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        socket.emit("logout");
-        socket.disconnect();
+        // socket.emit("logout");
+        // socket.disconnect();
         navigate("/login");
       }
     } catch (err) {
@@ -70,6 +70,7 @@ const Navbar = () => {
             })
           );
         }
+        navigate('/groups')
       }
     } catch (err) {
       Swal.fire({
@@ -116,6 +117,11 @@ const Navbar = () => {
       }))
     }
   }
+  
+  const handleMoreNoti = (e) => {
+    e.preventDefault()
+    navigate('/notifications')
+  }
 
   useEffect(() => {
     const getNotisAsync = async () => {
@@ -128,16 +134,16 @@ const Navbar = () => {
     };
     getNotisAsync();
 
-    const socketNotiListener = (data) => {
-      setNotis([data, ...notis]);
-    };
+    // const socketNotiListener = (data) => {
+    //   setNotis([data, ...notis]);
+    // };
 
-    socket.on("notificationToClient", socketNotiListener);
-    return () => {
-      socket.off("notificationToClient", socketNotiListener);
-    };
+    // socket.on("notificationToClient", socketNotiListener);
+    // return () => {
+    //   socket.off("notificationToClient", socketNotiListener);
+    // };
   }, []);
-  console.log(notis);
+
 
   return (
     <>
@@ -222,7 +228,7 @@ const Navbar = () => {
               </ul>
               <button
                 className={styles.moreNotiBtn}
-                onClick={(e) => setNotiOpen(false)}
+                onClick={(e) => handleMoreNoti(e)}
               >
                 更多通知
               </button>

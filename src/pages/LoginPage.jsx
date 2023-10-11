@@ -49,8 +49,8 @@ const LoginPage = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        socket.connect();
-        socket.emit("login");
+        // socket.connect();
+        // socket.emit("login");
         navigate("/groups");
       }
     } catch (err) {

@@ -59,7 +59,7 @@ const AddGroupPage = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        socket.emit('notificationToServer', addNotiData)
+        // socket.emit('notificationToServer', addNotiData)
         navigate("/groups");
       }
     } catch (err) {

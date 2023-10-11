@@ -12,7 +12,8 @@ import {
   EditItemPage,
   RedirectPage,
   ManageAccountPage,
-  SettlePage
+  SettlePage,
+  NotificationPage
 } from "./pages";
 // import {socket} from './socket'
 import { ItemDataProvider } from "./contexts/EditItemContext";
@@ -72,6 +73,7 @@ function App() {
             ></Route>
             <Route path="groups" element={<HomePage />}></Route>
             <Route path="manageAccount" element={<ManageAccountPage />}></Route>
+            <Route path="notifications" element={<NotificationPage />}></Route>
             <Route path="*" element={<RedirectPage />}></Route>
           </Routes>
         </BrowserRouter>

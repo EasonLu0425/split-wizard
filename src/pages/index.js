@@ -9,6 +9,7 @@ import EditItemPage from "./EditItemPage";
 import RedirectPage from "./RedirectPage";
 import ManageAccountPage from "./ManageAccountPage";
 import SettlePage from "./SettlePage";
+import NotificationPage from "./NotificationPage";
 
 export {
   RedirectPage,
@@ -21,5 +22,6 @@ export {
   ItemDetailPage,
   EditItemPage,
   ManageAccountPage,
-  SettlePage
+  SettlePage,
+  NotificationPage
 };

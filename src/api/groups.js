@@ -41,6 +41,17 @@ export const resetGroupRedirect = async (groupId) => {
     const res = await axiosInstance.put(`${baseURL}/groups/${groupId}/resetRedirect`);
     return res.data;
   } catch (err) {
-    console.error("[Add Group failed]:", err);
+    console.error("[reset group redirect failed]:", err);
   }
+}
+
+export const putArchive = async (groupId) => {
+   try {
+     const res = await axiosInstance.put(
+       `${baseURL}/groups/${groupId}/putArchive`
+     );
+     return res.data;
+   } catch (err) {
+     console.error("[put Group archive failed]:", err);
+   }
 }

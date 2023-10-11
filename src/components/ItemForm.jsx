@@ -175,6 +175,8 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
       if (
         itemInfo.itemAmount === 0 ||
         !itemInfo.itemName ||
+        !itemInfo.itemDate ||
+        !itemInfo.itemTime ||
         itemInfo.payer.length === 0 ||
         itemInfo.ower.length === 0
       ) {
@@ -286,9 +288,17 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
       const getItemAsync = async () => {
         try {
           const groupData = await getItem(groupId, itemId);
+          if (!groupData) throw new Error("查無此項目!");
           receiveItemData(groupData);
         } catch (err) {
-          console.error(err);
+           Swal.fire({
+             position: "center",
+             title: err.message,
+             timer: 1000,
+             icon: "error",
+             showConfirmButton: false,
+           });
+           navigate(`/groups/${groupId}`);
         }
       };
       getItemAsync();
@@ -296,9 +306,17 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
       const getGroupAsync = async () => {
         try {
           const groupData = await getGroup(groupId);
+          if (!groupData) throw new Error('查無此項目!')
           receiveGroupTitle(groupData.name);
         } catch (err) {
-          console.error(err);
+          Swal.fire({
+            position: "center",
+            title: err.message,
+            timer: 1000,
+            icon: "error",
+            showConfirmButton: false,
+          });
+          navigate(`/groups/${groupId}`);
         }
       };
       getGroupAsync();
@@ -306,9 +324,17 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
     const getgroupmembersAsync = async () => {
       try {
         const members = await getGroupMembers(groupId);
-        receiveGroupMembers(members);
+        if (members.result.length <= 1) throw new Error("沒有任何使用者，請其他使用者接受邀請後再操作!");
+        receiveGroupMembers(members.result);
       } catch (err) {
-        console.error(err);
+        Swal.fire({
+          position: "center",
+          title: err.message,
+          timer: 1000,
+          icon: "error",
+          showConfirmButton: false,
+        });
+        navigate(`/groups/${groupId}`)
       }
     };
     getgroupmembersAsync();
@@ -328,6 +354,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
             name="itemDate"
             value={itemInfo.itemDate}
             onChange={(e) => handleInputChange(e)}
+            required
           />
           <label>項目時間</label>
           <input
@@ -335,6 +362,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
             name="itemTime"
             value={itemInfo.itemTime}
             onChange={(e) => handleInputChange(e)}
+            required
           />
         </div>
         <label>項目名稱</label>
@@ -343,6 +371,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
           name="itemName"
           value={itemInfo.itemName}
           onChange={(e) => handleInputChange(e)}
+          required
         />
         <label>項目金額</label>
         <input
@@ -350,6 +379,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
           name="itemAmount"
           value={itemInfo.itemAmount}
           onChange={(e) => handleInputChange(e)}
+          required
         />
         <label>支付者</label>
         <div className={styles.usersContainer}>

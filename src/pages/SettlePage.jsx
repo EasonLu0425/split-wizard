@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { getOverView } from "../api/userGroupConn";
 import { getResult, switchStatus } from "../api/result";
 import clsx from "clsx";
+import { putArchive } from "../api/groups";
+import Swal from "sweetalert2";
 
 const SettlePage = () => {
   const navigate = useNavigate();
@@ -62,9 +64,19 @@ const SettlePage = () => {
     }
   };
 
-  const handleArchive = (e) => {
+  const handleArchive = async(e) => {
     e.preventDefault()
-    console.log('archive!')
+    const archiveRes = await putArchive(groupId)
+    if (archiveRes.status === 'success') {
+      Swal.fire({
+        position: "center",
+        title: archiveRes.message,
+        timer: 1000,
+        icon: "success",
+        showConfirmButton: false,
+      });
+      navigate(`/groups`)
+    }
   }
 
   useEffect(() => {
@@ -145,6 +157,7 @@ const SettlePage = () => {
                         <button
                           className={styles.payBtn}
                           onClick={(e) => handleFinishPaid(e, result.id)}
+                          disabled={overViewData.groupArchive}
                         >
                           支付完成
                         </button>
@@ -169,8 +182,11 @@ const SettlePage = () => {
                           {result.amount}
                         </div>
                         <button
-                          className={styles.cancelPaidBtn}
+                          className={clsx(styles.cancelPaidBtn, {
+                            [styles.btnDisabled]: overViewData.groupArchive,
+                          })}
                           onClick={(e) => handleCancelPaid(e, result.id)}
+                          disabled={overViewData.groupArchive}
                         >
                           取消紀錄
                         </button>
@@ -184,9 +200,10 @@ const SettlePage = () => {
           </div>
           <button
             className={clsx(styles.setArchiveBtn, {
-              [styles.btnDisabled]: !isButtonEnabled,
+              [styles.btnDisabled]:
+                !isButtonEnabled || overViewData.groupArchive,
             })}
-            disabled={!isButtonEnabled}
+            disabled={!isButtonEnabled || overViewData.groupArchive}
             onClick={handleArchive}
           >
             封存

@@ -1,0 +1,64 @@
+.notificationPageContainer {
+  margin-top: 4rem;
+}
+
+.listContainer {
+  margin: 2rem;
+}
+
+.notiLiContainer {
+  list-style-type: none;
+  padding: 0;
+}
+
+.notiLi {
+  border: 1px solid #bdbdbd;
+  height: 4rem;
+  position: relative;
+  padding: 0.5rem;
+}
+
+.unreadDot {
+  position: absolute;
+  top: 0.5rem;
+  width: 10px;
+  height: 10px;
+  background: #1b4965;
+  border-radius: 50%;
+  box-shadow: 1px 1px 1px white;
+}
+
+.notiControl {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin: 0.5rem;
+}
+
+.notiControl button {
+  border: none;
+  border-radius: 15px;
+  height: 1.5rem;
+  width: 50px;
+}
+
+.notiYes {
+  background: #1b4965;
+  color: white;
+}
+
+.notiNo {
+  background: #cae9ff;
+}
+
+.repliedTxt {
+  color: #bdbdbd;
+  margin-top: 0.5rem;
+}
+
+.notiTime {
+  position: absolute;
+  bottom: 0;
+  right:0;
+  color:#929292
+}
