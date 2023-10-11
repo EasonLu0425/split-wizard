@@ -148,7 +148,7 @@ const Navbar = () => {
   return (
     <>
       <div className={styles.navContainer}>
-        <div className="navHamburger" onClick={(e) => setNavOpen(!navOpen)}>
+        <div className={styles.navHamburger} onClick={(e) => setNavOpen(!navOpen)}>
           <div className={styles.hamburger}></div>
         </div>
         <div className={styles.title}>

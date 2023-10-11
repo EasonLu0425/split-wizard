@@ -11,6 +11,13 @@
   z-index: 10;
 }
 
+.navHamburger {
+  height:3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .hamburger {
   width: 20px;
   height: 2px;
