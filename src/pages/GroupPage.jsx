@@ -66,7 +66,7 @@ const GropuPage = () => {
         const groupData = await getGroup(groupId);
         console.log(groupData)
         setGroupName(groupData.name);
-        setGroupItems(groupData.Items);
+        setGroupItems(groupData.items);
         setIsSettled(groupData.redirect);
         setIsArchive(groupData.archive)
       } catch (err) {
@@ -100,12 +100,12 @@ const GropuPage = () => {
                       </p>
                       <p className={styles.itemAmount}>$ {item.amount}</p>
                       <div className={styles.itemPayerWrapper}>
-                        {item.ItemDetails.map((user) => (
+                        {item.details.map((user) => (
                           <p
                             className={styles.itemPayer}
-                            key={`payer${user.User.id}`}
+                            key={`payer${user.member.id}`}
                           >
-                            {user.User.name} 先付 ${user.amount}
+                            {user.member.name} 先付 ${user.amount}
                           </p>
                         ))}
                       </div>

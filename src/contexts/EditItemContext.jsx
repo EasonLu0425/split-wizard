@@ -35,8 +35,8 @@ const ItemDataProvider = ({ children }) => {
       itemDate: formatDate(itemData.itemTime),
       itemTime: formatTime(itemData.itemTime),
       itemAmount: itemData.amount,
-      payer: itemData.users.filter((user) => user.payer),
-      ower: itemData.users.filter((user) => !user.payer),
+      payer: itemData.details.filter((user) => user.payer),
+      ower: itemData.details.filter((user) => !user.payer),
     });
   };
 
