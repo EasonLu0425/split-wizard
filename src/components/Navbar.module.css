@@ -11,6 +11,13 @@
   z-index: 10;
 }
 
+.navHamburger {
+  height:3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .hamburger {
   width: 20px;
   height: 2px;
@@ -131,7 +138,7 @@
   position: absolute;
   top: 110%;
   right: 0;
-  width: 60vw;
+  width: 70vw;
   height: fit-content;
   padding: 1rem;
   background: white;
@@ -147,7 +154,7 @@
 
 .notiLi {
   border: 1px solid #bdbdbd;
-  height: 4rem;
+  height: 5rem;
   position: relative;
   padding: 0.5rem;
 }
@@ -168,6 +175,7 @@
   justify-content: flex-end;
   gap: 1rem;
   margin: 0.5rem;
+  margin-top: 0;
 }
 
 .notiControl button {
