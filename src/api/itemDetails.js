@@ -15,7 +15,7 @@ export const postItemDetails = async (formData, groupId, newItemId) => {
 export const putItemDetails = async (formData, groupId, itemId) => {
   try {
     const res = await axiosInstance.put(
-      `${baseURL}/groups/${groupId}/${itemId}/details`,
+      `${baseURL}/groups/${groupId}/${itemId}/editItemDetails`,
       formData
     );
     return res.data;
