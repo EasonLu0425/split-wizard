@@ -8,17 +8,19 @@ import { getNotifications, readNotification } from "../api/notifications";
 import { addMemberToGroup } from "../api/userGroupConn";
 import { socket } from "../socket";
 import { relativeTime } from "../helpers/helper";
+import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [notiOpen, setNotiOpen] = useState(false);
   const [notis, setNotis] = useState([]);
   const navigate = useNavigate();
+  const {logout, isAuthenticated} = useAuth()
 
   const handleLogOut = async (e) => {
     try {
       e.preventDefault();
-      localStorage.removeItem("currentUserId");
+      logout()
       const { data } = await axiosInstance.post(`${baseURL}/logout`);
       console.log("登出回傳", data);
       if (data.status === "success") {
@@ -124,6 +126,17 @@ const Navbar = () => {
   }
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      Swal.fire({
+        position: "center",
+        title: "您沒有權限進入此頁",
+        timer: 1000,
+        icon: "error",
+        showConfirmButton: false,
+      });
+      navigate("/login");
+    }
+
     const getNotisAsync = async () => {
       try {
         const data = await getNotifications();
@@ -142,7 +155,7 @@ const Navbar = () => {
     // return () => {
     //   socket.off("notificationToClient", socketNotiListener);
     // };
-  }, []);
+  }, [navigate, isAuthenticated]);
 
 
   return (

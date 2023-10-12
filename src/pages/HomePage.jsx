@@ -10,15 +10,18 @@ import Swal from "sweetalert2";
 const HomePage = () => {
   const [groups, setGroups] = useState([]);
   const navigate = useNavigate();
+
   const handleAddGroup = () => {
     navigate(`/groups/addGroup`);
   };
 
   useEffect(() => {
+
+
     const getGroupsAsync = async () => {
       try {
-        const data = await getGroups()
-        const groupsData = data.result
+        const data = await getGroups();
+        const groupsData = data.result;
         setGroups(groupsData.map((group) => ({ ...group })));
       } catch (err) {
         Swal.fire({

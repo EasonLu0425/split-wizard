@@ -1,18 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import styles from './RegisterPage.module.css'
+import styles from "./RegisterPage.module.css";
 import { axiosInstance, baseURL } from "../api/axiosInstance";
-
+import { useAuth } from "../contexts/AuthContext";
 
 const RegisterPage = () => {
-  const [name, setName] = useState('')
-  const [account, setaccount] = useState('')
-  const [password, setPassword] =useState('')
-  const [pwdConfirm, setPwdConfirm] = useState('')
-  const [isSubmit, setIsSubmit] = useState(false)
+  const [name, setName] = useState("");
+  const [account, setaccount] = useState("");
+  const [password, setPassword] = useState("");
+  const [pwdConfirm, setPwdConfirm] = useState("");
+  const [isSubmit, setIsSubmit] = useState(false);
+  const { register, isAuthenticated } = useAuth();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     try {
@@ -42,11 +43,15 @@ const RegisterPage = () => {
         name,
         account,
         password,
-        passwordCheck: pwdConfirm
+        passwordCheck: pwdConfirm,
       };
-      const { data } = await axiosInstance.post(`${baseURL}/register`, formData);
+      const { data } = await axiosInstance.post(
+        `${baseURL}/register`,
+        formData
+      );
+      const success = await register(formData);
       setIsSubmit(true);
-      if (data.status === 'success') {
+      if (success) {
         Swal.fire({
           position: "center",
           title: "註冊成功!",
@@ -54,19 +59,9 @@ const RegisterPage = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        navigate('/login')
-      } 
-      // else {
-      //   Swal.fire({
-      //     position: "center",
-      //     title: data.message,
-      //     timer: 1000,
-      //     icon: "error",
-      //     showConfirmButton: false,
-      //   });
-      //   setIsSubmit(false);
-      // }
-    } catch(err) {
+        navigate("/login");
+      }
+    } catch (err) {
       const { data } = err.response;
       Swal.fire({
         position: "center",
@@ -77,8 +72,13 @@ const RegisterPage = () => {
       });
       setIsSubmit(false);
     }
-    
-  }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/groups");
+    }
+  }, [navigate, isAuthenticated]);
 
   return (
     <>
