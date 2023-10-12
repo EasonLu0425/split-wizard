@@ -7,6 +7,7 @@ import { deleteItemDetails } from "../api/itemDetails";
 import { formatDate } from "../helpers/helper";
 import Swal from "sweetalert2";
 import { resetGroupRedirect } from "../api/groups";
+import { addNotification } from "../api/notifications";
 
 const ItemDetailPage = () => {
   const { groupId, itemId } = useParams();
@@ -62,23 +63,31 @@ const ItemDetailPage = () => {
         if (result.isConfirmed) {
           const deleteItemRes = await deleteItem(groupId, itemId);
           if (deleteItemRes.status === "success") {
-            const deleteItemDetailRes = await deleteItemDetails(
-              groupId,
-              itemId
-            );
-            if (itemData.groupRedirect) {
-              await resetGroupRedirect(groupId)
-            }
-            if (deleteItemDetailRes.status === "success") {
+            // const deleteItemDetailRes = await deleteItemDetails(
+            //   groupId,
+            //   itemId
+            // );
+            // if (itemData.groupRedirect) {
+            //   await resetGroupRedirect(groupId)
+            // }
+            // if (deleteItemDetailRes.status === "success") {
+            const addNotiData = {
+              type: "ITEM_DELETE",
+              receiverIds: [],
+              groupId: groupId,
+            };  
+            itemData.groupMembers.forEach( member => {
+              addNotiData.receiverIds.push(member.id)
+            })
+            await addNotification(addNotiData)
               Swal.fire({
                 position: "center",
-                title: deleteItemRes.message,
+                title: '刪除項目成功',
                 timer: 1000,
                 icon: "success",
                 showConfirmButton: false,
               });
               navigate(`/groups/${groupId}`);
-            }
           }
         }
       } catch (err) {

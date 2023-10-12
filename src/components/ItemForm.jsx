@@ -239,7 +239,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
             newItemId
           );
           if (addItemDetailsRes.status === "success") {
-            handleSendNotification(groupId, "ITEM_ADD");
+            await handleSendNotification(groupId, "ITEM_ADD");
             navigate(`/groups/${groupId}`);
           }
         }
@@ -306,7 +306,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
       const getGroupAsync = async () => {
         try {
           const groupData = await getGroup(groupId);
-          if (!groupData) throw new Error('查無此項目!')
+          if (!groupData) throw new Error('查無此行程!')
           receiveGroupTitle(groupData.name);
         } catch (err) {
           Swal.fire({
