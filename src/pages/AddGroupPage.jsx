@@ -8,13 +8,14 @@ import { addGroup } from "../api/groups";
 import { addMemberToGroup } from "../api/userGroupConn";
 import Swal from "sweetalert2";
 import { addNotification } from "../api/notifications";
-import {socket} from '../socket'
+import { useSocket } from "../contexts/SocketContext";
 
 const AddGroupPage = () => {
   const [groupName, setGroupName] = useState("");
   const [selectedNames, setSelectedNames] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState([]);
+  const {emitToServer} = useSocket()
   const navigate = useNavigate();
 
   const handleInputChange = (inputValue) => {
@@ -59,7 +60,7 @@ const AddGroupPage = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        // socket.emit('notificationToServer', addNotiData)
+        emitToServer("notificationToServer", {receiverIds: selectedUsers});
         navigate("/groups");
       }
     } catch (err) {

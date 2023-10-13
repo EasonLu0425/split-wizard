@@ -15,9 +15,9 @@ import {
   SettlePage,
   NotificationPage,
 } from "./pages";
-// import {socket} from './socket'
 import { ItemDataProvider } from "./contexts/EditItemContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import { SocketProvider } from "./contexts/SocketContext";
 // import { useState, useEffect } from "react";
 
 function App() {
@@ -52,38 +52,43 @@ function App() {
       <ItemDataProvider>
         <BrowserRouter basename="/splitWizard">
           <AuthProvider>
-            <Routes>
-              <Route path="login" element={<LoginPage />} />
-              <Route path="register" element={<RegisterPage />} />
-              <Route
-                path="groups/:groupId/addItem"
-                element={<AddItemPage />}
-              ></Route>
-              <Route path="groups/:groupId" element={<GroupPage />}></Route>
-              <Route
-                path="groups/:groupId/settle"
-                element={<SettlePage />}
-              ></Route>
-              <Route path="groups/addGroup" element={<AddGroupPage />}></Route>
-              <Route
-                path="groups/:groupId/:itemId/edit"
-                element={<EditItemPage />}
-              ></Route>
-              <Route
-                path="groups/:groupId/:itemId"
-                element={<ItemDetailPage />}
-              ></Route>
-              <Route path="groups" element={<HomePage />}></Route>
-              <Route
-                path="manageAccount"
-                element={<ManageAccountPage />}
-              ></Route>
-              <Route
-                path="notifications"
-                element={<NotificationPage />}
-              ></Route>
-              <Route path="*" element={<RedirectPage />}></Route>
-            </Routes>
+            <SocketProvider>
+              <Routes>
+                <Route path="login" element={<LoginPage />} />
+                <Route path="register" element={<RegisterPage />} />
+                <Route
+                  path="groups/:groupId/addItem"
+                  element={<AddItemPage />}
+                ></Route>
+                <Route path="groups/:groupId" element={<GroupPage />}></Route>
+                <Route
+                  path="groups/:groupId/settle"
+                  element={<SettlePage />}
+                ></Route>
+                <Route
+                  path="groups/addGroup"
+                  element={<AddGroupPage />}
+                ></Route>
+                <Route
+                  path="groups/:groupId/:itemId/edit"
+                  element={<EditItemPage />}
+                ></Route>
+                <Route
+                  path="groups/:groupId/:itemId"
+                  element={<ItemDetailPage />}
+                ></Route>
+                <Route path="groups" element={<HomePage />}></Route>
+                <Route
+                  path="manageAccount"
+                  element={<ManageAccountPage />}
+                ></Route>
+                <Route
+                  path="notifications"
+                  element={<NotificationPage />}
+                ></Route>
+                <Route path="*" element={<RedirectPage />}></Route>
+              </Routes>
+            </SocketProvider>
           </AuthProvider>
         </BrowserRouter>
       </ItemDataProvider>

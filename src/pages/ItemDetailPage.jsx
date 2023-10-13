@@ -70,6 +70,12 @@ const ItemDetailPage = () => {
               await resetGroupRedirect(groupId)
             }
             if (deleteItemDetailRes.status === "success") {
+              // 發通知給後端
+              const addNotiData = {
+                type: "ITEM_DELETE",
+                receiverIds: [],
+                groupId: groupId,
+              };
               Swal.fire({
                 position: "center",
                 title: deleteItemRes.message,
@@ -86,7 +92,7 @@ const ItemDetailPage = () => {
       }
     });
   };
-
+  console.log(itemData)
   useEffect(() => {
     const getItemAsync = async () => {
       try {
@@ -115,7 +121,7 @@ const ItemDetailPage = () => {
           <div className={styles.itemNameAndAmount}>
             <p>{itemData.itemName}</p>
             <p>${itemData.amount}</p>
-          </div>{" "}
+          </div>
           <div className={styles.payerContainer}>
             <p className={styles.payerTitle}>支付者</p>
             {payer.map((user, index) => (

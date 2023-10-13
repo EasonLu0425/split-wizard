@@ -46,6 +46,7 @@ export const AuthProvider = ({ children }) => {
       setPayload(tempPayload);
       setIsAuthenticated(true);
       localStorage.setItem("authToken", result.authToken);
+      localStorage.setItem("currentUserId", tempPayload.id)
     } else {
       setPayload(null);
       setIsAuthenticated(false);
@@ -85,7 +86,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         isAuthenticated,
-        currentMember: payload && { id: payload.sub, name: payload.name },
+        currentMember: payload && { id: payload.id, name: payload.name },
         register,
         login,
         logout

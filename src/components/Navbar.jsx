@@ -6,24 +6,26 @@ import { axiosInstance, baseURL } from "../api/axiosInstance";
 import Swal from "sweetalert2";
 import { getNotifications, readNotification } from "../api/notifications";
 import { addMemberToGroup } from "../api/userGroupConn";
-import { socket } from "../socket";
 import { relativeTime } from "../helpers/helper";
 import { useAuth } from "../contexts/AuthContext";
+import { useSocket } from "../contexts/SocketContext";
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [notiOpen, setNotiOpen] = useState(false);
   const [notis, setNotis] = useState([]);
   const navigate = useNavigate();
-  const {logout, isAuthenticated} = useAuth()
+  const { logout, isAuthenticated } = useAuth();
+  const { socket, emitToServer, closeSocket } = useSocket();
 
   const handleLogOut = async (e) => {
     try {
       e.preventDefault();
-      logout()
+      logout();
       const { data } = await axiosInstance.post(`${baseURL}/logout`);
       console.log("登出回傳", data);
       if (data.status === "success") {
+        closeSocket();
         Swal.fire({
           position: "center",
           title: "登出成功!",
@@ -31,8 +33,6 @@ const Navbar = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        // socket.emit("logout");
-        // socket.disconnect();
         navigate("/login");
       }
     } catch (err) {
@@ -72,7 +72,7 @@ const Navbar = () => {
             })
           );
         }
-        navigate('/groups')
+        navigate("/groups");
       }
     } catch (err) {
       Swal.fire({
@@ -90,6 +90,18 @@ const Navbar = () => {
       e.preventDefault();
       const readRes = await readNotification({ notiId });
       if (readRes.status === "success") {
+        setNotis(
+          notis.map((noti) => {
+            if (noti.id === notiId) {
+              return {
+                ...noti,
+                read: true,
+              };
+            } else {
+              return noti;
+            }
+          })
+        );
         Swal.fire({
           position: "center",
           title: "已拒絕加入!",
@@ -104,39 +116,30 @@ const Navbar = () => {
   };
 
   const handleRead = async (e, notiId) => {
-    e.preventDefault()
-    const readRes = await readNotification({ notiId })
-    if (readRes.status === 'success') {
-      setNotis(notis.map(noti => {
-        if (noti.id === notiId) {
-          return {
-            ...noti,
-            read: true
+    e.preventDefault();
+    const readRes = await readNotification({ notiId });
+    if (readRes.status === "success") {
+      setNotis(
+        notis.map((noti) => {
+          if (noti.id === notiId) {
+            return {
+              ...noti,
+              read: true,
+            };
+          } else {
+            return noti;
           }
-        } else {
-          return noti
-        }
-      }))
+        })
+      );
     }
-  }
-  
+  };
+
   const handleMoreNoti = (e) => {
-    e.preventDefault()
-    navigate('/notifications')
-  }
+    e.preventDefault();
+    navigate("/notifications");
+  };
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      Swal.fire({
-        position: "center",
-        title: "您沒有權限進入此頁",
-        timer: 1000,
-        icon: "error",
-        showConfirmButton: false,
-      });
-      navigate("/login");
-    }
-
     const getNotisAsync = async () => {
       try {
         const data = await getNotifications();
@@ -147,21 +150,31 @@ const Navbar = () => {
     };
     getNotisAsync();
 
-    // const socketNotiListener = (data) => {
-    //   setNotis([data, ...notis]);
-    // };
+    const socketNotiListener = (data) => {
+      console.log("收到socketToClient!執行重新整理noti");
+      getNotisAsync();
+    };
+    if (socket) {
+      socket.on("notificationToClient", socketNotiListener);
+      return () => {
+        socket.off("notificationToClient", socketNotiListener);
+      };
+    }
+  }, [socket]);
 
-    // socket.on("notificationToClient", socketNotiListener);
-    // return () => {
-    //   socket.off("notificationToClient", socketNotiListener);
-    // };
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
   }, [navigate, isAuthenticated]);
-
 
   return (
     <>
       <div className={styles.navContainer}>
-        <div className={styles.navHamburger} onClick={(e) => setNavOpen(!navOpen)}>
+        <div
+          className={styles.navHamburger}
+          onClick={(e) => setNavOpen(!navOpen)}
+        >
           <div className={styles.hamburger}></div>
         </div>
         <div className={styles.title}>

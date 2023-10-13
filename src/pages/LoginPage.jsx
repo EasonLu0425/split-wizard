@@ -4,13 +4,15 @@ import Swal from "sweetalert2";
 import { useContext, useEffect, useState } from "react";
 import { axiosInstance, baseURL } from "../api/axiosInstance";
 import { useAuth } from "../contexts/AuthContext";
+import { useSocket } from "../contexts/SocketContext";
 // import { socket } from "../socket";
 
 const LoginPage = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, currentMember } = useAuth();
+  const { emitToServer} = useSocket()
   const navigate = useNavigate();
 
   const handleAccountInput = (e) => {
@@ -53,8 +55,7 @@ const LoginPage = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        // socket.connect();
-        // socket.emit("login");
+        emitToServer("notificationToServer", "yeah!!!!");
         navigate("/groups");
       }
     } catch (err) {

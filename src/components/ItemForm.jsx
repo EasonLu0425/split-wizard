@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { postItem, putItem } from "../api/items";
 import { postItemDetails, putItemDetails } from "../api/itemDetails";
 import { addNotification } from "../api/notifications";
+import { useSocket } from "../contexts/SocketContext";
 
 const User = ({ role, allUsers, user, index, onChange, onDeleteUser }) => {
   const handleUserChange = (event) => {
@@ -73,6 +74,8 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
     resetItemInfo,
   } = useContext(ItemContext);
   const navigate = useNavigate();
+  const {emitToServer} = useSocket()
+
   const handleUserChange = (index, name, value, id) => {
     if (name === "ower") {
       const [nextUser] = groupmembers.filter(
@@ -239,7 +242,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
             newItemId
           );
           if (addItemDetailsRes.status === "success") {
-            handleSendNotification(groupId, "ITEM_ADD");
+            await handleSendNotification(groupId, "ITEM_ADD");
             navigate(`/groups/${groupId}`);
           }
         }
@@ -273,6 +276,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
     });
     const sendNotiRes = await addNotification(addNotiData);
     if (sendNotiRes.status === "success") {
+      emitToServer("notificationToServer", { receiverIds: addNotiData.receiverIds });
       Swal.fire({
         position: "center",
         title: notiType === "ITEM_ADD" ? "新增成功" : "修改成功",
