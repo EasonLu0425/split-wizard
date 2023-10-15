@@ -217,7 +217,7 @@ const Navbar = () => {
                             <p className={styles.repliedTxt}>已回覆邀請</p>
                           ))}
                         <span className={styles.notiTime}>
-                          {relativeTime(noti.time)}
+                          {relativeTime(noti.createdTime)}
                         </span>
                       </div>
                     </li>

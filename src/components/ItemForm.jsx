@@ -330,7 +330,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
         Swal.fire({
           position: "center",
           title: err.message,
-          timer: 1000,
+          timer: 2000,
           icon: "error",
           showConfirmButton: false,
         });
