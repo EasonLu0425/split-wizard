@@ -117,19 +117,19 @@ const SettlePage = () => {
         ></Title>
         <div className={styles.overView}>
           <h2>旅程總覽</h2>
-          {overViewData.overView && Array.isArray(overViewData.overView) ? (
-            overViewData.overView.map((data) => (
+          {overViewData.overViews && Array.isArray(overViewData.overViews) ? (
+            overViewData.overViews.map((data) => (
               <div
                 className={clsx(styles.overViewCard, {
-                  [styles.positive]: data.userNet > 0,
-                  [styles.negative]: data.userNet <= 0,
+                  [styles.positive]: data.memberNet > 0,
+                  [styles.negative]: data.memberNet <= 0,
                 })}
-                key={data.userId}
+                key={data.memberId}
               >
                 <p>
-                  <span>{data.userName}</span> 需
-                  {data.userNet > 0 ? "收到" : "支付"}{" "}
-                  <span>${Math.abs(data.userNet)}</span>
+                  <span>{data.memberName}</span> 需
+                  {data.memberNet > 0 ? "收到" : "支付"}{" "}
+                  <span>${Math.abs(data.memberNet)}</span>
                 </p>
               </div>
             ))

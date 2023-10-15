@@ -48,7 +48,7 @@ export const resetGroupRedirect = async (groupId) => {
 export const putArchive = async (groupId) => {
    try {
      const res = await axiosInstance.put(
-       `${baseURL}/groups/${groupId}/putArchive`
+       `${baseURL}/groups/${groupId}/setArchive`
      );
      return res.data;
    } catch (err) {

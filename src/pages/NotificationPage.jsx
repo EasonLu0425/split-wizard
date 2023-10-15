@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import bell from "../images/bell.svg";
 import { axiosInstance, baseURL } from "../api/axiosInstance";
 import Swal from "sweetalert2";
-import { getNotifications, readNotification } from "../api/notifications";
+import { getAllNotifications, readNotification } from "../api/notifications";
 import { addMemberToGroup } from "../api/userGroupConn";
 import { socket } from "../socket";
 import { relativeTime } from "../helpers/helper";
@@ -97,7 +97,7 @@ const NotificationPage = () => {
   useEffect(() => {
     const getNotisAsync = async () => {
       try {
-        const data = await getNotifications();
+        const data = await getAllNotifications();
         setNotis([...data]);
       } catch (err) {
         console.error(err);

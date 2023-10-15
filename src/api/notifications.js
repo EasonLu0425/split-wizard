@@ -29,3 +29,12 @@ export const addNotification = async (addNotiData) => {
     console.error(err);
   }
 }
+
+export const getAllNotifications = async () => {
+  try {
+    const res = await axiosInstance.get(`${baseURL}/getAllNotifications`);
+    return res.data.result;
+  } catch (err) {
+    console.error(err);
+  }
+};

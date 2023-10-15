@@ -103,7 +103,7 @@ const Navbar = () => {
 
   const handleRead = async (e, notiId) => {
     e.preventDefault()
-    const readRes = await readNotification({ notiId })
+    const readRes = await readNotification({ id: notiId })
     if (readRes.status === 'success') {
       setNotis(notis.map(noti => {
         if (noti.id === notiId) {
