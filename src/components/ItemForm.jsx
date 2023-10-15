@@ -54,6 +54,8 @@ const User = ({ role, allUsers, user, index, onChange, onDeleteUser }) => {
             name={`${role}Amount`}
             value={user.amount}
             onChange={handleUserChange}
+            step="0.01" // 指定小數點位數
+            pattern="\d+(\.\d{1,2})?" 
           />
         </div>
       </div>
@@ -129,11 +131,23 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
   const handleGoDutch = (e) => {
     e.preventDefault();
     const dutchedAmount = itemInfo.itemAmount / groupmembers.length;
+    const roundedDutchedAmount = parseFloat(dutchedAmount.toFixed(2));
+    if (!Number.isInteger(parseFloat(dutchedAmount.toFixed(2)))){
+      Swal.fire({
+        title: "金額包含小數，可能仍需手動調整與總金額相符",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#1B4965",
+        cancelButtonColor: "#e56b6f",
+        confirmButtonText: "好的!",
+        cancelButtonText: "取消",
+      });
+    }
     const nextOwer = groupmembers.map((user) => {
       return {
         id: user.id,
         name: user.name,
-        amount: dutchedAmount,
+        amount: roundedDutchedAmount,
         payer: false,
       };
     });

@@ -1,83 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Navbar, Title } from "../components";
+import { Navbar, Title, UserDetail } from "../components";
 import styles from "./SettlePage.module.css";
 import { useEffect, useState } from "react";
 import { getOverView } from "../api/userGroupConn";
 import { getResult, switchStatus } from "../api/result";
-import { getUserInGroupDetails } from "../api/itemDetails";
 import clsx from "clsx";
 import { putArchive } from "../api/groups";
 import Swal from "sweetalert2";
-import { formatDate } from "../helpers/helper";
 
-const UserDetail = ({ detailData, groupId }) => {
-  const [showDetail, setShowDetail] = useState(false);
-  const [firstClick, setFirstClick] = useState(true);
-  const [details, setDetails] = useState([]);
-  const [paidResult, setPaidResult] = useState([]);
-
-  const handleShowDetail = async (e) => {
-    e.preventDefault();
-    setShowDetail(!showDetail);
-    if (firstClick) {
-      setFirstClick(false);
-      const detailDatas = await getUserInGroupDetails(
-        groupId,
-        detailData.userId
-      );
-      console.log(detailDatas);
-      setDetails(detailDatas.details);
-      setPaidResult(detailDatas.paidResult);
-    }
-  };
-  return (
-    <>
-      <button
-        className={clsx(styles.overViewCard, {
-          [styles.positive]: detailData.userNet > 0,
-          [styles.negative]: detailData.userNet <= 0,
-        })}
-        onClick={handleShowDetail}
-      >
-        <p>
-          <span>{detailData.userName}</span> 需
-          {detailData.userNet > 0 ? "收到" : "支付"}{" "}
-          <span>${Math.abs(detailData.userNet)}</span>
-        </p>
-      </button>
-      {showDetail && (
-        <ul className={styles.detailContainer}>
-          {details ? (
-            details.map((detail) => (
-              <li className={styles.detailLi} key={`detail${detail.id}`}>
-                <div className={styles.detailTextContainer}>
-                  <div className={styles.timeAndName}>
-                    <span className={styles.detailTime}>
-                      {formatDate(detail.Item.itemTime)}
-                    </span>
-                    <span className={styles.detailName}>
-                      {detail.Item.name}
-                    </span>
-                  </div>
-                  <span
-                    className={clsx(styles.detailCost, {
-                      [styles.minusCost]: !detail.payer,
-                    })}
-                  >
-                    $ {!detail.payer && "-"}
-                    {detail.amount}
-                  </span>
-                </div>
-              </li>
-            ))
-          ) : (
-            <p>加载中</p>
-          )}
-        </ul>
-      )}
-    </>
-  );
-};
 
 const SettlePage = () => {
   const navigate = useNavigate();
@@ -214,7 +144,7 @@ const SettlePage = () => {
                         key={`unPaid${result.id}`}
                       >
                         <div className="unpayer">
-                          {result.payer.name} 給予 {result.ower.name} ${" "}
+                          {result.ower.name} 給予 {result.payer.name} ${" "}
                           {result.amount}
                         </div>
                         <button
@@ -232,7 +162,7 @@ const SettlePage = () => {
               )}
             </div>
           </div>
-          <div className={styles.unPaidContainer}>
+          <div className={styles.paidContainer}>
             <h2>已支付</h2>
             <div className={styles.paidListContainer}>
               {resultData && Array.isArray(resultData) ? (
@@ -241,7 +171,7 @@ const SettlePage = () => {
                     result.status && (
                       <div className={styles.paidLi} key={`paid${result.id}`}>
                         <div className="unpayer">
-                          {result.payer.name} 給予 {result.ower.name} ${" "}
+                          {result.ower.name} 給予 {result.payer.name} ${" "}
                           {result.amount}
                         </div>
                         <button

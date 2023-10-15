@@ -19,11 +19,13 @@ export const AuthProvider = ({ children }) => {
   const { pathname } = useLocation();
 
   const register = async (data) => {
-    const { success, result } = await apiRegister({
+    const {success, result} = await apiRegister({
       name: data.name,
       account: data.account,
       password: data.password,
+      passwordCheck: data.passwordCheck
     });
+
     const tempPayload = decodeToken(result.authToken);
     if (tempPayload) {
       setPayload(tempPayload);

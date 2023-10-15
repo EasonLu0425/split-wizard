@@ -1,0 +1,82 @@
+.overViewCard {
+  position:relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  margin-bottom: 0.5rem;
+  border: none;
+  box-shadow: 2px 2px 3px 2px #bdbdbd;
+  border-radius: 8px;
+}
+
+.showArrow {
+  position:absolute;
+  right:5%;
+  bottom:30%;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent; 
+  border-right: 5px solid transparent;
+  border-top: 10px solid black; 
+}
+
+.hideArrorw {
+  position:absolute;
+  right:5%;
+  bottom:30%;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent; 
+  border-right: 5px solid transparent;
+  border-bottom: 10px solid black; 
+}
+
+.overViewCard p {
+  margin: 0;
+  height: 1.5rem;
+}
+
+.detailContainer {
+  list-style-type: none;
+  padding: 1rem;
+  width: 70%;
+  margin-top: 0;
+  background: #eaeff0;
+  border-radius: 8px;
+}
+
+.detailLi {
+  border-bottom: 1px solid #b5b5b5;
+}
+
+.detailTextContainer {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.timeAndName{
+  display: flex;
+  justify-content: start;
+}
+
+.detailCost {
+  text-align: end;
+}
+
+.minusCost {
+  color:red
+}
+
+.positive {
+  background: #62b6cb;
+}
+
+.negative {
+  background: #ffbbbe;
+}
+
+.overViewCard p span {
+  font-weight: 700;
+}

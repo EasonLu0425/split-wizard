@@ -19,13 +19,15 @@ export const apiLogin = async ({ account, password }) => {
   }
 };
 
-export const apiRegister = async ({ account, email, password }) => {
+export const apiRegister = async ({ name, account, password, passwordCheck }) => {
   try {
     const { data } = await axiosInstance.post(`${authURL}/register`, {
+      name,
       account,
-      email,
       password,
+      passwordCheck
     });
+    console.log(data)
     const { authToken } = data.result;
     if (authToken) {
       return { success: true, ...data };

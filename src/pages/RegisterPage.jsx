@@ -45,13 +45,13 @@ const RegisterPage = () => {
         password,
         passwordCheck: pwdConfirm,
       };
-      const { data } = await axiosInstance.post(
-        `${baseURL}/register`,
-        formData
-      );
-      const success = await register(formData);
+      // const { data } = await axiosInstance.post(
+      //   `${baseURL}/register`,
+      //   formData
+      // );
+      const status = await register(formData);
       setIsSubmit(true);
-      if (success) {
+      if (status ==="success") {
         Swal.fire({
           position: "center",
           title: "註冊成功!",
@@ -62,10 +62,11 @@ const RegisterPage = () => {
         navigate("/login");
       }
     } catch (err) {
-      const { data } = err.response;
+      // const { data } = err.response;
+      console.log(err)
       Swal.fire({
         position: "center",
-        title: data.message,
+        title: err,
         timer: 1000,
         icon: "error",
         showConfirmButton: false,
