@@ -37,10 +37,10 @@ const UserDetail = ({ detailData, groupId }) => {
           <span>{detailData.userName}</span> 還需
           {detailData.userNet > 0 ? "收到" : "支付"}{" "}
           <span>${Math.abs(detailData.userNet)}</span>
-          <div
-            className={showDetail ? styles.hideArrorw : styles.showArrow}
-          ></div>
         </p>
+        <div
+          className={showDetail ? styles.hideArrorw : styles.showArrow}
+        ></div>
       </button>
       {showDetail && (
         <ul className={styles.detailContainer}>
@@ -106,4 +106,4 @@ const UserDetail = ({ detailData, groupId }) => {
   );
 };
 
-export default UserDetail
+export default UserDetail;
