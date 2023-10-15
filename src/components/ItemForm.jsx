@@ -53,6 +53,8 @@ const User = ({ role, allUsers, user, index, onChange, onDeleteUser }) => {
             name={`${role}Amount`}
             value={user.amount}
             onChange={handleUserChange}
+            step="0.01" // 指定小數點位數
+            pattern="\d+(\.\d{1,2})?"
           />
         </div>
       </div>
