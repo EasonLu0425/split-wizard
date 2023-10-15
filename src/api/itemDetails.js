@@ -33,3 +33,14 @@ export const deleteItemDetails = async (groupId, itemId) => {
     console.error(err);
   }
 };
+
+export const getUserInGroupDetails = async (groupId, userId) => {
+  try {
+    const res = await axiosInstance.get(
+      `${baseURL}/groups/${groupId}/${userId}/details`
+    );
+    return res.data.result;
+  } catch(err) {
+    console.error(err)
+  }
+}

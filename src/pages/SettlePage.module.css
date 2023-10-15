@@ -17,17 +17,52 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width:60%;
+  width: 70%;
   margin-bottom: 0.5rem;
+  border: none;
+  box-shadow: 2px 2px 3px 2px #bdbdbd;
+  border-radius: 8px;
 }
 
 .overViewCard p {
   margin: 0;
-  height:1.5rem
+  height: 1.5rem;
+}
+
+.detailContainer {
+  list-style-type: none;
+  padding: 1rem;
+  width: 70%;
+  margin-top: 0;
+  background: #eaeff0;
+  border-radius: 8px;
+}
+
+.detailLi {
+  border-bottom: 1px solid #b5b5b5;
+}
+
+.detailTextContainer {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.timeAndName{
+  display: flex;
+  justify-content: start;
+}
+
+.detailCost {
+  text-align: end;
+}
+
+.minusCost {
+  color:red
 }
 
 .positive {
-  background: #62B6CB;
+  background: #62b6cb;
 }
 
 .negative {
@@ -37,14 +72,16 @@
 .overViewCard p span {
   font-weight: 700;
 }
-.unPaidListContainer, .paidListContainer {
+.unPaidListContainer,
+.paidListContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.unPaidLi, .paidLi {
+.unPaidLi,
+.paidLi {
   padding: 0.5rem;
   display: flex;
   justify-content: space-around;
@@ -54,16 +91,17 @@
   margin-bottom: 1rem;
 }
 
-.payBtn, .cancelPaidBtn {
+.payBtn,
+.cancelPaidBtn {
   border: none;
   border-radius: 15px;
-  height:2rem;
-  width:100px;
+  height: 2rem;
+  width: 100px;
   margin-left: 0.5rem;
 }
 
 .payBtn {
-  background: #5FA8D3;
+  background: #5fa8d3;
 }
 
 .cancelPaidBtn {
@@ -71,14 +109,14 @@
   color: white;
 }
 
-.setArchiveBtn{
+.setArchiveBtn {
   margin-top: 1rem;
-  height:2rem;
-  width:100px;
+  height: 2rem;
+  width: 100px;
   border: none;
   border-radius: 15px;
-  background: #1B4965;
-  color:white
+  background: #1b4965;
+  color: white;
 }
 
 .btnDisabled {

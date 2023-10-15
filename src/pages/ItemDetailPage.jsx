@@ -7,6 +7,8 @@ import { deleteItemDetails } from "../api/itemDetails";
 import { formatDate } from "../helpers/helper";
 import Swal from "sweetalert2";
 import { resetGroupRedirect } from "../api/groups";
+import { addNotification } from "../api/notifications";
+import { useSocket } from "../contexts/SocketContext";
 
 const ItemDetailPage = () => {
   const { groupId, itemId } = useParams();
@@ -14,6 +16,7 @@ const ItemDetailPage = () => {
   const [itemData, setItemData] = useState([]);
   const [payer, setPayer] = useState([]);
   const [ower, setOwer] = useState([]);
+  const { emitToServer } = useSocket();
 
   const backToGroupPage = () => {
     navigate(`/groups/${groupId}`);
@@ -67,7 +70,7 @@ const ItemDetailPage = () => {
               itemId
             );
             if (itemData.groupRedirect) {
-              await resetGroupRedirect(groupId)
+              await resetGroupRedirect(groupId);
             }
             if (deleteItemDetailRes.status === "success") {
               // 發通知給後端
@@ -76,6 +79,13 @@ const ItemDetailPage = () => {
                 receiverIds: [],
                 groupId: groupId,
               };
+              itemData.groupMembers.forEach((user) => {
+                addNotiData.receiverIds.push(user.id);
+              });
+              await addNotification(addNotiData);
+              emitToServer("notificationToServer", {
+                receiverIds: addNotiData.receiverIds,
+              });
               Swal.fire({
                 position: "center",
                 title: deleteItemRes.message,
@@ -92,7 +102,7 @@ const ItemDetailPage = () => {
       }
     });
   };
-  console.log(itemData)
+  console.log(itemData);
   useEffect(() => {
     const getItemAsync = async () => {
       try {
@@ -106,7 +116,7 @@ const ItemDetailPage = () => {
     };
     getItemAsync();
   }, []);
-  console.log(itemData)
+  console.log(itemData);
 
   return (
     <>
