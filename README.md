@@ -17,8 +17,8 @@
 ## 如何在本地端運行?
 ### 此專案需搭配後端伺服器共同運行:
 運行環境擇一使用即可。
-JS Express 後端Git 連結: https://github.com/EasonLu0425/split-wizard
-Java Spring-Boot 後端Git 連結:
+- JS Express 後端Git 連結: https://github.com/EasonLu0425/split-wizard
+- Java Spring-Boot 後端Git 連結: https://github.com/PH010546/Split-Wizard-Spring-Boot
 
 
 1. 先將專案clone到本地端，後端程式也必須安裝完成。
