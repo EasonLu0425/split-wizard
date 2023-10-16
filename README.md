@@ -1,4 +1,42 @@
-# Getting Started with Create React App
+# Split Wizard 分帳魔法師
+
+與朋友出遊卻因為分帳事宜鬧得不愉快嗎? 讓分帳魔法師來幫你搞清楚來龍去脈! 
+本軟體為Split Wizard 前端Web App 程式，使用React為框架，並運用各項功能完成分帳難題!
+後續會持續更新，並且部屬到伺服器上，出門外出旅遊就可以使用了!
+
+## 核心功能: 
+  - 可註冊帳號並且登入，透過JWT Token登入驗證機制確保安全性，密碼透過bycrypt加密，安全不遺漏!
+  - 可創建多個行程並邀請同伴進入群組，並發出通知，讓同伴知道我們是一夥的!
+  - 可於行程中建立共同消費的項目，讓共同消費的項目清清楚楚，紀錄支出者及使用者有哪些人。
+  - 編輯或刪除錯誤的消費項目，不讓輸入錯誤的項目金額困擾著你!
+  - 行程完美結束，該結算了，分帳小幫手幫你自動算好錢，並且可查看明細，讓使用者體會不再一筆一筆計算到頭痛!
+  - 確認都支付完成可以封存行程，讓過去的行程保留在美好的記憶中
+  - 不論新增、刪除、更改項目，都有即時通知所有旅伴，公開透明不讓小人作祟。
+  - 支付完成可記錄於app中，讓支付者知道你已經付錢了，不再為有沒有還錢吵架!
+
+## 如何在本地端運行?
+### 此專案需搭配後端伺服器共同運行:
+運行環境擇一使用即可。
+JS Express 後端Git 連結: https://github.com/EasonLu0425/split-wizard
+Java Spring-Boot 後端Git 連結:
+
+
+1. 先將專案clone到本地端，後端程式也必須安裝完成。
+```
+git clone https://github.com/EasonLu0425/split-wizard.git
+```
+3. 安裝此專案套件
+```
+npm install
+```
+3. 啟用專案
+```
+npm run start
+```
+4. 進入 http://localhost:3000/splitWizard/login 開始你的旅程吧!
+
+## React 套件說明如下:
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -14,57 +52,9 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
