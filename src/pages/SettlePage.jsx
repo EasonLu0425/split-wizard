@@ -151,7 +151,7 @@ const SettlePage = () => {
                         key={`unPaid${result.id}`}
                       >
                         <div className="unpayer">
-                          {result.payer.name} 給予 {result.ower.name} ${" "}
+                          {result.giver.name} 給予 {result.taker.name} ${" "}
                           {result.amount}
                         </div>
                         <button
@@ -178,7 +178,7 @@ const SettlePage = () => {
                     result.status && (
                       <div className={styles.paidLi} key={`paid${result.id}`}>
                         <div className="unpayer">
-                          {result.payer.name} 給予 {result.ower.name} ${" "}
+                          {result.giver.name} 給予 {result.taker.name} ${" "}
                           {result.amount}
                         </div>
                         <button

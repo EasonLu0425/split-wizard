@@ -8,7 +8,7 @@ import { addGroup } from "../api/groups";
 import { addMemberToGroup } from "../api/userGroupConn";
 import Swal from "sweetalert2";
 import { addNotification } from "../api/notifications";
-import {socket} from '../socket'
+
 
 const AddGroupPage = () => {
   const [groupName, setGroupName] = useState("");
@@ -80,7 +80,7 @@ const AddGroupPage = () => {
         const data = await getAllUsers();
         const allusers = data.result;
         const newOptions = allusers.map((user) => {
-          return { value: user.id, label: user.name };
+          return { value: user.id, label: `${user.name}(${user.uid})` };
         });
         setOptions(newOptions);
       } catch (err) {
