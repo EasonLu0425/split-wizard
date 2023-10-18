@@ -63,14 +63,9 @@ const ItemDetailPage = () => {
         if (result.isConfirmed) {
           const deleteItemRes = await deleteItem(groupId, itemId);
           if (deleteItemRes.status === "success") {
-            // const deleteItemDetailRes = await deleteItemDetails(
-            //   groupId,
-            //   itemId
-            // );
-            // if (itemData.groupRedirect) {
-            //   await resetGroupRedirect(groupId)
-            // }
-            // if (deleteItemDetailRes.status === "success") {
+            if (itemData.groupRedirect) {
+              await resetGroupRedirect(groupId);
+            }
             const addNotiData = {
               type: "ITEM_DELETE",
               receiverIds: [],
@@ -79,6 +74,9 @@ const ItemDetailPage = () => {
             itemData.groupMembers.forEach( member => {
               addNotiData.receiverIds.push(member.id)
             })
+            if (itemData.groupRedirect) {
+              await resetGroupRedirect(groupId);
+            }
             await addNotification(addNotiData)
               Swal.fire({
                 position: "center",
