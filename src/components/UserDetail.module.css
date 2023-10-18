@@ -1,5 +1,5 @@
 .overViewCard {
-  position:relative;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,25 +11,25 @@
 }
 
 .showArrow {
-  position:absolute;
-  right:5%;
-  bottom:30%;
+  position: absolute;
+  right: 5%;
+  bottom: 30%;
   width: 0;
   height: 0;
-  border-left: 5px solid transparent; 
+  border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 10px solid black; 
+  border-top: 10px solid black;
 }
 
 .hideArrorw {
-  position:absolute;
-  right:5%;
-  bottom:30%;
+  position: absolute;
+  right: 5%;
+  bottom: 30%;
   width: 0;
   height: 0;
-  border-left: 5px solid transparent; 
+  border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-bottom: 10px solid black; 
+  border-bottom: 10px solid black;
 }
 
 .overViewCard p {
@@ -46,6 +46,12 @@
   border-radius: 8px;
 }
 
+.resultTextContainer {
+  display: flex;
+  flex-direction: column;
+  background: #fff0d4;
+}
+
 .detailLi {
   border-bottom: 1px solid #b5b5b5;
 }
@@ -53,10 +59,9 @@
 .detailTextContainer {
   display: flex;
   flex-direction: column;
-
 }
 
-.timeAndName{
+.timeAndName {
   display: flex;
   justify-content: start;
 }
@@ -65,8 +70,12 @@
   text-align: end;
 }
 
+.detailName {
+  font-weight: 700;
+}
+
 .minusCost {
-  color:red
+  color: red;
 }
 
 .positive {

@@ -8,7 +8,7 @@ const UserDetail = ({ detailData, groupId }) => {
   const [showDetail, setShowDetail] = useState(false);
   const [firstClick, setFirstClick] = useState(true);
   const [details, setDetails] = useState([]);
-  const [paidResult, setPaidResult] = useState([]);
+  const [paidResults, setPaidResult] = useState([]);
 
   const handleShowDetail = async (e) => {
     e.preventDefault();
@@ -21,7 +21,7 @@ const UserDetail = ({ detailData, groupId }) => {
       );
       console.log(detailDatas);
       setDetails(detailDatas.details);
-      setPaidResult(detailDatas.paidResult);
+      setPaidResult(detailDatas.paidResults);
     }
   };
   return (
@@ -68,19 +68,20 @@ const UserDetail = ({ detailData, groupId }) => {
               </li>
             ))
           ) : (
-            <p>加载中</p>
+            <p>加載中</p>
           )}
-          {paidResult ? (
-            paidResult.map((result) => (
+          {/* 小計 */}
+          {paidResults ? (
+            paidResults.map((result) => (
               <li className={styles.detailLi} key={`result${result.id}`}>
-                <div className={styles.detailTextContainer}>
+                <div className={styles.resultTextContainer}>
                   <div className={styles.timeAndName}>
                     <span className={styles.detailTime}>
                       {formatDate(result.createdAt)}
                     </span>
                     <span className={styles.detailName}>
                       {result.owerId === detailData.userId ? (
-                        <>已支付分帳款項</>
+                        <>已清償分帳款項</>
                       ) : (
                         <>已收到分帳款項</>
                       )}
@@ -88,10 +89,10 @@ const UserDetail = ({ detailData, groupId }) => {
                   </div>
                   <span
                     className={clsx(styles.detailCost, {
-                      [styles.minusCost]: result.payerId === detailData.userId,
+                      // [styles.minusCost]: result.payerId === detailData.userId,
                     })}
                   >
-                    $ {result.payerId === detailData.userId && "-"}
+                    $ 
                     {result.amount}
                   </span>
                 </div>
