@@ -109,6 +109,10 @@ const SettlePage = () => {
     );
     setIsButtonEnabled(allResultsAreTrue);
   }, [resultData]);
+
+  useEffect (() => {
+    getOverViewAsync();
+  }, [resultData])
   return (
     <>
       <Navbar></Navbar>
