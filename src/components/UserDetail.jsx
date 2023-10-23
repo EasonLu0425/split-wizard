@@ -1,5 +1,5 @@
 import { getUserInGroupDetails } from "../api/itemDetails";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import clsx from "clsx";
 import styles from "./UserDetail.module.css";
 import { formatDate } from "../helpers/helper";
@@ -10,20 +10,28 @@ const UserDetail = ({ detailData, groupId }) => {
   const [details, setDetails] = useState([]);
   const [paidResults, setPaidResult] = useState([]);
 
+  const getDetailAsync = async() => {
+    const detailDatas = await getUserInGroupDetails(
+      groupId,
+      detailData.memberId
+    );
+    setDetails(detailDatas.details);
+    setPaidResult(detailDatas.results);
+  }
+
   const handleShowDetail = async (e) => {
     e.preventDefault();
     setShowDetail(!showDetail);
     if (firstClick) {
       setFirstClick(false);
-      const detailDatas = await getUserInGroupDetails(
-        groupId,
-        detailData.memberId
-      );
-      console.log(detailDatas);
-      setDetails(detailDatas.details);
-      setPaidResult(detailDatas.results);
+      getDetailAsync()
     }
   };
+
+  useEffect(() => {
+    setShowDetail(false)
+    setFirstClick(true)
+  }, [detailData])
   return (
     <>
       <button

@@ -23,7 +23,7 @@ const GropuPage = () => {
   const handleAddItem = () => {
     if (isSettled) {
       Swal.fire({
-        title: "已經結算過了，新增後會刪除分帳結果",
+        title: "已經結算過了，新增後會刪除尚未處理分帳結果",
         text: "確定要再新增嗎?",
         icon: "warning",
         showCancelButton: true,

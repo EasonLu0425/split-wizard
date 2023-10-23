@@ -35,7 +35,6 @@ const SettlePage = () => {
             }
           })
         );
-        getOverViewAsync();
       }
     } catch (err) {
       console.error(err);
@@ -59,7 +58,6 @@ const SettlePage = () => {
             }
           })
         );
-        getOverViewAsync();
       }
     } catch (err) {
       console.error(err);
@@ -99,7 +97,6 @@ const SettlePage = () => {
   };
 
   useEffect(() => {
-    getOverViewAsync();
     getResultAsync();
   }, []);
 
@@ -108,11 +105,9 @@ const SettlePage = () => {
       (result) => result.status === true
     );
     setIsButtonEnabled(allResultsAreTrue);
+    getOverViewAsync();
   }, [resultData]);
 
-  useEffect (() => {
-    getOverViewAsync();
-  }, [resultData])
   return (
     <>
       <Navbar></Navbar>
@@ -132,7 +127,7 @@ const SettlePage = () => {
               ></UserDetail>
             ))
           ) : (
-            <div>加载中...</div>
+            <div>讀取中...</div>
           )}
         </div>
         <hr />
