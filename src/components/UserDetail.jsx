@@ -21,7 +21,7 @@ const UserDetail = ({ detailData, groupId }) => {
       );
       console.log(detailDatas);
       setDetails(detailDatas.details);
-      setPaidResult(detailDatas.paidResults);
+      setPaidResult(detailDatas.results);
     }
   };
   return (
@@ -68,7 +68,7 @@ const UserDetail = ({ detailData, groupId }) => {
               </li>
             ))
           ) : (
-            <p>加載中</p>
+            <p>讀取中</p>
           )}
           {/* 小計 */}
           {paidResults ? (
@@ -98,7 +98,7 @@ const UserDetail = ({ detailData, groupId }) => {
               </li>
             ))
           ) : (
-            <p>加载中</p>
+            <p>讀取中</p>
           )}
         </ul>
       )}
