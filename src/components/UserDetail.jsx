@@ -54,7 +54,7 @@ const UserDetail = ({ detailData, groupId }) => {
                       {formatDate(detail.item.itemTime)}
                     </span>
                     <span className={styles.detailName}>
-                      &nbsp;&nbsp;{detail.item.name}
+                      {detail.item.name}
                     </span>
                   </div>
                   <span
