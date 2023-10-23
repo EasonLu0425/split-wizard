@@ -80,7 +80,7 @@ const UserDetail = ({ detailData, groupId }) => {
                       {formatDate(result.createdAt)}
                     </span>
                     <span className={styles.detailName}>
-                      {result.owerId === detailData.memberId ? (
+                      {result.giverId === detailData.memberId ? (
                         <>已清償分帳款項</>
                       ) : (
                         <>已收到分帳款項</>
