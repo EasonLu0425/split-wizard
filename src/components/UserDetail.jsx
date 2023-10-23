@@ -28,15 +28,15 @@ const UserDetail = ({ detailData, groupId }) => {
     <>
       <button
         className={clsx(styles.overViewCard, {
-          [styles.positive]: detailData.userNet > 0,
-          [styles.negative]: detailData.userNet <= 0,
+          [styles.positive]: detailData.memberNet > 0,
+          [styles.negative]: detailData.memberNet <= 0,
         })}
         onClick={handleShowDetail}
       >
         <p>
-          <span>{detailData.userName}</span> 還需
-          {detailData.userNet > 0 ? "收到" : "支付"}{" "}
-          <span>${Math.abs(detailData.userNet)}</span>
+          <span>{detailData.memberName}</span> 還需
+          {detailData.memberNet > 0 ? "收到" : "支付"}{" "}
+          <span>${Math.abs(detailData.memberNet)}</span>
         </p>
         <div
           className={showDetail ? styles.hideArrorw : styles.showArrow}
@@ -80,7 +80,7 @@ const UserDetail = ({ detailData, groupId }) => {
                       {formatDate(result.createdAt)}
                     </span>
                     <span className={styles.detailName}>
-                      {result.owerId === detailData.userId ? (
+                      {result.owerId === detailData.memberId ? (
                         <>已清償分帳款項</>
                       ) : (
                         <>已收到分帳款項</>

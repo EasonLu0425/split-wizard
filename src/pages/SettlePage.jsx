@@ -117,12 +117,12 @@ const SettlePage = () => {
         ></Title>
         <div className={styles.overView}>
           <h2>旅程總覽</h2>
-          {overViewData.overView && Array.isArray(overViewData.overView) ? (
-            overViewData.overView.map((data) => (
+          {overViewData.overViews && Array.isArray(overViewData.overViews) ? (
+            overViewData.overViews.map((data) => (
               <UserDetail
                 detailData={data}
                 groupId={groupId}
-                key={data.userId}
+                key={data.memberId}
               ></UserDetail>
             ))
           ) : (
