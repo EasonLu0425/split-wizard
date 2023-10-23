@@ -79,25 +79,25 @@ const SettlePage = () => {
     }
   };
 
-  useEffect(() => {
-    const getOverViewAsync = async () => {
-      try {
-        const overViewData = await getOverView(groupId);
-        setOverViewData(overViewData.result);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    const getResultAsync = async () => {
-      try {
-        const resultData = await getResult(groupId);
+   const getOverViewAsync = async () => {
+     try {
+       const overViewData = await getOverView(groupId);
+       setOverViewData(overViewData.result);
+     } catch (err) {
+       console.error(err);
+     }
+   };
+   const getResultAsync = async () => {
+     try {
+       const resultData = await getResult(groupId);
 
-        setResultData(resultData.result);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getOverViewAsync();
+       setResultData(resultData.result);
+     } catch (err) {
+       console.error(err);
+     }
+   };
+
+  useEffect(() => {
     getResultAsync();
   }, []);
 
@@ -106,6 +106,7 @@ const SettlePage = () => {
       (result) => result.status === true
     );
     setIsButtonEnabled(allResultsAreTrue);
+    getOverViewAsync()
   }, [resultData]);
 
   return (
