@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Navbar, Title } from "../components";
+import { Navbar, Title, UserDetail } from "../components";
 import styles from "./SettlePage.module.css";
 import { useEffect, useState } from "react";
 import { getOverView } from "../api/userGroupConn";
@@ -64,10 +64,10 @@ const SettlePage = () => {
     }
   };
 
-  const handleArchive = async(e) => {
-    e.preventDefault()
-    const archiveRes = await putArchive(groupId)
-    if (archiveRes.status === 'success') {
+  const handleArchive = async (e) => {
+    e.preventDefault();
+    const archiveRes = await putArchive(groupId);
+    if (archiveRes.status === "success") {
       Swal.fire({
         position: "center",
         title: archiveRes.message,
@@ -75,9 +75,9 @@ const SettlePage = () => {
         icon: "success",
         showConfirmButton: false,
       });
-      navigate(`/groups`)
+      navigate(`/groups`);
     }
-  }
+  };
 
   useEffect(() => {
     const getOverViewAsync = async () => {
@@ -117,21 +117,13 @@ const SettlePage = () => {
         ></Title>
         <div className={styles.overView}>
           <h2>旅程總覽</h2>
-          {overViewData.overViews && Array.isArray(overViewData.overViews) ? (
-            overViewData.overViews.map((data) => (
-              <div
-                className={clsx(styles.overViewCard, {
-                  [styles.positive]: data.memberNet > 0,
-                  [styles.negative]: data.memberNet <= 0,
-                })}
-                key={data.memberId}
-              >
-                <p>
-                  <span>{data.memberName}</span> 需
-                  {data.memberNet > 0 ? "收到" : "支付"}{" "}
-                  <span>${Math.abs(data.memberNet)}</span>
-                </p>
-              </div>
+          {overViewData.overView && Array.isArray(overViewData.overView) ? (
+            overViewData.overView.map((data) => (
+              <UserDetail
+                detailData={data}
+                groupId={groupId}
+                key={data.userId}
+              ></UserDetail>
             ))
           ) : (
             <div>加载中...</div>
@@ -169,7 +161,7 @@ const SettlePage = () => {
               )}
             </div>
           </div>
-          <div className={styles.unPaidContainer}>
+          <div className={styles.paidContainer}>
             <h2>已支付</h2>
             <div className={styles.paidListContainer}>
               {resultData && Array.isArray(resultData) ? (
