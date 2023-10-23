@@ -70,7 +70,7 @@ const Navbar = () => {
             })
           );
         }
-        navigate('/groups')
+        window.location.reload();
       }
     } catch (err) {
       Swal.fire({
