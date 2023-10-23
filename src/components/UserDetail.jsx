@@ -17,7 +17,7 @@ const UserDetail = ({ detailData, groupId }) => {
       setFirstClick(false);
       const detailDatas = await getUserInGroupDetails(
         groupId,
-        detailData.userId
+        detailData.memberId
       );
       console.log(detailDatas);
       setDetails(detailDatas.details);
