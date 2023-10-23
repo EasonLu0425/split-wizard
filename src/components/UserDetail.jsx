@@ -77,7 +77,7 @@ const UserDetail = ({ detailData, groupId }) => {
                 <div className={styles.resultTextContainer}>
                   <div className={styles.timeAndName}>
                     <span className={styles.detailTime}>
-                      {formatDate(result.createdTime)}
+                      {formatDate(result.updatedTime)}
                     </span>
                     <span className={styles.detailName}>
                       {result.giverId === detailData.memberId ? (
