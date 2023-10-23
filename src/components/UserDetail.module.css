@@ -64,14 +64,17 @@
 .timeAndName {
   display: flex;
   justify-content: start;
+  align-items: center;
 }
 
 .detailCost {
   text-align: end;
+  margin-right: 4px;
 }
 
 .detailName {
   font-weight: 700;
+  margin-left: 4px;
 }
 
 .minusCost {
