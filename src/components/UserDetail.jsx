@@ -68,7 +68,7 @@ const UserDetail = ({ detailData, groupId }) => {
               </li>
             ))
           ) : (
-            <p>加載中</p>
+            <p>載入中</p>
           )}
           {/* 小計 */}
           {paidResults ? (
@@ -80,7 +80,7 @@ const UserDetail = ({ detailData, groupId }) => {
                       {formatDate(result.createdAt)}
                     </span>
                     <span className={styles.detailName}>
-                      {result.owerId === detailData.userId ? (
+                      {result.giverId === detailData.userId ? (
                         <>已清償分帳款項</>
                       ) : (
                         <>已收到分帳款項</>
@@ -99,7 +99,7 @@ const UserDetail = ({ detailData, groupId }) => {
               </li>
             ))
           ) : (
-            <p>加载中</p>
+            <p>載入中</p>
           )}
         </ul>
       )}
