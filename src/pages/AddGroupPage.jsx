@@ -81,7 +81,7 @@ const AddGroupPage = () => {
         const data = await getAllUsers();
         const allusers = data.result;
         const newOptions = allusers.map((user) => {
-          return { value: user.id, label: `${user.name}(${user.account})` };
+          return { value: user.id, label: `${user.name}(${user.uid})` };
         });
         setOptions(newOptions);
       } catch (err) {
