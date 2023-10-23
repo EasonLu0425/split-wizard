@@ -50,10 +50,10 @@ const UserDetail = ({ detailData, groupId }) => {
                 <div className={styles.detailTextContainer}>
                   <div className={styles.timeAndName}>
                     <span className={styles.detailTime}>
-                      {formatDate(detail.Item.itemTime)}
+                      {formatDate(detail.item.itemTime)}
                     </span>
                     <span className={styles.detailName}>
-                      {detail.Item.name}
+                      {detail.item.name}
                     </span>
                   </div>
                   <span
@@ -77,7 +77,7 @@ const UserDetail = ({ detailData, groupId }) => {
                 <div className={styles.resultTextContainer}>
                   <div className={styles.timeAndName}>
                     <span className={styles.detailTime}>
-                      {formatDate(result.createdAt)}
+                      {formatDate(result.createdTime)}
                     </span>
                     <span className={styles.detailName}>
                       {result.giverId === detailData.memberId ? (
