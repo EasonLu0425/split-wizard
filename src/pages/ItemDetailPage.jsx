@@ -122,7 +122,7 @@ const ItemDetailPage = () => {
           <div className={styles.itemNameAndAmount}>
             <p>{itemData.name}</p>
             <p>${itemData.amount}</p>
-          </div>{" "}
+          </div>
           <div className={styles.payerContainer}>
             <p className={styles.payerTitle}>支付者</p>
             {payer.map((user, index) => (

@@ -35,7 +35,8 @@ const UserDetail = ({ detailData, groupId }) => {
       >
         <p>
           <span>{detailData.memberName}</span> 還需
-          {detailData.memberNet > 0 ? "收到" : "支付"}{"  "}
+          {detailData.memberNet > 0 ? "收到" : "支付"}
+          {"  "}
           <span>${Math.abs(detailData.memberNet)}</span>
         </p>
         <div
@@ -51,9 +52,9 @@ const UserDetail = ({ detailData, groupId }) => {
                   <div className={styles.timeAndName}>
                     <span className={styles.detailTime}>
                       {formatDate(detail.item.itemTime)}
-                    </span>{""}
+                    </span>
                     <span className={styles.detailName}>
-                      {detail.item.name}
+                      &nbsp;&nbsp;{detail.item.name}
                     </span>
                   </div>
                   <span
@@ -79,7 +80,6 @@ const UserDetail = ({ detailData, groupId }) => {
                     <span className={styles.detailTime}>
                       {formatDate(result.updatedTime)}
                     </span>
-                    {"  "}
                     <span className={styles.detailName}>
                       {result.giverId === detailData.memberId ? (
                         <>已清償分帳款項</>
