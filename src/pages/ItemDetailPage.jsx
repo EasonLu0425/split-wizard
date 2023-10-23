@@ -114,7 +114,7 @@ const ItemDetailPage = () => {
       <Navbar></Navbar>
       <div className={styles.itemDetailPageContainer}>
         <Title
-          title={`${itemData.groupName}/${itemData.itemName}`}
+          title={`${itemData.groupName}/${itemData.name}`}
           backFn={backToGroupPage}
         ></Title>
         <div className={styles.detailContainer}>
