@@ -8,7 +8,6 @@ import clsx from "clsx";
 import { putArchive } from "../api/groups";
 import Swal from "sweetalert2";
 
-
 const SettlePage = () => {
   const navigate = useNavigate();
   const { groupId } = useParams();
@@ -108,6 +107,7 @@ const SettlePage = () => {
     );
     setIsButtonEnabled(allResultsAreTrue);
   }, [resultData]);
+
   return (
     <>
       <Navbar></Navbar>
