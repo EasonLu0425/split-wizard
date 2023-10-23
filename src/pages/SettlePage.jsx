@@ -35,6 +35,7 @@ const SettlePage = () => {
             }
           })
         );
+        getOverViewAsync();
       }
     } catch (err) {
       console.error(err);
@@ -58,6 +59,7 @@ const SettlePage = () => {
             }
           })
         );
+        getOverViewAsync();
       }
     } catch (err) {
       console.error(err);
@@ -78,25 +80,25 @@ const SettlePage = () => {
       navigate(`/groups`);
     }
   };
+  const getOverViewAsync = async () => {
+    try {
+      const overViewData = await getOverView(groupId);
+      setOverViewData(overViewData.result);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const getResultAsync = async () => {
+    try {
+      const resultData = await getResult(groupId);
+
+      setResultData(resultData.result);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
-    const getOverViewAsync = async () => {
-      try {
-        const overViewData = await getOverView(groupId);
-        setOverViewData(overViewData.result);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    const getResultAsync = async () => {
-      try {
-        const resultData = await getResult(groupId);
-
-        setResultData(resultData.result);
-      } catch (err) {
-        console.error(err);
-      }
-    };
     getOverViewAsync();
     getResultAsync();
   }, []);
