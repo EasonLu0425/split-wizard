@@ -1,15 +1,15 @@
-import axios from "axios";
+import { axiosInstance } from "./axiosInstance";
 
-const authURL = "http://localhost:5000/splitWizard";
-// const authURL = "http://localhost:8081/splitwizard-SP-0.1";
+// const authURL = "http://localhost:5000/splitWizard";
+const authURL = "http://localhost:8081/splitwizard-SP-0.1";
 
-export const login = async ({ account, password }) => {
+export const apiLogin = async ({ account, password }) => {
   try {
-    const { data } = await axios.post(`${authURL}/login`, {
+    const { data } = await axiosInstance.post(`${authURL}/login`, {
       account,
       password,
     });
-    const { authToken } = data;
+    const { authToken } = data.result;
     if (authToken) {
       return { success: true, ...data };
     }
@@ -19,14 +19,21 @@ export const login = async ({ account, password }) => {
   }
 };
 
-export const register = async ({ account, email, password }) => {
+export const apiRegister = async ({
+  name,
+  account,
+  password,
+  passwordCheck,
+}) => {
   try {
-    const { data } = await axios.post(`${authURL}/register`, {
+    const { data } = await axiosInstance.post(`${authURL}/register`, {
+      name,
       account,
-      email,
       password,
+      passwordCheck,
     });
-    const { authToken } = data;
+    console.log(data);
+    const { authToken } = data.result;
     if (authToken) {
       return { success: true, ...data };
     }
@@ -36,23 +43,15 @@ export const register = async ({ account, email, password }) => {
   }
 };
 
-// export const checkPermission = async (authToken) => {
-//   try {
-//     const response = await axios.get(`${authURL}/test-token`, {
-//       headers: {
-//         Authorization: "Bearer " + authToken,
-//       },
-//     });
-//     return response.data.success;
-//   } catch (error) {
-//     console.error("[Check Permission Failed]:", error);
-//   }
-// };
-
-export const checkPermission = async () => {
+export const checkPermission = async (authToken) => {
   try {
-
-  } catch(err) {
-    console.error(err)
+    const response = await axiosInstance.get(`${authURL}/test-token`, {
+      headers: {
+        Authorization: "Bearer " + authToken,
+      },
+    });
+    return response.data.status;
+  } catch (error) {
+    console.error("[Check Permission Failed]:", error);
   }
-}
+};

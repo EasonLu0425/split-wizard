@@ -1,14 +1,18 @@
 import styles from "./LoginPage.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { axiosInstance, baseURL } from "../api/axiosInstance";
-import { socket } from "../socket";
+import { useAuth } from "../contexts/AuthContext";
+// import { useSocket } from "../contexts/SocketContext";
+// import { socket } from "../socket";
 
 const LoginPage = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
+  const { login, isAuthenticated, currentMember } = useAuth();
+  // const { emitToServer } = useSocket();
   const navigate = useNavigate();
 
   const handleAccountInput = (e) => {
@@ -38,10 +42,12 @@ const LoginPage = () => {
         password,
       };
       setIsSubmit(true);
-      const { data } = await axiosInstance.post(`${baseURL}/login`, formData);
-      //  const success = await login({ account, password }); 有JWT之後把login判斷式換成api.auth跟authContext
-      localStorage.setItem("currentUserId", data.result.id);
-      if (data.status === "success") {
+      // const { data } = await axiosInstance.post(`${baseURL}/login`, formData);
+
+      const success = await login(formData); //有JWT之後把login判斷式換成api.auth跟authContext
+      // localStorage.setItem("currentUserId", data.result.id);
+      // if (data.status === "success") {
+      if (success) {
         Swal.fire({
           position: "center",
           title: "登入成功",
@@ -49,20 +55,13 @@ const LoginPage = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        // socket.connect();
-        // socket.emit("login");
+        // emitToServer("notificationToServer", "yeah!!!!");
         navigate("/groups");
       }
     } catch (err) {
-      let data = {};
-      if (err.status === 401) {
-        data = { message: "帳號或密碼錯誤" };
-      }
-
-      console.log("error.data", err);
       Swal.fire({
         position: "center",
-        title: data.message,
+        title: "請重新登入",
         timer: 1000,
         icon: "error",
         showConfirmButton: false,
@@ -70,6 +69,11 @@ const LoginPage = () => {
       setIsSubmit(false);
     }
   };
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/groups");
+    }
+  }, [navigate, isAuthenticated]);
 
   return (
     <>
