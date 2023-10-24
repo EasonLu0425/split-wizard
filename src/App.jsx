@@ -22,9 +22,9 @@ import { AuthProvider } from "./contexts/AuthContext";
 function App() {
   return (
     <div className="App">
-      <AuthProvider>
-        <ItemDataProvider>
-          <BrowserRouter basename="/splitWizard">
+      <ItemDataProvider>
+        <BrowserRouter basename="/splitWizard">
+          <AuthProvider>
             <Routes>
               <Route path="login" element={<LoginPage />} />
               <Route path="register" element={<RegisterPage />} />
@@ -57,9 +57,9 @@ function App() {
               ></Route>
               <Route path="*" element={<RedirectPage />}></Route>
             </Routes>
-          </BrowserRouter>
-        </ItemDataProvider>
-      </AuthProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </ItemDataProvider>
     </div>
   );
 }
