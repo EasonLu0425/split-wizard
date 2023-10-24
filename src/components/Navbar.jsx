@@ -7,36 +7,37 @@ import Swal from "sweetalert2";
 import { getNotifications, readNotification } from "../api/notifications";
 import { addMemberToGroup } from "../api/userGroupConn";
 import { socket } from "../socket";
+import { useAuth } from "../contexts/AuthContext";
 import { relativeTime } from "../helpers/helper";
 
 const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [notiOpen, setNotiOpen] = useState(false);
   const [notis, setNotis] = useState([]);
+    const { logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogOut = async (e) => {
-    try {
-      e.preventDefault();
-      localStorage.removeItem("currentUserId");
-      const { data } = await axiosInstance.post(`${baseURL}/logout`);
-      console.log("登出回傳", data);
-      if (data.status === "success") {
-        Swal.fire({
-          position: "center",
-          title: "登出成功!",
-          timer: 1000,
-          icon: "success",
-          showConfirmButton: false,
-        });
-        // socket.emit("logout");
-        // socket.disconnect();
-        navigate("/login");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+ const handleLogOut = async (e) => {
+   try {
+     e.preventDefault();
+     logout();
+     const { data } = await axiosInstance.post(`${baseURL}/logout`);
+     console.log("登出回傳", data);
+     if (data.status === "success") {
+       Swal.fire({
+         position: "center",
+         title: "登出成功!",
+         timer: 1000,
+         icon: "success",
+         showConfirmButton: false,
+       });
+       navigate("/login");
+     }
+   } catch (err) {
+     console.error(err);
+   }
+ };
+
 
   const acceptInvite = async (e, groupId, notiId) => {
     try {
@@ -133,17 +134,12 @@ const Navbar = () => {
       }
     };
     getNotisAsync();
-
-    // const socketNotiListener = (data) => {
-    //   setNotis([data, ...notis]);
-    // };
-
-    // socket.on("notificationToClient", socketNotiListener);
-    // return () => {
-    //   socket.off("notificationToClient", socketNotiListener);
-    // };
   }, []);
-
+ useEffect(() => {
+   if (!isAuthenticated) {
+     navigate("/login");
+   }
+ }, [navigate, isAuthenticated]);
 
   return (
     <>
