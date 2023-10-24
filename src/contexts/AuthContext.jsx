@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
         return;
       }
       const result = await checkPermission(authToken);
-      if (result) {
+      if (result === 'success') {
         setIsAuthenticated(true);
         const tempPayload = decodeToken(authToken);
 
