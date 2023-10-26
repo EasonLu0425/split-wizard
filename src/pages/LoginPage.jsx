@@ -11,7 +11,7 @@ const LoginPage = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
-  const { login, isAuthenticated, currentMember } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   // const { emitToServer } = useSocket();
   const navigate = useNavigate();
 

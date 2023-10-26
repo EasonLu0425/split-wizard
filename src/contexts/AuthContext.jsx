@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }) => {
       password: registerData.password,
       passwordCheck: registerData.passwordCheck,
     });
-    console.log('context res', data)
     if (data.status === 'success') {
       const tempPayload = decodeToken(data.result.authToken);
       if (tempPayload) {
@@ -45,7 +44,6 @@ export const AuthProvider = ({ children }) => {
       account: loginData.account,
       password: loginData.password,
     });
-    console.log("login result", data);
     if (data.status === "success") {
       const tempPayload = decodeToken(data.result.authToken);
       if (tempPayload) {

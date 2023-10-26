@@ -6,7 +6,6 @@ export const apiLogin = async ({ account, password }) => {
       account,
       password,
     });
-    console.log('apiLoginRes', apiLoginRes)
     return apiLoginRes;
   } catch (error) {
     console.error("[Login Failed]:", error);
@@ -27,7 +26,6 @@ export const apiRegister = async ({
       password,
       passwordCheck,
     });
-    console.log('apiRegisterRes', apiRegisterRes)
     return apiRegisterRes
   } catch (error) {
     console.error("[Register Failed]", error);
