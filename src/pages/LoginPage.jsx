@@ -42,12 +42,9 @@ const LoginPage = () => {
         password,
       };
       setIsSubmit(true);
-      // const { data } = await axiosInstance.post(`${baseURL}/login`, formData);
 
-      const success = await login(formData); //有JWT之後把login判斷式換成api.auth跟authContext
-      // localStorage.setItem("currentUserId", data.result.id);
-      // if (data.status === "success") {
-      if (success) {
+      const loginRes = await login(formData);
+      if (loginRes.status === 'success') {
         Swal.fire({
           position: "center",
           title: "登入成功",
@@ -55,10 +52,19 @@ const LoginPage = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        // emitToServer("notificationToServer", "yeah!!!!");
         navigate("/groups");
+      } else if (loginRes.status === 'error') {
+        Swal.fire({
+          position: "center",
+          title: "帳號或密碼錯誤",
+          timer: 1000,
+          icon: "error",
+          showConfirmButton: false,
+        });
+        setIsSubmit(false);
       }
     } catch (err) {
+      console.log(err)
       Swal.fire({
         position: "center",
         title: "請重新登入",

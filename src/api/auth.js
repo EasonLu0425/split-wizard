@@ -1,21 +1,16 @@
-import { axiosInstance } from "./axiosInstance";
-
-// const authURL = "http://localhost:5000/splitWizard";
-const authURL = "http://localhost:8081/splitwizard-SP-0.1";
+import { axiosInstance, baseURL } from "./axiosInstance";
 
 export const apiLogin = async ({ account, password }) => {
   try {
-    const { data } = await axiosInstance.post(`${authURL}/login`, {
+    const apiLoginRes = await axiosInstance.post(`${baseURL}/login`, {
       account,
       password,
     });
-    const { authToken } = data.result;
-    if (authToken) {
-      return { success: true, ...data };
-    }
-    return data;
+    console.log('apiLoginRes', apiLoginRes)
+    return apiLoginRes;
   } catch (error) {
     console.error("[Login Failed]:", error);
+    return error.response;
   }
 };
 
@@ -26,26 +21,23 @@ export const apiRegister = async ({
   passwordCheck,
 }) => {
   try {
-    const { data } = await axiosInstance.post(`${authURL}/register`, {
+    const apiRegisterRes = await axiosInstance.post(`${baseURL}/register`, {
       name,
       account,
       password,
       passwordCheck,
     });
-    console.log(data);
-    const { authToken } = data.result;
-    if (authToken) {
-      return { success: true, ...data };
-    }
-    return data;
+    console.log('apiRegisterRes', apiRegisterRes)
+    return apiRegisterRes
   } catch (error) {
     console.error("[Register Failed]", error);
+    return error
   }
 };
 
 export const checkPermission = async (authToken) => {
   try {
-    const response = await axiosInstance.get(`${authURL}/test-token`, {
+    const response = await axiosInstance.get(`${baseURL}/test-token`, {
       headers: {
         Authorization: "Bearer " + authToken,
       },

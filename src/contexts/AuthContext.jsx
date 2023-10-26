@@ -18,46 +18,52 @@ export const AuthProvider = ({ children }) => {
   const [payload, setPayload] = useState(null);
   const { pathname } = useLocation();
 
-  const register = async (data) => {
-    const { success, result } = await apiRegister({
-      name: data.name,
-      account: data.account,
-      password: data.password,
-      passwordCheck: data.passwordCheck,
+  const register = async (registerData) => {
+    const {data} = await apiRegister({
+      name: registerData.name,
+      account: registerData.account,
+      password: registerData.password,
+      passwordCheck: registerData.passwordCheck,
     });
-
-    const tempPayload = decodeToken(result.authToken);
-    if (tempPayload) {
-      setPayload(tempPayload);
-      setIsAuthenticated(true);
-      localStorage.setItem("authToken", result.authToken);
-    } else {
-      setPayload(null);
-      setIsAuthenticated(false);
+    console.log('context res', data)
+    if (data.status === 'success') {
+      const tempPayload = decodeToken(data.result.authToken);
+      if (tempPayload) {
+        setPayload(tempPayload);
+        setIsAuthenticated(true);
+        localStorage.setItem("authToken", data.result.authToken);
+      } else {
+        setPayload(null);
+        setIsAuthenticated(false);
+      }
     }
-    return success;
+    return data
   };
 
-  const login = async (data) => {
-    const { success, result } = await apiLogin({
-      account: data.account,
-      password: data.password,
+  const login = async (loginData) => {
+    const { data } = await apiLogin({
+      account: loginData.account,
+      password: loginData.password,
     });
-    const tempPayload = decodeToken(result.authToken);
-    if (tempPayload) {
-      setPayload(tempPayload);
-      setIsAuthenticated(true);
-      localStorage.setItem("authToken", result.authToken);
-      localStorage.setItem("currentUserId", tempPayload.userId);
-    } else {
-      setPayload(null);
-      setIsAuthenticated(false);
+    console.log("login result", data);
+    if (data.status === "success") {
+      const tempPayload = decodeToken(data.result.authToken);
+      if (tempPayload) {
+        setPayload(tempPayload);
+        setIsAuthenticated(true);
+        localStorage.setItem("authToken", data.result.authToken);
+        localStorage.setItem("currentUserId", tempPayload.userId);
+      } else {
+        setPayload(null);
+        setIsAuthenticated(false);
+      }
     }
-    return success;
+    return data;
   };
 
   const logout = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("currentUserId");
     setPayload(null);
     setIsAuthenticated(false);
   };
@@ -71,7 +77,7 @@ export const AuthProvider = ({ children }) => {
         return;
       }
       const result = await checkPermission(authToken);
-      if (result === 'success') {
+      if (result === "success") {
         setIsAuthenticated(true);
         const tempPayload = decodeToken(authToken);
 

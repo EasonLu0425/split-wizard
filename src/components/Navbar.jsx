@@ -14,30 +14,29 @@ const Navbar = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [notiOpen, setNotiOpen] = useState(false);
   const [notis, setNotis] = useState([]);
-    const { logout, isAuthenticated } = useAuth();
+  const { logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
- const handleLogOut = async (e) => {
-   try {
-     e.preventDefault();
-     logout();
-     const { data } = await axiosInstance.post(`${baseURL}/logout`);
-     console.log("登出回傳", data);
-     if (data.status === "success") {
-       Swal.fire({
-         position: "center",
-         title: "登出成功!",
-         timer: 1000,
-         icon: "success",
-         showConfirmButton: false,
-       });
-       navigate("/login");
-     }
-   } catch (err) {
-     console.error(err);
-   }
- };
-
+  const handleLogOut = async (e) => {
+    try {
+      e.preventDefault();
+      const { data } = await axiosInstance.post(`${baseURL}/memberLogout`);
+      logout();
+      console.log("登出回傳", data);
+      if (data.status === "success") {
+        Swal.fire({
+          position: "center",
+          title: "登出成功!",
+          timer: 1000,
+          icon: "success",
+          showConfirmButton: false,
+        });
+        navigate("/login");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const acceptInvite = async (e, groupId, notiId) => {
     try {
@@ -103,26 +102,28 @@ const Navbar = () => {
   };
 
   const handleRead = async (e, notiId) => {
-    e.preventDefault()
-    const readRes = await readNotification({ id: notiId })
-    if (readRes.status === 'success') {
-      setNotis(notis.map(noti => {
-        if (noti.id === notiId) {
-          return {
-            ...noti,
-            read: true
+    e.preventDefault();
+    const readRes = await readNotification({ id: notiId });
+    if (readRes.status === "success") {
+      setNotis(
+        notis.map((noti) => {
+          if (noti.id === notiId) {
+            return {
+              ...noti,
+              read: true,
+            };
+          } else {
+            return noti;
           }
-        } else {
-          return noti
-        }
-      }))
+        })
+      );
     }
-  }
-  
+  };
+
   const handleMoreNoti = (e) => {
-    e.preventDefault()
-    navigate('/notifications')
-  }
+    e.preventDefault();
+    navigate("/notifications");
+  };
 
   useEffect(() => {
     const getNotisAsync = async () => {
@@ -135,16 +136,20 @@ const Navbar = () => {
     };
     getNotisAsync();
   }, []);
- useEffect(() => {
-   if (!isAuthenticated) {
-     navigate("/login");
-   }
- }, [navigate, isAuthenticated]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [navigate, isAuthenticated]);
 
   return (
     <>
       <div className={styles.navContainer}>
-        <div className={styles.navHamburger} onClick={(e) => setNavOpen(!navOpen)}>
+        <div
+          className={styles.navHamburger}
+          onClick={(e) => setNavOpen(!navOpen)}
+        >
           <div className={styles.hamburger}></div>
         </div>
         <div className={styles.title}>
