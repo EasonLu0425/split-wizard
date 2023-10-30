@@ -55,7 +55,7 @@ const Navbar = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        const readRes = await readNotification({ notiId });
+        const readRes = await readNotification({ id:notiId });
         if (readRes.status === "success") {
           setNotis(
             notis.map((noti) => {
@@ -86,7 +86,7 @@ const Navbar = () => {
   const handleReject = async (e, notiId) => {
     try {
       e.preventDefault();
-      const readRes = await readNotification({ notiId });
+      const readRes = await readNotification({ id: notiId });
       if (readRes.status === "success") {
         Swal.fire({
           position: "center",
@@ -103,7 +103,7 @@ const Navbar = () => {
 
   const handleRead = async (e, notiId) => {
     e.preventDefault();
-    const readRes = await readNotification({ id: notiId });
+    const readRes = await readNotification({id:notiId});
     if (readRes.status === "success") {
       setNotis(
         notis.map((noti) => {
