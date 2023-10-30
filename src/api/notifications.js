@@ -11,7 +11,7 @@ export const getNotifications = async () => {
 
 export const readNotification = async (notiId) => {
   try {
-    const res = await axiosInstance.post(`${baseURL}/readNotification`, notiId);
+    const res = await axiosInstance.post(`${baseURL}/readNotification`, {id: notiId});
     return res.data;
   } catch (err) {
     console.error(err);

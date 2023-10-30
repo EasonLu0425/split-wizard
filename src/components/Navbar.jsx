@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { getNotifications, readNotification } from "../api/notifications";
 import { addMemberToGroup } from "../api/userGroupConn";
 import { socket } from "../socket";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth, currentMember} from "../contexts/AuthContext";
 import { relativeTime } from "../helpers/helper";
 
 const Navbar = () => {
@@ -244,6 +244,7 @@ const Navbar = () => {
       >
         <div className={styles.listContainer}>
           <ul>
+          {/* 要新增hello, currentUserNaem(#UID) */}
             <li>
               <Link to="/groups">我的行程</Link>
             </li>
@@ -254,11 +255,9 @@ const Navbar = () => {
               <Link to="/groups">已封存的行程</Link>
             </li>
           </ul>
-          <form>
-            <button className={styles.logoutBtn} onClick={handleLogOut}>
-              登出
-            </button>
-          </form>
+          <button className={styles.logoutBtn} onClick={handleLogOut}>
+            登出
+          </button>
         </div>
       </div>
     </>
