@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { getNotifications, readNotification } from "../api/notifications";
 import { addMemberToGroup } from "../api/userGroupConn";
 import { socket } from "../socket";
-import { useAuth, currentMember} from "../contexts/AuthContext";
+import { useAuth, currentMember } from "../contexts/AuthContext";
 import { relativeTime } from "../helpers/helper";
 
 const Navbar = () => {
@@ -55,7 +55,7 @@ const Navbar = () => {
           icon: "success",
           showConfirmButton: false,
         });
-        const readRes = await readNotification({ id:notiId });
+        const readRes = await readNotification({ id: notiId });
         if (readRes.status === "success") {
           setNotis(
             notis.map((noti) => {
@@ -101,9 +101,11 @@ const Navbar = () => {
     }
   };
 
-  const handleRead = async (e, notiId) => {
+  const handleRead = async (e, notiId, notiRead) => {
     e.preventDefault();
-    const readRes = await readNotification({id:notiId});
+    //  如果已經已讀，就不要再傳post已讀
+    if (notiRead) return;
+    const readRes = await readNotification({ id: notiId });
     if (readRes.status === "success") {
       setNotis(
         notis.map((noti) => {
@@ -125,6 +127,13 @@ const Navbar = () => {
     navigate("/notifications");
   };
 
+  const handleClickOutside = (e) => {
+    const notificationElement = document.querySelector(".modalContainer");
+    if (!notificationElement.contains(e.target) && notiOpen) {
+      setNotiOpen(false);
+    }
+  };
+
   useEffect(() => {
     const getNotisAsync = async () => {
       try {
@@ -136,6 +145,18 @@ const Navbar = () => {
     };
     getNotisAsync();
   }, []);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      handleClickOutside(e);
+    };
+
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, [notiOpen]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -178,6 +199,7 @@ const Navbar = () => {
             className={`${styles.modalContainer} ${
               notiOpen ? styles.notiShow : styles.notiHide
             }`}
+            onClick={handleClickOutside}
           >
             <div className={styles.modal}>
               <ul className={styles.notiLiContainer}>
@@ -187,8 +209,8 @@ const Navbar = () => {
                       <div
                         className={styles.notiLi}
                         onClick={(e) => {
-                          if (noti.type !== "INVITATION") {
-                            handleRead(e, noti.id);
+                          if (!noti.read && noti.type !== "INVITATION") {
+                            handleRead(e, noti.id, noti.read);
                           }
                         }}
                       >
@@ -244,7 +266,7 @@ const Navbar = () => {
       >
         <div className={styles.listContainer}>
           <ul>
-          {/* 要新增hello, currentUserNaem(#UID) */}
+            {/* 要新增hello, currentUserNaem(#UID) */}
             <li>
               <Link to="/groups">我的行程</Link>
             </li>

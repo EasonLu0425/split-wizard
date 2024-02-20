@@ -10,34 +10,34 @@ const UserDetail = ({ detailData, groupId }) => {
   const [details, setDetails] = useState([]);
   const [paidResults, setPaidResult] = useState([]);
 
-  const getDetailAsync = async() => {
+  const getDetailAsync = async () => {
     const detailDatas = await getUserInGroupDetails(
       groupId,
       detailData.memberId
     );
     setDetails(detailDatas.details);
     setPaidResult(detailDatas.results);
-  }
+  };
 
   const handleShowDetail = async (e) => {
     e.preventDefault();
     setShowDetail(!showDetail);
     if (firstClick) {
       setFirstClick(false);
-      getDetailAsync()
+      getDetailAsync();
     }
   };
 
   useEffect(() => {
-    setShowDetail(false)
-    setFirstClick(true)
-  }, [detailData])
+    setShowDetail(false);
+    setFirstClick(true);
+  }, [detailData]);
   return (
     <>
       <button
         className={clsx(styles.overViewCard, {
-          [styles.positive]: detailData.memberNet > 0,
-          [styles.negative]: detailData.memberNet <= 0,
+          [styles.positive]: detailData.memberNet >= 0,
+          [styles.negative]: detailData.memberNet < 0,
         })}
         onClick={handleShowDetail}
       >
