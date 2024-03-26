@@ -306,14 +306,14 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
           if (!groupData) throw new Error("查無此項目!");
           receiveItemData(groupData);
         } catch (err) {
-           Swal.fire({
-             position: "center",
-             title: err.message,
-             timer: 1000,
-             icon: "error",
-             showConfirmButton: false,
-           });
-           navigate(`/groups/${groupId}`);
+          Swal.fire({
+            position: "center",
+            title: err.message,
+            timer: 1000,
+            icon: "error",
+            showConfirmButton: false,
+          });
+          navigate(`/groups/${groupId}`);
         }
       };
       getItemAsync();
@@ -321,7 +321,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
       const getGroupAsync = async () => {
         try {
           const groupData = await getGroup(groupId);
-          if (!groupData) throw new Error('查無此行程!')
+          if (!groupData) throw new Error("查無此行程!");
           receiveGroupTitle(groupData.name);
         } catch (err) {
           Swal.fire({
@@ -339,7 +339,8 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
     const getgroupmembersAsync = async () => {
       try {
         const members = await getGroupMembers(groupId);
-        if (members.result.length <= 1) throw new Error("沒有任何使用者，請其他使用者接受邀請後再操作!");
+        if (members.result.length <= 1)
+          throw new Error("沒有任何使用者，請其他使用者接受邀請後再操作!");
         receiveGroupMembers(members.result);
       } catch (err) {
         Swal.fire({
@@ -349,7 +350,7 @@ const ItemForm = ({ isEdit, groupId, itemId }) => {
           icon: "error",
           showConfirmButton: false,
         });
-        navigate(`/groups/${groupId}`)
+        navigate(`/groups/${groupId}`);
       }
     };
     getgroupmembersAsync();

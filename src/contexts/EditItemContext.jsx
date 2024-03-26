@@ -43,9 +43,9 @@ const ItemDataProvider = ({ children }) => {
   const receiveGroupTitle = (groupTitle) => {
     setItemInfo({
       ...itemInfo,
-      groupName: groupTitle
-    })
-  }
+      groupName: groupTitle,
+    });
+  };
 
   const receiveGroupMembers = (members) => {
     setGroupMembers(members);

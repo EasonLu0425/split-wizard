@@ -8,11 +8,11 @@
   align-items: center;
   background-color: #bee9e8;
   box-shadow: 0px 1px 2px 1px #bebebe;
-  z-index: 10;
+  z-index: 15;
 }
 
 .navHamburger {
-  height:3rem;
+  height: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,7 +103,7 @@
   border-radius: 0;
   border: none;
   position: absolute;
-  bottom: 15%;
+  bottom: 0%;
   left: 0;
 }
 
@@ -133,6 +133,19 @@
 .notiHide {
   display: none;
 }
+.modalOverlay {
+  position: fixed;
+  top: 3rem;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色 */
+  z-index: 2; /* 確保模態位於所有其他內容上面 */
+}
+
+.hideOverlay {
+  display: none;
+}
 
 .modalContainer {
   position: absolute;
@@ -143,8 +156,8 @@
   padding: 1rem;
   background: white;
   border-radius: 15px;
-  box-shadow: 2px 2px 2px 3px #bdbdbd;
-  z-index: 1;
+  /* box-shadow: 2px 2px 2px 3px #bdbdbd; */
+  z-index: 10;
 }
 
 .notiLiContainer {

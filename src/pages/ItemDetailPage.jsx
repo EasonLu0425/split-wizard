@@ -70,22 +70,22 @@ const ItemDetailPage = () => {
               type: "ITEM_DELETE",
               receiverIds: [],
               groupId: groupId,
-            };  
-            itemData.groupMembers.forEach( member => {
-              addNotiData.receiverIds.push(member.id)
-            })
+            };
+            itemData.groupMembers.forEach((member) => {
+              addNotiData.receiverIds.push(member.id);
+            });
             if (itemData.groupRedirect) {
               await resetGroupRedirect(groupId);
             }
-            await addNotification(addNotiData)
-              Swal.fire({
-                position: "center",
-                title: '刪除項目成功',
-                timer: 1000,
-                icon: "success",
-                showConfirmButton: false,
-              });
-              navigate(`/groups/${groupId}`);
+            await addNotification(addNotiData);
+            Swal.fire({
+              position: "center",
+              title: "刪除項目成功",
+              timer: 1000,
+              icon: "success",
+              showConfirmButton: false,
+            });
+            navigate(`/groups/${groupId}`);
           }
         }
       } catch (err) {
@@ -107,20 +107,20 @@ const ItemDetailPage = () => {
     };
     getItemAsync();
   }, []);
-  console.log(itemData)
+  console.log(itemData);
 
   return (
     <>
       <Navbar></Navbar>
       <div className={styles.itemDetailPageContainer}>
         <Title
-          title={`${itemData.groupName}/${itemData.name}`}
+          title={`${itemData.groupName}/${itemData.itemName}`}
           backFn={backToGroupPage}
         ></Title>
         <div className={styles.detailContainer}>
           <div className={styles.itemDate}>{formatDate(itemData.itemTime)}</div>
           <div className={styles.itemNameAndAmount}>
-            <p>{itemData.name}</p>
+            <p>{itemData.itemName}</p>
             <p>${itemData.amount}</p>
           </div>
           <div className={styles.payerContainer}>

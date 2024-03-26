@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import bell from "../images/bell.svg";
 import { axiosInstance, baseURL } from "../api/axiosInstance";
 import Swal from "sweetalert2";
@@ -11,6 +11,7 @@ import { useAuth, currentMember } from "../contexts/AuthContext";
 import { relativeTime } from "../helpers/helper";
 
 const Navbar = () => {
+  const modalOverlayRef = useRef(null);
   const [navOpen, setNavOpen] = useState(false);
   const [notiOpen, setNotiOpen] = useState(false);
   const [notis, setNotis] = useState([]);
@@ -128,9 +129,12 @@ const Navbar = () => {
   };
 
   const handleClickOutside = (e) => {
-    const notificationElement = document.querySelector(".modalContainer");
-    if (!notificationElement.contains(e.target) && notiOpen) {
-      setNotiOpen(false);
+    if (notiOpen) {
+      console.log(e.target);
+      if (modalOverlayRef.current === e.target) {
+        setNotiOpen(false);
+        return;
+      }
     }
   };
 
@@ -199,7 +203,6 @@ const Navbar = () => {
             className={`${styles.modalContainer} ${
               notiOpen ? styles.notiShow : styles.notiHide
             }`}
-            onClick={handleClickOutside}
           >
             <div className={styles.modal}>
               <ul className={styles.notiLiContainer}>
@@ -257,6 +260,11 @@ const Navbar = () => {
               </button>
             </div>
           </div>
+          <div
+            ref={modalOverlayRef}
+            className={notiOpen ? styles.modalOverlay : styles.hideOverlay}
+            onClick={handleClickOutside}
+          ></div>
         </div>
       </div>
       {/* navlist */}
